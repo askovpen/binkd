@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.31 2003/10/24 21:50:37 hbrew Exp $
+# $Id: Makefile,v 2.32 2003/10/25 16:05:52 stas Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -28,8 +28,8 @@ endif
 OUTDIR=bin/mingw32
 BINKDTYPE=mingw32
 
-CFLAGS= -mno-cygwin -mthreads -Wall -funsigned-char -Wno-char-subscripts -pipe
-CDEFS=  -DHAVE_THREADS -DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_UNISTD        \
+CFLAGS+= -mno-cygwin -mthreads -Wall -funsigned-char -Wno-char-subscripts -pipe
+CDEFS+= -DHAVE_THREADS -DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_UNISTD        \
         -DWIN32 -DHAVE_IO_H -DHAVE_DOS_H -DHAVE_STDARG_H -DHAVE_SNPRINTF     \
         -DHAVE_VSNPRINTF -DHAVE_WAITPID -DHTTPS -DNTLM                       \
         -DAMIGADOS_4D_OUTBOUND
