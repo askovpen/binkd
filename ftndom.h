@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftndom.h,v 2.3 2003/08/18 17:19:13 stream Exp $
+ * $Id: ftndom.h,v 2.4 2003/08/24 19:42:08 gul Exp $
  *
  * $Log: ftndom.h,v $
+ * Revision 2.4  2003/08/24 19:42:08  gul
+ * Get FTN-domain from matched zone in exp_ftnaddress()
+ *
  * Revision 2.3  2003/08/18 17:19:13  stream
  * Partially implemented new configuration parser logic (required for config reload)
  *
@@ -56,6 +59,11 @@ extern FTN_DOMAIN *pDomains;
  * 0 == domain not found
  */
 FTN_DOMAIN *get_domain_info (char *domain_name);
+
+/*
+ * Returns the matched domain by zone
+ */
+char *get_matched_domain (int zone, FTN_ADDR *pAddr, int nAddr);
 
 /*
  * Returns the default domain
