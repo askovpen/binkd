@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: binkd.c,v 2.82 2004/01/03 19:33:42 stas Exp $
+ * $Id: binkd.c,v 2.83 2004/01/07 10:13:26 gul Exp $
  *
  * $Log: binkd.c,v $
+ * Revision 2.83  2004/01/07 10:13:26  gul
+ * Fix usage output
+ *
  * Revision 2.82  2004/01/03 19:33:42  stas
  * Implement install and uninstall win* services using -t option
  *
@@ -427,10 +430,7 @@ void usage (void)
 #endif
 	  "pqrsvmh] [-P node]"
 #if defined(WIN32)
-	  " [-S name]"
-#if defined(BINKDW9X)
-          " [-t cmd]"
-#endif
+	  " [-S name] [-t cmd]"
 #endif
 	  " config"
 #ifdef OS2
