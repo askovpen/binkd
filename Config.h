@@ -12,11 +12,15 @@
  */
 
 /*
- * $Id: Config.h,v 2.155 2003/08/26 14:36:50 gul Exp $
+ * $Id: Config.h,v 2.156 2003/08/26 16:06:26 stream Exp $
  */
 
 #ifndef _Config_h
 #define _Config_h
+
+#if defined(HAVE_FORK) + defined(HAVE_THREADS) != 1
+#error You must defined either HAVE_FORK either HAVE_THREADS!
+#endif
 
 #ifdef __WATCOMC__
   #include <stdlib.h>
@@ -69,7 +73,7 @@
 #define MAX_NETNAME 255
 
 #ifndef CHECKCFG_INTERVAL		    /* Can be defined in Makefile */
-#define CHECKCFG_INTERVAL rescan_delay
+#define CHECKCFG_INTERVAL config->rescan_delay
 #endif
 
 #define MAILBOX                             /* fileboxes suport */
@@ -121,9 +125,6 @@
 #define BEGINTHREAD _beginthread
 #endif
 
-/* Pragmas */
-#ifdef __WATCOMC__
-  #pragma off (unreferenced);
-#endif
+#define UNUSED_ARG(s)  (void)(s)
 
 #endif

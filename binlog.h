@@ -7,9 +7,15 @@
 /*       Definition file.                                             */
 /*--------------------------------------------------------------------*/
 /*
- * $Id: binlog.h,v 2.1 2003/08/16 09:08:33 gul Exp $
+ * $Id: binlog.h,v 2.2 2003/08/26 16:06:26 stream Exp $
  *
  * $Log: binlog.h,v $
+ * Revision 2.2  2003/08/26 16:06:26  stream
+ * Reload configuration on-the fly.
+ *
+ * Warning! Lot of code can be broken (Perl for sure).
+ * Compilation checked only under OS/2-Watcom and NT-MSVC (without Perl)
+ *
  * Revision 2.1  2003/08/16 09:08:33  gul
  * Binlog semaphoring removed
  *
@@ -21,8 +27,6 @@
 #ifndef __BINLOG_H__
 #define __BINLOG_H__
 
-#ifdef STATE_DEFINED
-void BinLogStat (char *status, STATE *state);
-#endif
+void BinLogStat (char *status, STATE *state, BINKD_CONFIG *config);
 
 #endif

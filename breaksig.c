@@ -12,9 +12,15 @@
  */
 
 /*
- * $Id: breaksig.c,v 2.2 2003/03/10 10:39:23 gul Exp $
+ * $Id: breaksig.c,v 2.3 2003/08/26 16:06:26 stream Exp $
  *
  * $Log: breaksig.c,v $
+ * Revision 2.3  2003/08/26 16:06:26  stream
+ * Reload configuration on-the fly.
+ *
+ * Warning! Lot of code can be broken (Perl for sure).
+ * Compilation checked only under OS/2-Watcom and NT-MSVC (without Perl)
+ *
  * Revision 2.2  2003/03/10 10:39:23  gul
  * New include file common.h
  *
@@ -42,11 +48,7 @@
 #include "Config.h"
 #include "sys.h"
 #include "common.h"
-#include "bsy.h"
 #include "tools.h"
-#include "iphdr.h"
-#include "readcfg.h"
-#include "binlog.h"
 
 static void exitsig (int arg)
 {
