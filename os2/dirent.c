@@ -11,6 +11,17 @@
  *  (at your option) any later version. See COPYING.
  */
 
+/*
+ * $Id: dirent.c,v 2.1 2003/03/01 20:26:36 gul Exp $
+ *
+ * Revision history:
+ * $Log: dirent.c,v $
+ * Revision 2.1  2003/03/01 20:26:36  gul
+ * *** empty log message ***
+ *
+ *
+ */
+
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
