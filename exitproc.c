@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.15 2003/06/04 10:36:58 stas Exp $
+ * $Id: exitproc.c,v 2.15.2.1 2003/10/08 10:32:46 gul Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.15.2.1  2003/10/08 10:32:46  gul
+ * Fix exit threads in exitfunc()
+ *
  * Revision 2.15  2003/06/04 10:36:58  stas
  * Thread-safety tcperr() implementation on Win32
  *
@@ -118,7 +121,7 @@ void exitfunc (void)
     kill (i, SIGTERM);
     /* sleep (1); */
   }
-#elif HAVE_THREADS
+#elif defined(HAVE_THREADS)
   /* exit all threads */
   { SOCKET h;
     /* wait for threads exit */
