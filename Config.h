@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.49 2003/07/06 08:32:33 gul Exp $
+ * $Id: Config.h,v 2.50 2003/07/06 10:18:59 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.50  2003/07/06 10:18:59  gul
+ * Auto increase patchlevel, set 0.9.6a-39
+ * Increase loglevel for "Watinig for M_GOT" message
+ *
  * Revision 2.49  2003/07/06 08:32:33  gul
  * Auto increase patchlevel, set 0.9.6a-38
  * Decrease logging about link status changes
@@ -203,7 +207,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-38"
+#define MYVER "0.9.6a-39"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
