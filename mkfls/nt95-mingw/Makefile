@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.29 2003/10/21 08:14:31 hbrew Exp $
+# $Id: Makefile,v 2.30 2003/10/23 10:16:10 hbrew Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -11,7 +11,7 @@
 
 #ZLIB_BASE=../zlib
 #ZLIB_LIB=z
-#BZLIB2_BASE=../bzip2
+#BZLIB2_BASE=../bzlib2
 #BZLIB2_LIB=bz2
 
 # =============================================================================
