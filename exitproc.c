@@ -12,11 +12,11 @@
  */
 
 /*
- *  $Id: exitproc.c,v 1.1 2001/01/10 11:34:58 gul Exp $
+ * $Id: exitproc.c,v 2.0 2001/01/10 12:12:37 gul Exp $
  *
- *  $Log: exitproc.c,v $
- *  Revision 1.1  2001/01/10 11:34:58  gul
- *  Initial revision
+ * $Log: exitproc.c,v $
+ * Revision 2.0  2001/01/10 12:12:37  gul
+ * Binkd is under CVS again
  *
  * Revision 1.2  1997/10/23  04:13:35  mff
  * pidfiles are now killed only by servmgrs, misc

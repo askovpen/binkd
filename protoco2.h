@@ -1,4 +1,13 @@
 /*
+ * $Id: protoco2.h,v 2.0 2001/01/10 12:12:38 gul Exp $
+ *
+ * $Log: protoco2.h,v $
+ * Revision 2.0  2001/01/10 12:12:38  gul
+ * Binkd is under CVS again
+ *
+ *
+ */
+/*
 
    binkp's frames:
 

@@ -3,6 +3,16 @@
  * Sendmail 8.8.8 by Eric Allman <eric@sendmail.org>.
  * Edited a bit by Dima Maloff for Binkd/0.9.3
  */
+/*
+ * $Id: setpttl.c,v 2.0 2001/01/10 12:12:40 gul Exp $
+ *
+ * Revision history:
+ * $Log: setpttl.c,v $
+ * Revision 2.0  2001/01/10 12:12:40  gul
+ * Binkd is under CVS again
+ *
+ *
+ */
 
 #include <stdlib.h>
 #include <stdio.h>

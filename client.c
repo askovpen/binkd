@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: client.c,v 1.1 2001/01/10 11:34:57 gul Exp $
+ * $Id: client.c,v 2.0 2001/01/10 12:12:37 gul Exp $
  *
  * $Log: client.c,v $
- * Revision 1.1  2001/01/10 11:34:57  gul
- * Initial revision
+ * Revision 2.0  2001/01/10 12:12:37  gul
+ * Binkd is under CVS again
  *
  * Revision 1.12  1998/06/19  05:21:12  mff
  * Oport was broken

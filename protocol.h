@@ -1,3 +1,12 @@
+/*
+ * $Id: protocol.h,v 2.0 2001/01/10 12:12:39 gul Exp $
+ *
+ * $Log: protocol.h,v $
+ * Revision 2.0  2001/01/10 12:12:39  gul
+ * Binkd is under CVS again
+ *
+ *
+ */
 #ifndef _protocol_h
 #define _protocol_h
 

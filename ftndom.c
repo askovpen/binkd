@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: ftndom.c,v 1.1 2001/01/10 11:34:58 gul Exp $
+ * $Id: ftndom.c,v 2.0 2001/01/10 12:12:37 gul Exp $
  *
  * $Log: ftndom.c,v $
- * Revision 1.1  2001/01/10 11:34:58  gul
- * Initial revision
+ * Revision 2.0  2001/01/10 12:12:37  gul
+ * Binkd is under CVS again
  *
  * Revision 1.2  1997/10/23  04:08:50  mff
  * stricmp() -> STRICMP()

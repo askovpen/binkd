@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: srif.c,v 1.1 2001/01/10 11:34:59 gul Exp $
+ * $Id: srif.c,v 2.0 2001/01/10 12:12:39 gul Exp $
  *
  * $Log: srif.c,v $
- * Revision 1.1  2001/01/10 11:34:59  gul
- * Initial revision
+ * Revision 2.0  2001/01/10 12:12:39  gul
+ * Binkd is under CVS again
  *
  * Revision 1.4  1997/06/16  05:40:33  mff
  * Binkd will not complain about missing .rsp files when running

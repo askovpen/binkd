@@ -13,11 +13,11 @@
  */
 
 /*
- * $Id: readdir.h,v 1.1 2001/01/10 11:34:58 gul Exp $
+ * $Id: readdir.h,v 2.0 2001/01/10 12:12:39 gul Exp $
  *
  * $Log: readdir.h,v $
- * Revision 1.1  2001/01/10 11:34:58  gul
- * Initial revision
+ * Revision 2.0  2001/01/10 12:12:39  gul
+ * Binkd is under CVS again
  *
  * Revision 1.1  1996/12/29  09:46:20  mff
  * Initial revision

@@ -11,6 +11,15 @@
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version. See COPYING.
  */
+/*
+ * $Id: https.h,v 2.0 2001/01/10 12:12:38 gul Exp $
+ *
+ * $Log: https.h,v $
+ * Revision 2.0  2001/01/10 12:12:38  gul
+ * Binkd is under CVS again
+ *
+ *
+ */
 
 int h_connect(int *socket, struct sockaddr_in *sin);
 

@@ -1,4 +1,5 @@
 # from "Pavel Gulchouck" <gul@gul.kiev.ua>
+# $Id: Makefile,v 2.0 2001/01/10 12:12:40 gul Exp $
 
 .SUFFIXES:
 .SUFFIXES: .res .rc .lst .obj .c .asm .hlp .itl .ipf .cpp

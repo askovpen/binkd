@@ -12,11 +12,11 @@
  */
 
 /*
- *  $Id: server.c,v 1.1 2001/01/10 11:34:59 gul Exp $
+ * $Id: server.c,v 2.0 2001/01/10 12:12:39 gul Exp $
  *
- *  $Log: server.c,v $
- *  Revision 1.1  2001/01/10 11:34:59  gul
- *  Initial revision
+ * $Log: server.c,v $
+ * Revision 2.0  2001/01/10 12:12:39  gul
+ * Binkd is under CVS again
  *
  * Revision 1.8  1997/10/23  03:39:42  mff
  * DUP() removed

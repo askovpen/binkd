@@ -10,6 +10,15 @@
  *  the Free Software Foundation; either version 2 of the License, or
  *  (at your option) any later version. See COPYING.
  */
+/*
+ * $Id: dirwin32.c,v 2.0 2001/01/10 12:12:40 gul Exp $
+ *
+ * $Log: dirwin32.c,v $
+ * Revision 2.0  2001/01/10 12:12:40  gul
+ * Binkd is under CVS again
+ *
+ *
+ */
 
 
 #include <string.h>

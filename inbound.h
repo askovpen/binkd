@@ -1,3 +1,12 @@
+/*
+ * $Id: inbound.h,v 2.0 2001/01/10 12:12:38 gul Exp $
+ *
+ * $Log: inbound.h,v $
+ * Revision 2.0  2001/01/10 12:12:38  gul
+ * Binkd is under CVS again
+ *
+ *
+ */
 #ifndef _inbound_h
 #define _inbound_h
 

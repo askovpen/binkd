@@ -1,3 +1,12 @@
+/*
+ * $Id: bsy.h,v 2.0 2001/01/10 12:12:37 gul Exp $
+ *
+ * $Log: bsy.h,v $
+ * Revision 2.0  2001/01/10 12:12:37  gul
+ * Binkd is under CVS again
+ *
+ *
+ */
 #ifndef _bsy_h
 #define _bsy_h
 

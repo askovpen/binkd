@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: ftndom.h,v 1.1 2001/01/10 11:34:58 gul Exp $
+ * $Id: ftndom.h,v 2.0 2001/01/10 12:12:38 gul Exp $
  *
  * $Log: ftndom.h,v $
- * Revision 1.1  2001/01/10 11:34:58  gul
- * Initial revision
+ * Revision 2.0  2001/01/10 12:12:38  gul
+ * Binkd is under CVS again
  *
  * Revision 1.1  1996/12/29  09:41:28  mff
  * Initial revision

@@ -1,7 +1,15 @@
-/* $Id: reapchld.inc,v 1.1 2001/01/10 11:34:59 gul Exp $ */
 /*
  * Common part of SIGCHLD handling for diff.parts of binkd
  * Should be included in chld()
+ */
+/* 
+ * $Id: reapchld.inc,v 2.0 2001/01/10 12:12:39 gul Exp $
+ *
+ * $Log: reapchld.inc,v $
+ * Revision 2.0  2001/01/10 12:12:39  gul
+ * Binkd is under CVS again
+ *
+ *
  */
 {
   int old_errno = errno;

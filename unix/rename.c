@@ -1,3 +1,13 @@
+/*
+ * $Id: rename.c,v 2.0 2001/01/10 12:12:40 gul Exp $
+ *
+ * Revision history:
+ * $Log: rename.c,v $
+ * Revision 2.0  2001/01/10 12:12:40  gul
+ * Binkd is under CVS again
+ *
+ *
+ */
 #include <stdio.h>
 #include <errno.h>
 #include <string.h>
