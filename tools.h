@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: tools.h,v 2.17 2003/08/16 09:47:26 gul Exp $
+ * $Id: tools.h,v 2.18 2003/08/18 15:44:51 stream Exp $
  *
  * $Log: tools.h,v $
+ * Revision 2.18  2003/08/18 15:44:51  stream
+ * New function last_slash(): Return pointer to last directory separator
+ * in file name, or NULL if no path present.
+ *
  * Revision 2.17  2003/08/16 09:47:26  gul
  * Autodetect tzoff if not specified
  *
@@ -260,6 +264,9 @@ int tz_off(time_t t);
  * errno set to zero if no error
  */
 long safe_atol(char* str, char** msg);
+
+/* Return last directory separator in file name, or NULL if no path present */
+char * last_slash(char *s);
 
 /* Extract filename from path */
 char *extract_filename(char *s);
