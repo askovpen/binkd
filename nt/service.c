@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.c,v 2.10 2003/07/17 02:53:04 hbrew Exp $
+ * $Id: service.c,v 2.11 2003/07/18 04:15:03 hbrew Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.11  2003/07/18 04:15:03  hbrew
+ * Fix 'tell_start_ntservice(): {120} ...' error on Win9x
+ *
  * Revision 2.10  2003/07/17 02:53:04  hbrew
  * Fix MSVC warnings & errors
  *
@@ -794,6 +797,9 @@ int tell_start_ntservice(void)
 {
   SERVICE_TABLE_ENTRY dt[]= { {"", (LPSERVICE_MAIN_FUNCTION)ServiceMain}, {NULL, NULL}};
   int res=0;
+
+  if( W32_CheckOS(VER_PLATFORM_WIN32_NT) )
+    return 1;
 
   if(!StartServiceCtrlDispatcher(dt)){  /* Can't start service */
     switch( GetLastError() ){
