@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.h,v 2.9 2003/10/07 14:41:04 stas Exp $
+ * $Id: service.h,v 2.10 2003/10/09 09:41:07 stas Exp $
  *
  * $Log: service.h,v $
+ * Revision 2.10  2003/10/09 09:41:07  stas
+ * Change service stop sequence
+ *
  * Revision 2.9  2003/10/07 14:41:04  stas
  * Fix NT service shutdown
  *
@@ -117,5 +120,13 @@ BOOL ReportStatusToSCMgr(DWORD dwCurrentState,
                          DWORD dwWin32ExitCode,
                          DWORD dwWaitHint);
 
-/* Service-specific cleanup procedure. Not an thread-safe! */
+/* Service-specific cleanup procedure. Not an thread-safe!
+ * Must be set in first call of atexit().
+ */
 void atServiceExit(void);
+
+/* Start service-specific cleanup procedure.
+ * Must be set in last call of atexit().
+ * (Report to SCM about service stop pending)
+ */
+void atServiceExitBegins(void);
