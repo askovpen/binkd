@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.c,v 2.30 2003/10/07 14:41:04 stas Exp $
+ * $Id: service.c,v 2.31 2003/10/07 18:03:18 stas Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.31  2003/10/07 18:03:18  stas
+ * Fix error with MS VC. Thanks to Serguei Trouchelle <stro@isd.dp.ua>
+ *
  * Revision 2.30  2003/10/07 14:41:04  stas
  * Fix NT service shutdown
  *
@@ -474,6 +477,7 @@ static enum service_main_retcodes service_main(enum service_main_types type)
     }
     break;
     default:
+    ;
   }
 
   if(shan) CloseServiceHandle(shan);
