@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: Config.h,v 2.25 2003/06/12 12:04:14 gul Exp $
+ * $Id: Config.h,v 2.26 2003/06/13 03:10:09 hbrew Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.26  2003/06/13 03:10:09  hbrew
+ * Auto increase patchlevel
+ *
  * Revision 2.25  2003/06/12 12:04:14  gul
  * Auto increase patchlevel
  *
@@ -130,7 +133,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-14"
+#define MYVER "0.9.6a-15"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
