@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: server.c,v 2.11 2003/03/05 13:21:51 gul Exp $
+ * $Id: server.c,v 2.12 2003/03/05 19:47:11 gul Exp $
  *
  * $Log: server.c,v $
+ * Revision 2.12  2003/03/05 19:47:11  gul
+ * Fix compilation warning
+ *
  * Revision 2.11  2003/03/05 13:21:51  gul
  * Fix warnings
  *
@@ -127,11 +130,11 @@ static void chld (int signo)
 
 SOCKET sockfd = (SOCKET)-1;
 extern int checkcfg_flag;	       /* exit(3) on config change */
+extern int pidcmgr;
 
 void serv (void *arg)
 {
   int h = *(int *) arg;
-  extern int pidcmgr;
 
 #ifdef HAVE_FORK
   pidcmgr = 0;
