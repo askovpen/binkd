@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.26 2003/10/19 05:14:42 hbrew Exp $
+# $Id: Makefile,v 2.27 2003/10/19 19:24:26 gul Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -166,8 +166,9 @@ endif
 ifdef ZLIB_BZLIB2
 ifdef ZLIBDL
 CDEFS+= -DZLIBDL
-endif
 SRCS+= zlibdl.c
+endif
+SRCS+= compress.c
 endif
 
 BINKDEXE = $(BINKDNAME).exe
