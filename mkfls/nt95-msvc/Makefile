@@ -1,5 +1,5 @@
 # Microsoft Developer Studio Generated NMAKE File, Based on binkd.dsp
-# $Id: Makefile,v 2.8 2003/03/10 12:16:54 gul Exp $
+# $Id: Makefile,v 2.9 2003/03/10 15:47:53 gul Exp $
 !IFNDEF BINKD9X
 !MESSAGE To make binkd9x, you can specify BINKD9X macros when running NMAKE
 !MESSAGE by defining the macro BINKD9X on the command line. For example:
@@ -953,6 +953,7 @@ SOURCE=.\nt\service.c
 !IF  "$(CFG)" == "binkd - Win32 Debug"
 
 "$(INTDIR)\service.obj"	"$(INTDIR)\service.SBR" : $(SOURCE) "$(INTDIR)"
+	$(CPP) $(CPP_PROJ) $(SOURCE)
 
 !ELSEIF  "$(CFG)" == "binkd - Win32 Release"
 
