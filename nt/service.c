@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.c,v 2.44 2003/10/29 06:44:34 stas Exp $
+ * $Id: service.c,v 2.45 2004/01/02 18:02:39 stas Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.45  2004/01/02 18:02:39  stas
+ * Small code change to simplification
+ *
  * Revision 2.44  2003/10/29 06:44:34  stas
  * Remove unused header file
  *
@@ -697,9 +700,7 @@ int service(int argc, char **argv, char **envp)
   if (tray_flag)
   {
      srvtype |= SERVICE_INTERACTIVE_PROCESS;
-#ifdef HAVE_THREADS
-     BEGINTHREAD(wndthread, 0, NULL);
-#endif
+     do_tray_flag();
   }
 
   j=checkservice();
@@ -792,5 +793,7 @@ int tell_start_ntservice(void)
 
 void do_tray_flag(void)
 {
+#ifdef HAVE_THREADS
   BEGINTHREAD(wndthread, 0, NULL);
+#endif
 }
