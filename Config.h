@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.224 2003/10/06 06:30:38 val Exp $
+ * $Id: Config.h,v 2.225 2003/10/06 08:25:32 val Exp $
  */
 
 #ifndef _Config_h
@@ -52,7 +52,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "1.0a-207"
+#define MYVER "1.0a-208"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
