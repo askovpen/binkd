@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: server.c,v 2.21 2003/04/28 07:30:17 gul Exp $
+ * $Id: server.c,v 2.22 2003/05/04 08:45:30 gul Exp $
  *
  * $Log: server.c,v $
+ * Revision 2.22  2003/05/04 08:45:30  gul
+ * Lock semaphores more safely for resolve and IP-addr print
+ *
  * Revision 2.21  2003/04/28 07:30:17  gul
  * Bugfix: Log() changes TCPERRNO
  *
@@ -318,9 +321,9 @@ accepterr:
       add_socket(new_sockfd);
       rel_grow_handles (6);
       ext_rand=rand();
+      get_hostname(&client_addr, host, sizeof(host));
       lockhostsem();
-      Log (3, "incoming from %s (%s)",
-	   get_hostname(&client_addr, host, sizeof(host)),
+      Log (3, "incoming from %s (%s)", host,
 	   inet_ntoa (client_addr.sin_addr));
       releasehostsem();
 

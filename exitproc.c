@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.12 2003/03/31 19:53:08 gul Exp $
+ * $Id: exitproc.c,v 2.13 2003/05/04 08:45:30 gul Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.13  2003/05/04 08:45:30  gul
+ * Lock semaphores more safely for resolve and IP-addr print
+ *
  * Revision 2.12  2003/03/31 19:53:08  gul
  * Close socket before exit
  *
@@ -140,6 +143,7 @@ void exitfunc (void)
   BinLogDeInit ();
   nodes_deinit ();
   CleanSem (&hostsem);
+  CleanSem (&resolvsem);
   CleanSem (&varsem);
   CleanSem (&LSem);
   CleanEventSem (&eothread);
