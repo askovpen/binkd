@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: TCPErr.c,v 2.12 2003/07/18 10:30:34 stas Exp $
+ * $Id: TCPErr.c,v 2.13 2003/08/05 05:36:14 hbrew Exp $
  *
  * Revision history:
  * $Log: TCPErr.c,v $
+ * Revision 2.13  2003/08/05 05:36:14  hbrew
+ * 'static const char rcsid[]' removed
+ *
  * Revision 2.12  2003/07/18 10:30:34  stas
  * New functions: IsNT(), Is9x(); small code cleanup
  *
@@ -74,9 +77,6 @@
  *      First revision
  *
  */
-
- static const char rcsid[] =
-      "$Id: TCPErr.c,v 2.12 2003/07/18 10:30:34 stas Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */

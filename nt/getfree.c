@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: getfree.c,v 2.4 2003/02/28 20:39:08 gul Exp $
+ * $Id: getfree.c,v 2.5 2003/08/05 05:36:14 hbrew Exp $
  *
  * Revision history:
  * $Log: getfree.c,v $
+ * Revision 2.5  2003/08/05 05:36:14  hbrew
+ * 'static const char rcsid[]' removed
+ *
  * Revision 2.4  2003/02/28 20:39:08  gul
  * Code cleanup:
  * change "()" to "(void)" in function declarations;
@@ -45,9 +48,6 @@
  *      First revision
  *
  */
-
- static const char rcsid[] =
-      "$Id: getfree.c,v 2.4 2003/02/28 20:39:08 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */
