@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.27 2003/10/19 12:21:48 gul Exp $
+# $Id: Makefile,v 2.28 2003/10/19 22:19:59 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [DLLRTL=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1]
@@ -83,7 +83,7 @@ ZLIB_CDEFS= $(ZLIB_CDEFS) -DWITH_BZLIB2
 !endif
 !ifdef ZLIBDL
 ZLIB_CDEFS= $(ZLIB_CDEFS) -DZLIBDL
-ZLIBDL_OBJDS = $(OUTDIR)\zlibdl.obj
+ZLIBDL_OBJS = $(OUTDIR)\zlibdl.obj
 !else
 ! if defined(ZLIB)
 ZLIB_COPT= -I"$(ZLIB_SRC)"
