@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.143 2003/08/24 18:54:32 gul Exp $
+ * $Id: Config.h,v 2.144 2003/08/24 19:42:11 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.144  2003/08/24 19:42:11  gul
+ * Auto increase patchlevel, set 0.9.6a-131
+ * Get FTN-domain from matched zone in exp_ftnaddress()
+ *
  * Revision 2.143  2003/08/24 18:54:32  gul
  * Auto increase patchlevel, set 0.9.6a-130
  * Bugfix in timeout check on win32
@@ -618,7 +622,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-130"
+#define MYVER "0.9.6a-131"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
