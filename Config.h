@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.113 2003/08/16 09:08:35 gul Exp $
+ * $Id: Config.h,v 2.114 2003/08/16 09:47:27 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.114  2003/08/16 09:47:27  gul
+ * Auto increase patchlevel, set 0.9.6a-101
+ * Autodetect tzoff if not specified
+ *
  * Revision 2.113  2003/08/16 09:08:35  gul
  * Auto increase patchlevel, set 0.9.6a-100
  * Binlog semaphoring removed
@@ -486,7 +490,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-100"
+#define MYVER "0.9.6a-101"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
