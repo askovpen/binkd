@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: binkd.c,v 2.55 2003/08/24 16:55:07 hbrew Exp $
+ * $Id: binkd.c,v 2.56 2003/08/26 14:36:47 gul Exp $
  *
  * $Log: binkd.c,v $
+ * Revision 2.56  2003/08/26 14:36:47  gul
+ * Perl hooks in os2-emx
+ *
  * Revision 2.55  2003/08/24 16:55:07  hbrew
  * Fix memory allocation for polls
  *
@@ -604,8 +607,6 @@ char *parseargs (int argc, char *argv[])
   if (optind<argc)
     Log (1, "Extra parameters ignored");
 
-  if (!rerun) putenv("BINKD_RERUN=1");
-
   return cfgfile;
 }
 
@@ -765,6 +766,8 @@ int main (int argc, char *argv[], char *envp[])
     if (perl_strict && !ok) Log (0, "error parsing Perl script %s", perl_script);
   }
 #endif
+
+  if (!getenv("BINKD_RERUN")) putenv("BINKD_RERUN=1");
 
 #ifdef HAVE_FORK
   signal (SIGCHLD, chld);
