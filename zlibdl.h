@@ -11,17 +11,17 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: zlibdl.h,v 2.1 2003/09/12 07:37:58 val Exp $
+ * $Id: zlibdl.h,v 2.2 2003/09/12 09:09:38 val Exp $
  */
 
 /* type for compress() and decompress() */
 typedef int __stdcall zlib_compress_func(char *, int *, const char *, int);
 
 /* actual compress() and decompress() */
-extern zlib_compress_func *dl_compress, *dl_decompress;
+extern zlib_compress_func *dl_compress, *dl_uncompress;
 
 #define compress(a1,a2,a3,a4)   (*dl_compress)(a1,a2,a3,a4)
-#define decompress(a1,a2,a3,a4) (*dl_decompress)(a1,a2,a3,a4)
+#define uncompress(a1,a2,a3,a4) (*dl_uncompress)(a1,a2,a3,a4)
 
 /* loading function */
 int zlib_init(const char *dll_name);

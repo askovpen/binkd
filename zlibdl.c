@@ -11,20 +11,20 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: zlibdl.c,v 2.1 2003/09/12 07:37:58 val Exp $
+ * $Id: zlibdl.c,v 2.2 2003/09/12 09:09:38 val Exp $
  */
 
 #include <windows.h>
 #include "zlibdl.h"
 
-zlib_compress_func *dl_compress = NULL, *dl_decompress = NULL;
+zlib_compress_func *dl_compress = NULL, *dl_uncompress = NULL;
 
 /* loading function */
 int zlib_init(const char *dll_name) {
 #ifdef WIN32
   HINSTANCE hl = LoadLibrary(dll_name);
   dl_compress = (void*)GetProcAddress(hl, "compress");
-  dl_decompress = (void*)GetProcAddress(hl, "uncompress");
+  dl_uncompress = (void*)GetProcAddress(hl, "uncompress");
 #endif
-  return dl_compress && dl_decompress ? 1 : 0;
+  return dl_compress && dl_uncompress ? 1 : 0;
 }
