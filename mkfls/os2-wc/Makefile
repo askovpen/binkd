@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.11 2003/03/26 13:56:58 gul Exp $
+# $Id: Makefile,v 2.12 2003/07/07 10:13:52 gul Exp $
 
 .SILENT
 
@@ -41,7 +41,7 @@ OBJS      = binkd.obj     readcfg.obj    tools.obj    ftnaddr.obj   &
             readflo.obj   prothlp.obj    iptools.obj  run.obj       &
             binlog.obj    exitproc.obj   getw.obj     xalloc.obj    &
             setpttl.obj   dirent.obj     md5b.obj     crypt.obj     &
-            https.obj     $(NTLM_OBJS)
+            getopt.obj    https.obj      $(NTLM_OBJS)
 
 .c.obj: .autodepend
 	-echo Compile  $<
