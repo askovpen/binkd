@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: Config.h,v 2.10 2003/03/11 09:21:29 gul Exp $
+ * $Id: Config.h,v 2.11 2003/06/06 16:16:34 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.11  2003/06/06 16:16:34  gul
+ * Change version
+ *
  * Revision 2.10  2003/03/11 09:21:29  gul
  * Fixed OS/2 Watcom compilation
  *
@@ -85,7 +88,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.5a"
+#define MYVER "0.9.6a"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
