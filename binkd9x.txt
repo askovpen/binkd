@@ -176,3 +176,5 @@
 Alexander Reznikov, 2:4600/220@fidonet
                     99:2003/110@webnet
                     homebrewer@yandex.ru
+
+$Id: binkd9x.txt,v 2.12 2004/02/07 14:08:04 hbrew Exp $

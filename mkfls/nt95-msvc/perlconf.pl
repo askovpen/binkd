@@ -1,3 +1,5 @@
+# $Id: perlconf.pl,v 2.2 2004/02/07 14:08:05 hbrew Exp $
+
 $file = $ARGV[0] || die;
 
 use Config;
