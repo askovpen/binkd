@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.67.2.13 2003/08/29 13:37:37 gul Exp $
+ * $Id: protocol.c,v 2.67.2.14 2003/09/15 21:28:31 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.67.2.14  2003/09/15 21:28:31  gul
+ * Fix remote IP check logic
+ *
  * Revision 2.67.2.13  2003/08/29 13:37:37  gul
  * Do not save zero-length .dt files
  *
@@ -1055,28 +1058,29 @@ static int ADR (STATE *state, char *s, int sz)
       if (ipok == 1)
       { /* matched */
 	ip_verified = 2;
-      }
-      else if (ipok == 0)
-      { /* unresolvable */
-	if (n.restrictIP == 2 && ip_verified == 0) /* strict */
-	  ip_verified = -1;
-      } else
-      { /* not matched */
-	if (n.pwd && strcmp(n.pwd, "-"))
+      } else if (ipok<0 || n.restrictIP == 2)
+      { /* not matched or unresolvable with strict check */
+	if (n.pwd && strcmp(n.pwd, "-") && state->to == NULL)
 	{
-	  Log (1, "addr: %s (not from allowed remote address)", szFTNAddr);
+	  if (ipok == 0)
+	    Log (1, "addr: %s (unresolvable)", szFTNAddr);
+	  else
+	    Log (1, "addr: %s (not from allowed remote address)", szFTNAddr);
 	  msg_send2 (state, M_ERR, "Bad source IP", 0);
 	  return 0;
 	} else
 	{ /* drop unsecure AKA with bad IP-addr */
 	  if (ip_verified == 0)
 	    ip_verified = -1;
-	  Log(2, "Addr %s dropped - not from allowed IP", szFTNAddr);
+	  if (ipok == 0)
+	    Log(2, "Addr %s dropped - unresolvable", szFTNAddr);
+	  else
+	    Log(2, "Addr %s dropped - not from allowed IP", szFTNAddr);
 	  continue;
 	}
       }
     }
-    else
+    else if (pn)
     { /* no check ip -> reset restrict */
       ip_verified = 1;
     }
