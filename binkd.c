@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: binkd.c,v 2.67 2003/10/18 15:59:07 stas Exp $
+ * $Id: binkd.c,v 2.68 2003/10/18 18:50:47 stas Exp $
  *
  * $Log: binkd.c,v $
+ * Revision 2.68  2003/10/18 18:50:47  stas
+ * Move to new 'tray.c' file several functions when is related with 'minimize to tray' feature
+ *
  * Revision 2.67  2003/10/18 15:59:07  stas
  * Improve logging (report about loading dlls)
  *
@@ -313,6 +316,7 @@
 #ifdef WIN32
 #include <windows.h>
 #include "nt/service.h"
+#include "nt/w32tools.h"
 #ifdef BINKDW9X
 #include "nt/win9x.h"
 #endif

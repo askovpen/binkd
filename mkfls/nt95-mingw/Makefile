@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.24 2003/10/17 04:25:59 hbrew Exp $
+# $Id: Makefile,v 2.25 2003/10/18 18:50:47 stas Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1] [ZLIB=1] [BZLIB2=1]
@@ -36,8 +36,8 @@ SRCS= binkd.c readcfg.c tools.c ftnaddr.c ftnq.c client.c server.c protocol.c \
       bsy.c inbound.c branch.c ftndom.c ftnnode.c srif.c pmatch.c readflo.c   \
       prothlp.c iptools.c run.c binlog.c exitproc.c getw.c xalloc.c setpttl.c \
       https.c md5b.c crypt.c getopt.c nt/breaksig.c nt/getfree.c nt/sem.c     \
-      nt/TCPErr.c nt/WSock.c nt/w32tools.c ntlm/des_enc.c ntlm/helpers.c      \
-      ntlm/ecb_enc.c ntlm/md4_dgst.c ntlm/set_key.c
+      nt/TCPErr.c nt/WSock.c nt/w32tools.c nt/tray.c      \
+      ntlm/ecb_enc.c ntlm/md4_dgst.c ntlm/set_key.c ntlm/des_enc.c ntlm/helpers.c
 
 
 OBJDIR= $(OUTDIR)/obj

@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.h,v 2.11 2003/10/18 06:45:23 stas Exp $
+ * $Id: service.h,v 2.12 2003/10/18 18:50:48 stas Exp $
  *
  * $Log: service.h,v $
+ * Revision 2.12  2003/10/18 18:50:48  stas
+ * Move to new 'tray.c' file several functions when is related with 'minimize to tray' feature
+ *
  * Revision 2.11  2003/10/18 06:45:23  stas
  * Fix a semaphore usage in exitfunc()
  *
@@ -100,11 +103,6 @@ extern MUTEXSEM exitsem;
  */
 int checkservice(void);
 
-/* A hack to determine if we're running as a service without waiting for
- * the SCM to fail.
- * Idea taken from Apache sources
- */
-int isService();
 
 /* main service code
  */
