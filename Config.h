@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.126 2003/08/19 10:16:13 gul Exp $
+ * $Id: Config.h,v 2.127 2003/08/19 18:01:09 stream Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.127  2003/08/19 18:01:09  stream
+ * Auto increase patchlevel, set 0.9.6a-114
+ * Fix unix compilation
+ *
  * Revision 2.126  2003/08/19 10:16:13  gul
  * Auto increase patchlevel, set 0.9.6a-113
  * Rename trunc() -> trunc_file() due to conflict under OS/2 EMX
@@ -548,7 +552,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-113"
+#define MYVER "0.9.6a-114"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
