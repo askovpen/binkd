@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.36 2003/12/05 22:16:33 stas Exp $
+# $Id: Makefile,v 2.37 2004/01/03 19:02:48 stas Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -250,7 +250,7 @@ $(MAKEDIRS):
 
 install: all clean
 
-html: $(OUTDIR)/binkd.html
+html: binkd.html
 
 binkd.html: binkd.8
 	groff -Thtml -mman binkd.8 >$(OUTDIR)/binkd.html
