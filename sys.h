@@ -14,9 +14,12 @@
  */
 
 /*
- * $Id: sys.h,v 2.6 2003/03/10 10:39:23 gul Exp $
+ * $Id: sys.h,v 2.7 2003/03/10 12:16:54 gul Exp $
  *
  * $Log: sys.h,v $
+ * Revision 2.7  2003/03/10 12:16:54  gul
+ * Use HAVE_DOS_H macro
+ *
  * Revision 2.6  2003/03/10 10:39:23  gul
  * New include file common.h
  *
@@ -70,7 +73,7 @@
 #endif
 
 #ifdef HAVE_THREADS
-  #ifndef __IBMC__
+  #ifdef HAVE_DOS_H
     #include <dos.h>
   #endif
   #include <process.h>
