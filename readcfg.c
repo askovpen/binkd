@@ -3,7 +3,7 @@
  *
  *  readcfg.c is a part of binkd project
  *
- *  Copyright (C) 1996-2002  Dima Maloff, 5047/13 and others
+ *  Copyright (C) 1996-2003  Dima Maloff, 5047/13 and others
  *
  *  This program is free software; you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.c,v 2.14 2003/02/13 19:18:11 gul Exp $
+ * $Id: readcfg.c,v 2.15 2003/02/22 20:19:54 gul Exp $
  *
  * $Log: readcfg.c,v $
+ * Revision 2.15  2003/02/22 20:19:54  gul
+ * Update copyrightes, 2002->2003
+ *
  * Revision 2.14  2003/02/13 19:18:11  gul
  * minor fix
  *
