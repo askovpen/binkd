@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnnode.c,v 2.3 2003/02/22 12:12:33 gul Exp $
+ * $Id: ftnnode.c,v 2.4 2003/02/22 14:30:18 gul Exp $
  *
  * $Log: ftnnode.c,v $
+ * Revision 2.4  2003/02/22 14:30:18  gul
+ * Make nNod var static
+ *
  * Revision 2.3  2003/02/22 12:12:33  gul
  * Cleanup sources
  *
@@ -50,10 +53,9 @@
 static MUTEXSEM LSem;
 #endif
 
-int nNod = 0;
-FTN_NODE *pNod = 0;
-int nNodSorted = 0;
-extern int havedefnode;
+static int nNod = 0;
+static FTN_NODE *pNod = 0;
+static int nNodSorted = 0;
 
 /*
  * Call this before all others functions from this file.
