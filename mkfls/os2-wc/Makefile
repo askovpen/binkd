@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.11 2003/03/26 13:56:58 gul Exp $
+# $Id: Makefile,v 2.11.2.1 2003/09/05 07:50:43 gul Exp $
 
 .SILENT
 
@@ -47,7 +47,7 @@ OBJS      = binkd.obj     readcfg.obj    tools.obj    ftnaddr.obj   &
 	-echo Compile  $<
 	$(CC) $(CFLAGS) $<
 
-all: binkd.exe .SYMBOLIC
+all: binkd2.exe .SYMBOLIC
 
 before:	.SYMBOLIC
 !ifeq DEBUG yes
@@ -56,7 +56,7 @@ before:	.SYMBOLIC
 	-echo Make binkd release version from $(%cdrive):$(%cwd)
 !endif
 
-binkd.exe: before $(OBJS)
+binkd2.exe: before $(OBJS)
 	-echo Link     $@
 	$(LINK) $(LFLAGS) /fe=$@ $(OBJS)
 
