@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnnode.c,v 2.19 2003/08/26 21:01:10 gul Exp $
+ * $Id: ftnnode.c,v 2.20 2003/09/08 08:21:20 stream Exp $
  *
  * $Log: ftnnode.c,v $
+ * Revision 2.20  2003/09/08 08:21:20  stream
+ * Cleanup config semaphore, free memory of base config on exit.
+ *
  * Revision 2.19  2003/08/26 21:01:10  gul
  * Fix compilation under unix
  *
@@ -330,10 +333,11 @@ int foreach_node (int (*func) (FTN_NODE *, void *), void *arg, BINKD_CONFIG *con
 {
   int i, rc = 0;
 
+  locknodesem();
+
   if (!config->nNodSorted)
     sort_nodes (config);
 
-  locknodesem();
   for (i = 0; i < config->nNod; ++i)
   {
     if (!config->pNod[i].hosts)
