@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.119 2003/08/18 07:35:11 val Exp $
+ * $Id: Config.h,v 2.120 2003/08/18 08:23:05 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.120  2003/08/18 08:23:05  gul
+ * Auto increase patchlevel, set 0.9.6a-107
+ * Return log semaphoring
+ *
  * Revision 2.119  2003/08/18 07:35:11  val
  * Auto increase patchlevel, set 0.9.6a-106
  * multiple changes:
@@ -519,7 +523,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-106"
+#define MYVER "0.9.6a-107"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
