@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.39 2004/02/07 14:00:30 hbrew Exp $
+# $Id: Makefile,v 2.40 2004/03/24 08:07:31 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [STATIC=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1]
@@ -171,7 +171,7 @@ BINKDTYPE=$(BINKDTYPE), zlib
 !ifndef ZLIB_LIB
 ZLIB_LIB=zlib.lib
 !endif
-LIBS=$(LIBS) ZLIB_LIB
+LIBS=$(LIBS) $(ZLIB_LIB)
 !else
 BINKDNAME=$(BINKDNAME)-zlibdl
 OUTDIR=$(OUTDIR)-zlibdl
@@ -199,7 +199,7 @@ BINKDTYPE=$(BINKDTYPE), bzlib2
 !ifndef BZLIB2_LIB
 BZLIB2_LIB=libbz2.lib
 !endif
-LIBS=$(LIBS) BZLIB2_LIB
+LIBS=$(LIBS) $(BZLIB2_LIB)
 !else
 BINKDNAME=$(BINKDNAME)-bzlib2dl
 OUTDIR=$(OUTDIR)-bzlib2dl
