@@ -1,7 +1,10 @@
 /*
- * $Id: protoco2.h,v 2.1 2001/02/15 11:03:18 gul Exp $
+ * $Id: protoco2.h,v 2.2 2001/02/15 16:05:59 gul Exp $
  *
  * $Log: protoco2.h,v $
+ * Revision 2.2  2001/02/15 16:05:59  gul
+ * crypt bugfix
+ *
  * Revision 2.1  2001/02/15 11:03:18  gul
  * Added crypt traffic possibility
  *
@@ -159,6 +162,6 @@ struct _STATE
 #define NO_CRYPT	0
 #define WE_CRYPT	1
 #define THEY_CRYPT	2
-#define YES_CRYPT	(WE_CRYPT|THEY_CRYPT)
+#define YES_CRYPT	4
 
 #endif
