@@ -11,6 +11,17 @@
  *  (at your option) any later version. See COPYING.
  */
 
+/*
+ * $Id: win9x.c,v 2.2 2002/11/13 07:58:19 gul Exp $
+ *
+ * Revision history:
+ * $Log: win9x.c,v $
+ * Revision 2.2  2002/11/13 07:58:19  gul
+ * Add CVS macros
+ *
+ *
+ */
+
 #ifdef BINKDW9X
 //
 #include <stdlib.h>
