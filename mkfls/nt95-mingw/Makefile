@@ -1,6 +1,6 @@
-# $Id: Makefile,v 2.8 2003/03/10 12:16:54 gul Exp $
+# $Id: Makefile,v 2.9 2003/03/10 15:59:15 gul Exp $
 #
-ifeq ($(TERM),msys)
+ifeq ($(OSTYPE),msys)
 SHELL=sh.exe
 else
 SHELL=bash.exe
