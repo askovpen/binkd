@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.1 2001/02/15 11:03:19 gul Exp $
+# $Id: Makefile,v 2.2 2001/02/15 15:25:51 gul Exp $
 #
 CC=gcc
 DEFINES=-DHAVE_FORK -DHAVE_SNPRINTF -DHAVE_UNISTD -DOS2 -DHAVE_IO_H -DHAVE_ARPA_INET_H -DEMX -DEMXSIGNALS -DHAVE_WAITPID -DHTTPS
@@ -17,7 +17,7 @@ binkd.exe: $(OBJS)
 install: all clean
 
 clean:
-	-del /n *.RES *.obj *.o os2\\*.o *.map *~ *.bak *.b *.ini *.err core >nul 2> nul
+	-del /n *.RES *.obj *.o os2\*.o *.map *~ *.bak *.b *.ini *.err core >nul 2> nul
 
 depend	Makefile.dep:
 	gcc -MM $(CFLAGS) $(SRCS) | tee Makefile.dep
