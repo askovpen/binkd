@@ -16,10 +16,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: w32tools.c,v 2.8 2003/10/06 17:16:47 stas Exp $
+ * $Id: w32tools.c,v 2.9 2003/10/18 17:02:29 stas Exp $
  *
  * Revision history:
  * $Log: w32tools.c,v $
+ * Revision 2.9  2003/10/18 17:02:29  stas
+ * Don't set '-S name' option to NT service parameters list in registry
+ *
  * Revision 2.8  2003/10/06 17:16:47  stas
  * (Cosmetics) Rename tcperr() to w32err() for win32/win9x versions
  *
@@ -177,7 +180,7 @@ int build_service_arguments(char **asp, char *argv[], int use_argv0)
     if (curind != oldind)
       n_opt = 1;
 
-    if (i != 'i' && i != 'u' && i != 't')
+    if (i != 'i' && i != 'u' && i != 't' && (Is9x() || i != 'S'))
     {
       if (n_opt)
       {
