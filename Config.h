@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.92 2003/08/04 12:23:42 gul Exp $
+ * $Id: Config.h,v 2.93 2003/08/05 05:36:16 hbrew Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.93  2003/08/05 05:36:16  hbrew
+ * Auto increase patchlevel, set 0.9.6a-81
+ * 'static const char rcsid[]' removed
+ *
  * Revision 2.92  2003/08/04 12:23:42  gul
  * Auto increase patchlevel, set 0.9.6a-80
  * Add CVS tags
@@ -403,7 +407,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-80"
+#define MYVER "0.9.6a-81"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
