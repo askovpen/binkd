@@ -12,10 +12,13 @@
  */
 
 /*
- * $Id: confopt.h,v 2.2 2003/11/04 00:47:52 hbrew Exp $
+ * $Id: confopt.h,v 2.3 2003/11/17 01:03:27 hbrew Exp $
  *
  * Revision history:
  * $Log: confopt.h,v $
+ * Revision 2.3  2003/11/17 01:03:27  hbrew
+ * Fix BINKDW9X macro
+ *
  * Revision 2.2  2003/11/04 00:47:52  hbrew
  * Cosmetic
  *
@@ -45,7 +48,7 @@
 #endif
 
 /* binkd9x: */
-#if defined(WIN32) && defined(BINKD9X)
+#if defined(WIN32) && defined(BINKDW9X)
 #  define _DBNKD_BINKD9X ", binkd9x"
 #else
 #  define _DBNKD_BINKD9X
