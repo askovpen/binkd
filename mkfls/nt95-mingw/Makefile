@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.34 2003/10/26 20:59:19 gul Exp $
+# $Id: Makefile,v 2.35 2003/11/04 00:46:21 hbrew Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -278,5 +278,4 @@ include $(DEPS)
 endif
 
 # Dependencies for resourses
-# !!! Todo: add confopt.h
-$(RESOBJS): Config.h
+$(RESOBJS): Config.h confopt.h
