@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: sem.h,v 2.9 2003/08/16 06:21:12 gul Exp $
+ * $Id: sem.h,v 2.10 2003/08/17 10:38:55 gul Exp $
  *
  * $Log: sem.h,v $
+ * Revision 2.10  2003/08/17 10:38:55  gul
+ * Return semaphoring for log and binlog
+ *
  * Revision 2.9  2003/08/16 06:21:12  gul
  * Log() semaphoring removed
  *
@@ -149,6 +152,8 @@ int _CleanEventSem (void *);
 #ifdef HAVE_THREADS
 extern MUTEXSEM hostsem;
 extern MUTEXSEM resolvsem;
+extern MUTEXSEM lsem;
+extern MUTEXSEM blsem;
 extern MUTEXSEM varsem;
 extern EVENTSEM eothread;
 extern EVENTSEM exitcmgr;
