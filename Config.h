@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.331 2003/12/15 00:03:58 gul Exp $
+ * $Id: Config.h,v 2.332 2003/12/24 00:36:40 gul Exp $
  */
 
 #ifndef _Config_h
@@ -96,14 +96,6 @@
 #define STACKSIZE (256*1024)
 #define MKTMPFILE_TRYES 20
 
-#ifndef O_BINARY
-  #define O_BINARY 0
-#endif
-#if defined(__WATCOMC__) || defined(VISUALCPP) || defined(__MINGW32__) || defined(IBMC) || defined(__MSC__)
-  #define MKDIR(s) mkdir(s)
-#else
-  #define MKDIR(s) mkdir(s, 0755)
-#endif
 #ifndef OS
   #if defined(BINKDW9X)
     #define OS "Win9x"
@@ -115,20 +107,5 @@
     #define OS "DOS"
   #endif
 #endif
-
-#ifdef __MINGW32__
-#define sleep(sec) _sleep((sec)*1000ul)
-/* MS VC RTL implementation of the _snprintf() and _vsnprintf() is very buggy
-   and may produce vulnerables. We well use true implementation.
-*/
-#endif
-
-#if defined(__WATCOMC__) || defined(__EMX__) /* expand list if necessary */
-#define BEGINTHREAD(a, b, c)   _beginthread(a, NULL, b, c)
-#else
-#define BEGINTHREAD _beginthread
-#endif
-
-#define UNUSED_ARG(s)  (void)(s)
 
 #endif
