@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: protocol.c,v 2.11 2002/02/22 00:18:34 gul Exp $
+ * $Id: protocol.c,v 2.12 2002/02/22 08:57:23 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.12  2002/02/22 08:57:23  gul
+ * Pring warning if remote says "OK non-secure" and we have password
+ * for the session
+ *
  * Revision 2.11  2002/02/22 00:18:34  gul
  * Run by-file events with the same command-line once after session
  *
@@ -1029,6 +1033,8 @@ static int PWD (STATE *state, char *pwd, int sz)
 static int OK (STATE *state, char *buf, int sz)
 {
   state->state = !strcmp (state->to->pwd, "-") ? P_NONSECURE : P_SECURE;
+  if (state->state == P_SECURE && strcmp(buf, "non-secure") == 0)
+    Log (1, "Warning: remote set UNSECURE sesion");
   complete_login (state);
   return 1;
 }
