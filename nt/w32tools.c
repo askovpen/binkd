@@ -15,6 +15,16 @@
 /*  the License, or (at your option) any later version. See COPYING.  */
 /*--------------------------------------------------------------------*/
 
+/*
+ * $Id: w32tools.c,v 2.5 2003/08/04 12:23:40 gul Exp $
+ *
+ * Revision history:
+ * $Log: w32tools.c,v $
+ * Revision 2.5  2003/08/04 12:23:40  gul
+ * Add CVS tags
+ *
+ */
+
 #include <stdlib.h>
 #include <windows.h>
 #include "../Config.h"
