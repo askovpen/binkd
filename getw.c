@@ -3,9 +3,12 @@
  * (c) 1995,1996,1997 <maloff@tts.magadan.su>
  */
 /*
- * $Id: getw.c,v 2.7 2003/10/29 21:08:38 gul Exp $
+ * $Id: getw.c,v 2.8 2003/12/29 10:49:37 gul Exp $
  *
  * $Log: getw.c,v $
+ * Revision 2.8  2003/12/29 10:49:37  gul
+ * Comments in config now starts by "#" only if prev char is space
+ *
  * Revision 2.7  2003/10/29 21:08:38  gul
  * Change include-files structure, relax dependences
  *
@@ -125,8 +128,7 @@ char *getwordx2 (char *src, int n, int flags, char *fldsep, char *fldskip)
 	quoted = ~quoted;
 	i--;
       }
-      else if ((strchr (fldsep, *src) || ((flags & GWX_HASH) && *src == '#')) &&
-	       !quoted)
+      else if (strchr (fldsep, *src) && !quoted)
 	break;
       else if (*src == '%' && (flags & GWX_SUBST))
       {
