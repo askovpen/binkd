@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftndom.c,v 2.4 2003/10/29 21:08:38 gul Exp $
+ * $Id: ftndom.c,v 2.5 2004/11/04 06:21:58 stas Exp $
  *
  * $Log: ftndom.c,v $
+ * Revision 2.5  2004/11/04 06:21:58  stas
+ * BUGFIX: segfault if 1st address is 4D
+ *
  * Revision 2.4  2003/10/29 21:08:38  gul
  * Change include-files structure, relax dependences
  *
@@ -78,5 +81,7 @@ char *get_matched_domain (int zone, FTN_ADDR *pAddr, int nAddr, FTN_DOMAIN *pDom
   for (n = 0; n < nAddr; n++)
     if (zone == pAddr[n].z)
       return pAddr[n].domain;
-  return pAddr[0].domain;
+  if(pAddr[0].domain)   /* If parse second address then return domain of the 1st address */
+    return pAddr[0].domain;
+  return pDomains->name; /* If parse first address then return first domain */
 }
