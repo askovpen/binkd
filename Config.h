@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.10.2.17 2004/06/15 08:22:58 gul Exp $
+ * $Id: Config.h,v 2.10.2.18 2004/08/03 19:52:55 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.10.2.18  2004/08/03 19:52:55  gul
+ * Change SIGCHLD handling, make signal handler more clean,
+ * prevent occasional hanging (mutex deadlock) under linux kernel 2.6.
+ *
  * Revision 2.10.2.17  2004/06/15 08:22:58  gul
  * Set version 0.9.7
  *
@@ -145,7 +149,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.7"
+#define MYVER "0.9.8-stable"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
