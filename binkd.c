@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: binkd.c,v 2.22 2003/03/10 10:39:23 gul Exp $
+ * $Id: binkd.c,v 2.23 2003/03/11 00:04:25 gul Exp $
  *
  * $Log: binkd.c,v $
+ * Revision 2.23  2003/03/11 00:04:25  gul
+ * Use patches for compile under MSDOS by MSC 6.0 with IBMTCPIP
+ *
  * Revision 2.22  2003/03/10 10:39:23  gul
  * New include file common.h
  *
@@ -478,7 +481,7 @@ int main (int argc, char *argv[], char *envp[])
 
 #ifdef HAVE_FORK
   signal (SIGCHLD, chld);
-#else
+#elif defined(HAVE_THREADS)
   InitSem (&hostsem);
   InitSem (&varsem);
 #ifdef OS2

@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: server.c,v 2.16 2003/03/10 17:32:37 gul Exp $
+ * $Id: server.c,v 2.17 2003/03/11 00:04:26 gul Exp $
  *
  * $Log: server.c,v $
+ * Revision 2.17  2003/03/11 00:04:26  gul
+ * Use patches for compile under MSDOS by MSC 6.0 with IBMTCPIP
+ *
  * Revision 2.16  2003/03/10 17:32:37  gul
  * Use socklen_t
  *
@@ -111,7 +114,7 @@
 #include <dos.h>
 #endif
 #include <process.h>
-#else
+#elif !defined(DOS)
 #error Must define either HAVE_FORK or HAVE_THREADS!
 #endif
 
@@ -160,6 +163,8 @@ void serv (void *arg)
 #ifdef HAVE_THREADS
   threadsafe(--n_servers);
   _endthread();
+#elif defined(DOS)
+  --n_servers;
 #endif
 }
 

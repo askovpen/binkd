@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.43 2003/03/10 17:32:37 gul Exp $
+ * $Id: protocol.c,v 2.44 2003/03/11 00:04:25 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.44  2003/03/11 00:04:25  gul
+ * Use patches for compile under MSDOS by MSC 6.0 with IBMTCPIP
+ *
  * Revision 2.43  2003/03/10 17:32:37  gul
  * Use socklen_t
  *
@@ -1260,6 +1263,15 @@ static int start_file_recv (STATE *state, char *args, int sz)
 	  state->skip_all_flag = 1;
 	}
       }
+
+#if defined(DOS) && defined(__MSC__)
+      if (!state->skip_all_flag &&
+          (state->n_rcvdlist+1ul) * sizeof(RCVDLIST) > 64535ul)
+      {
+        Log (1, "ReceivedList has reached max size 64K");
+        state->skip_all_flag = 1;
+      }
+#endif
 
       if (state->skip_all_flag)
       {

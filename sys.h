@@ -14,9 +14,12 @@
  */
 
 /*
- * $Id: sys.h,v 2.7 2003/03/10 12:16:54 gul Exp $
+ * $Id: sys.h,v 2.8 2003/03/11 00:04:26 gul Exp $
  *
  * $Log: sys.h,v $
+ * Revision 2.8  2003/03/11 00:04:26  gul
+ * Use patches for compile under MSDOS by MSC 6.0 with IBMTCPIP
+ *
  * Revision 2.7  2003/03/10 12:16:54  gul
  * Use HAVE_DOS_H macro
  *
@@ -85,6 +88,9 @@
   #else
     #define PID() ((int)gettid())
   #endif
+#elif defined(__MSC__)
+  #define PID() ((int)getpid())
+  #define sleep(s)
 #else
   #include <sys/wait.h>
   #define PID() ((int)getpid())
