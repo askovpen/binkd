@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnaddr.c,v 2.6 2003/08/26 16:06:26 stream Exp $
+ * $Id: ftnaddr.c,v 2.7 2003/08/26 21:01:09 gul Exp $
  *
  * $Log: ftnaddr.c,v $
+ * Revision 2.7  2003/08/26 21:01:09  gul
+ * Fix compilation under unix
+ *
  * Revision 2.6  2003/08/26 16:06:26  stream
  * Reload configuration on-the fly.
  *
@@ -47,6 +50,8 @@
  * Revision 1.4  1997/10/23  04:11:58  mff
  * +ftnaddress_to_domain()
  */
+
+#include <string.h>
 #include <ctype.h>
 
 #include "readcfg.h"

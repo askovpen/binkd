@@ -1,8 +1,11 @@
 /*
- * $Id: daemonize.c,v 2.5 2003/07/13 09:37:50 gul Exp $
+ * $Id: daemonize.c,v 2.6 2003/08/26 21:01:11 gul Exp $
  *
  * Revision history:
  * $Log: daemonize.c,v $
+ * Revision 2.6  2003/08/26 21:01:11  gul
+ * Fix compilation under unix
+ *
  * Revision 2.5  2003/07/13 09:37:50  gul
  * Fix daemonize with libc5
  *
@@ -40,6 +43,7 @@
 #include <sys/ioctl.h>
 #endif
 
+#include "../readcfg.h"
 #include "../tools.h"
 #include "daemonize.h"
 

@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: iptools.c,v 2.11 2003/08/26 16:06:26 stream Exp $
+ * $Id: iptools.c,v 2.12 2003/08/26 21:01:10 gul Exp $
  *
  * $Log: iptools.c,v $
+ * Revision 2.12  2003/08/26 21:01:10  gul
+ * Fix compilation under unix
+ *
  * Revision 2.11  2003/08/26 16:06:26  stream
  * Reload configuration on-the fly.
  *
@@ -64,15 +67,18 @@
  * Initial revision
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <fcntl.h>
+#if defined(HAVE_SYS_IOCTL_H)
+#include <sys/ioctl.h>
+#endif
+
 #include "readcfg.h"
 #include "iptools.h"
 #include "tools.h"
 #include "sem.h"
-
-#include <ctype.h>
-#if defined(HAVE_SYS_IOCTL_H)
-#include <sys/ioctl.h>
-#endif
 
 /*
  * Finds ASCIIZ address

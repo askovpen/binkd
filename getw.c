@@ -3,9 +3,12 @@
  * (c) 1995,1996,1997 <maloff@tts.magadan.su>
  */
 /*
- * $Id: getw.c,v 2.5 2003/05/27 18:58:42 gul Exp $
+ * $Id: getw.c,v 2.6 2003/08/26 21:01:10 gul Exp $
  *
  * $Log: getw.c,v $
+ * Revision 2.6  2003/08/26 21:01:10  gul
+ * Fix compilation under unix
+ *
  * Revision 2.5  2003/05/27 18:58:42  gul
  * Minor fix in parsing quoted words
  *
@@ -32,6 +35,7 @@
 #include <sys/types.h>
 #include <stddef.h>
 
+#include "readcfg.h"
 #include "tools.h"
 
 char *getwordx2 (char *src, int n, int flags, char *fldsep, char *fldskip)

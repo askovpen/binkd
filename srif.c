@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: srif.c,v 2.12 2003/08/26 16:06:27 stream Exp $
+ * $Id: srif.c,v 2.13 2003/08/26 21:01:10 gul Exp $
  *
  * $Log: srif.c,v $
+ * Revision 2.13  2003/08/26 21:01:10  gul
+ * Fix compilation under unix
+ *
  * Revision 2.12  2003/08/26 16:06:27  stream
  * Reload configuration on-the fly.
  *
@@ -72,13 +75,15 @@
  *
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+
 #include "readcfg.h"
 #include "srif.h"
 
 #include "tools.h"
 #include "run.h"
-
-#include <ctype.h>
 
 static EVTQ *evt_queue(EVTQ *eq, char evt_type, char *path)
 {

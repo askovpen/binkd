@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnnode.c,v 2.18 2003/08/26 16:06:26 stream Exp $
+ * $Id: ftnnode.c,v 2.19 2003/08/26 21:01:10 gul Exp $
  *
  * $Log: ftnnode.c,v $
+ * Revision 2.19  2003/08/26 21:01:10  gul
+ * Fix compilation under unix
+ *
  * Revision 2.18  2003/08/26 16:06:26  stream
  * Reload configuration on-the fly.
  *
@@ -87,6 +90,9 @@
  * Initial revision
  */
 
+#include <stdlib.h>
+#include <string.h>
+
 #include "readcfg.h"
 #include "ftnnode.h"
 
@@ -146,7 +152,7 @@ static void add_node_nolock (FTN_ADDR *fa, char *hosts, char *pwd, char obox_flv
 	      int MD_flag, int restrictIP, int HC_flag, BINKD_CONFIG *config)
 {
   int cn;
-  FTN_NODE *pn;
+  FTN_NODE *pn = NULL; /* avoid compiler warning */
 
   for (cn = 0; cn < config->nNod; ++cn)
   {

@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.c,v 2.48 2003/08/26 16:06:27 stream Exp $
+ * $Id: tools.c,v 2.49 2003/08/26 21:01:10 gul Exp $
  *
  * $Log: tools.c,v $
+ * Revision 2.49  2003/08/26 21:01:10  gul
+ * Fix compilation under unix
+ *
  * Revision 2.48  2003/08/26 16:06:27  stream
  * Reload configuration on-the fly.
  *
@@ -226,6 +229,8 @@
  * Now we don't mkdir drives
  */
 
+#include <stdlib.h>
+#include <string.h>
 #include <fcntl.h>
 #include <ctype.h>
 #include <sys/stat.h>

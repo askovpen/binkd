@@ -12,9 +12,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: https.c,v 2.16 2003/08/26 16:06:26 stream Exp $
+ * $Id: https.c,v 2.17 2003/08/26 21:01:10 gul Exp $
  *
  * $Log: https.c,v $
+ * Revision 2.17  2003/08/26 21:01:10  gul
+ * Fix compilation under unix
+ *
  * Revision 2.16  2003/08/26 16:06:26  stream
  * Reload configuration on-the fly.
  *
@@ -72,6 +75,15 @@
  *
  */
 
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#ifdef HAVE_SYS_TIME_H
+#include <sys/time.h>
+#else
+#include <time.h>
+#endif
+
 #include "readcfg.h"
 #include "https.h"
 
@@ -80,13 +92,6 @@
 #include "sem.h"
 #ifdef NTLM
 #include "ntlm/helpers.h"
-#endif
-
-#include <ctype.h>
-#ifdef HAVE_SYS_TIME_H
-#include "sys/time.h"
-#else
-#include "time.h"
 #endif
 
 static char b64t[]="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";

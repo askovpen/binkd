@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readflo.c,v 2.3 2003/08/26 16:06:27 stream Exp $
+ * $Id: readflo.c,v 2.4 2003/08/26 21:01:10 gul Exp $
  *
  * $Log: readflo.c,v $
+ * Revision 2.4  2003/08/26 21:01:10  gul
+ * Fix compilation under unix
+ *
  * Revision 2.3  2003/08/26 16:06:27  stream
  * Reload configuration on-the fly.
  *
@@ -35,6 +38,8 @@
  *
  */
 
+#include <stdlib.h>
+#include <string.h>
 #include <ctype.h>
 
 #include "readcfg.h"
