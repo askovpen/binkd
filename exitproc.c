@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.26 2003/09/08 08:21:20 stream Exp $
+ * $Id: exitproc.c,v 2.27 2003/09/09 17:57:43 stream Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.27  2003/09/09 17:57:43  stream
+ * Do not unload config on exit (considered useless and potentially unstable)
+ *
  * Revision 2.26  2003/09/08 08:21:20  stream
  * Cleanup config semaphore, free memory of base config on exit.
  *
@@ -215,7 +218,7 @@ Log(7, "exitproc(): pid=%d, cmgr=%d, smgr=%d, inetd=%d", getpid(), pidCmgr, pids
       delete (config->pid_file);
     unlock_config_structure(config);
 
-    unlock_config_structure(config); /* completely unload config */
+  /*  unlock_config_structure(config); */ /* completely unload config */
   }
   CleanSem (&config_sem);
   CleanSem (&hostsem);
