@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.69 2003/07/16 15:43:25 stas Exp $
+ * $Id: Config.h,v 2.70 2003/07/16 15:50:46 stas Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.70  2003/07/16 15:50:46  stas
+ * Auto increase patchlevel, set 0.9.6a-59
+ * Fix: restore "Minimise to tray"
+ *
  * Revision 2.69  2003/07/16 15:43:25  stas
  * Auto increase patchlevel, set 0.9.6a-58
  * Fix: restore -T option
@@ -289,7 +293,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-58"
+#define MYVER "0.9.6a-59"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
