@@ -3,9 +3,12 @@
  * (c) 1995,1996,1997 <maloff@tts.magadan.su>
  */
 /*
- * $Id: getw.c,v 2.1 2003/01/29 19:32:03 gul Exp $
+ * $Id: getw.c,v 2.2 2003/03/01 18:06:45 gul Exp $
  *
  * $Log: getw.c,v $
+ * Revision 2.2  2003/03/01 18:06:45  gul
+ * Add include <sys/types.h>
+ *
  * Revision 2.1  2003/01/29 19:32:03  gul
  * Code cleanup, prevent segfault on bad config
  *
@@ -17,6 +20,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include <string.h>
+#include <sys/types.h>
 
 #include "getw.h"
 
