@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: Config.h,v 2.1 2001/09/24 10:31:39 gul Exp $
+ * $Id: Config.h,v 2.2 2001/12/25 17:13:15 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.2  2001/12/25 17:13:15  gul
+ * mingw _sleep() fix
+ *
  * Revision 2.1  2001/09/24 10:31:39  gul
  * Build under mingw32
  *
@@ -102,7 +105,7 @@
 #define write _write
 #define stat  _stat
 #define fstat _fstat
-#define sleep _sleep
+#define sleep(sec) _sleep((sec)*1000ul)
 #define snprintf  _snprintf
 #define vsnprintf _vsnprintf
 #endif
