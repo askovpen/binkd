@@ -1,7 +1,10 @@
 /*
- * $Id: server.h,v 2.1 2003/03/10 10:39:23 gul Exp $
+ * $Id: server.h,v 2.2 2003/03/10 10:57:45 gul Exp $
  *
  * $Log: server.h,v $
+ * Revision 2.2  2003/03/10 10:57:45  gul
+ * Extern declarations moved to header files
+ *
  * Revision 2.1  2003/03/10 10:39:23  gul
  * New include file common.h
  *
@@ -21,5 +24,6 @@
 void servmgr(void *arg);
 
 extern SOCKET sockfd;
+extern int ext_rand;
 
 #endif

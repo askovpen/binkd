@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.c,v 2.20 2003/03/10 10:39:23 gul Exp $
+ * $Id: readcfg.c,v 2.21 2003/03/10 10:57:45 gul Exp $
  *
  * $Log: readcfg.c,v $
+ * Revision 2.21  2003/03/10 10:57:45  gul
+ * Extern declarations moved to header files
+ *
  * Revision 2.20  2003/03/10 10:39:23  gul
  * New include file common.h
  *
@@ -219,8 +222,6 @@ struct maskchain *skipmask = NULL, *overwrite = NULL;
 
 int nAddr = 0;
 FTN_ADDR *pAddr = 0;
-
-extern FTN_DOMAIN *pDomains;
 
 typedef struct _KEYWORD KEYWORD;
 struct _KEYWORD
