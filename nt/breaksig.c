@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: breaksig.c,v 2.20 2003/10/13 08:48:10 stas Exp $
+ * $Id: breaksig.c,v 2.21 2003/10/17 04:20:29 hbrew Exp $
  *
  * Revision history:
  * $Log: breaksig.c,v $
+ * Revision 2.21  2003/10/17 04:20:29  hbrew
+ * Fix binkd9x atexit()
+ *
  * Revision 2.20  2003/10/13 08:48:10  stas
  * Implement true NT service stop sequence
  *
@@ -207,10 +210,10 @@ SigHandlerNT (DWORD SigType)
 int
 set_break_handlers (void)
 {
+  atexit (exitfunc);
 #if BINKDW9X
   CreateWin9xThread (&SigHandler);
 #else
-  atexit (exitfunc);
   if (IsNT () && isService ())
     atexit (&atServiceExitBegins);
   if (SetConsoleCtrlHandler (&SigHandlerNT, TRUE) != TRUE)
