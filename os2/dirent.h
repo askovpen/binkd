@@ -12,13 +12,15 @@
  */
 
 /*
- * $Id: dirent.h,v 2.1 2003/03/01 20:26:36 gul Exp $
+ * $Id: dirent.h,v 2.2 2003/03/01 20:31:59 gul Exp $
  *
  * Revision history:
  * $Log: dirent.h,v $
+ * Revision 2.2  2003/03/01 20:31:59  gul
+ * dos2unix EOL
+ *
  * Revision 2.1  2003/03/01 20:26:36  gul
  * *** empty log message ***
- *
  *
  */
 
