@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnq.c,v 2.7 2003/03/01 15:17:48 gul Exp $
+ * $Id: ftnq.c,v 2.8 2003/03/01 15:26:50 gul Exp $
  *
  * $Log: ftnq.c,v $
+ * Revision 2.8  2003/03/01 15:26:50  gul
+ * *** empty log message ***
+ *
  * Revision 2.7  2003/03/01 15:17:48  gul
  * *** empty log message ***
  *
@@ -579,8 +582,7 @@ static FTNQ *q_add_dir (FTNQ *q, char *dir, FTN_ADDR *fa1)
 	  if (!isxdigit (s[j]))
 	    break;
 
-        if (j != 8 || strchr (s, 0) - s != 12 ||
-	    strchr (s, '.') - s != 8 || strrchr (s, '.') - s != 8)
+        if (j != 8 || strlen(s) != 12 || s[8] != '.' || strchr(s+9, '.'))
 	  continue;
 
 	/* fa2 will store dest.address for the current (de->d_name) file */
