@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.40 2004/03/24 08:07:31 gul Exp $
+# $Id: Makefile,v 2.41 2004/06/16 06:24:31 stas Exp $
 #
 # Usage: nmake [DEBUG=1] [STATIC=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1]
@@ -221,6 +221,8 @@ OBJS=$(OBJS) "$(OBJDIR)\zlibdl.obj"
 
 # PERL_BASE & PERL_LIB ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 !ifdef PERL
+
+LIBS = $(LIBS) $(PERL_BASE)\lib\CORE\$(PERL_LIB)
 
 !if !defined(PERL_INCL) || (!defined(PERL_DL) && !defined(PERL_LIB))
 
