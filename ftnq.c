@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnq.c,v 2.4 2003/02/22 21:32:46 gul Exp $
+ * $Id: ftnq.c,v 2.5 2003/02/28 19:40:47 gul Exp $
  *
  * $Log: ftnq.c,v $
+ * Revision 2.5  2003/02/28 19:40:47  gul
+ * Outbound scan bugfix if defnode used
+ *
  * Revision 2.4  2003/02/22 21:32:46  gul
  * Amiga Style Outbound support
  *
@@ -607,7 +610,7 @@ static FTNQ *q_add_dir (FTNQ *q, char *dir, FTN_ADDR *fa1)
 	  process_bsy (&fa2, buf);
 
 	locknodesem();
-	if (!get_node_info (&fa2) && !is5D (fa1))
+	if (!havedefnode && !get_node_info (&fa2) && !is5D (fa1))
 	{
 	  releasenodesem();
 	  continue;
