@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.1 2001/01/16 03:53:23 gul Exp $
+dnl $Id: configure.in,v 2.2 2001/01/16 03:57:06 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -10,7 +10,7 @@ AC_PROG_INSTALL
 dnl Checks for header files.
 AC_CHECK_HEADERS(unistd.h io.h)
 AC_CHECK_HEADERS(sys/vfs.h sys/statfs.h sys/statvfs.h sys/param.h sys/mount.h)
-AC_CHECK_HEADERS(arpa/inet.h)
+AC_CHECK_HEADERS(arpa/inet.h sys/ioctl.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
