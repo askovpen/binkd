@@ -1,5 +1,5 @@
 # Microsoft Developer Studio Generated NMAKE File, Based on binkd.dsp
-# $Id: Makefile,v 2.6 2003/02/13 19:44:44 gul Exp $
+# $Id: Makefile,v 2.7 2003/02/22 21:32:47 gul Exp $
 !IFNDEF BINKD9X
 !MESSAGE To make binkd9x, you can specify BINKD9X macros when running NMAKE
 !MESSAGE by defining the macro BINKD9X on the command line. For example:
@@ -146,7 +146,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MTd /W3 /Gm /GX /ZI /Od /D "HTTPS" /D "_DEBUG" /D "WIN32" $(ModeOpt) /D "HAVE_THREADS" /D "HAVE_IO_H" /D "VISUALCPP" /FR"$(INTDIR)\\" /Fp"$(INTDIR)\$(OutFile).pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
+CPP_PROJ=/nologo /MTd /W3 /Gm /GX /ZI /Od /D "HTTPS" /D "_DEBUG" /D "WIN32" $(ModeOpt) /D "HAVE_THREADS" /D "HAVE_IO_H" /D "VISUALCPP" /D "AMIGADOS_4D_OUTBOUND" /FR"$(INTDIR)\\" /Fp"$(INTDIR)\$(OutFile).pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
 
 .c{$(INTDIR)}.obj:
    $(CPP) @<<
@@ -320,7 +320,7 @@ CLEAN :
     if not exist "$(OUTDIR)/$(NULL)" mkdir "$(OUTDIR)"
 
 CPP=cl.exe
-CPP_PROJ=/nologo /MT /W3 /GX /Ox /D "HTTPS" /D "WIN32" $(ModeOpt) /D "HAVE_THREADS" /D "HAVE_IO_H" /D "VISUALCPP" /Fp"$(INTDIR)\$(OutFile).pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
+CPP_PROJ=/nologo /MT /W3 /GX /Ox /D "HTTPS" /D "WIN32" $(ModeOpt) /D "HAVE_THREADS" /D "HAVE_IO_H" /D "VISUALCPP" /D "AMIGADOS_4D_OUTBOUND" /Fp"$(INTDIR)\$(OutFile).pch" /YX /Fo"$(INTDIR)\\" /Fd"$(INTDIR)\\" /c 
 
 .c{$(INTDIR)}.obj:
    $(CPP) @<<

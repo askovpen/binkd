@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.3 2001/07/28 11:29:24 gul Exp $
+dnl $Id: configure.in,v 2.4 2003/02/22 21:32:47 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -142,6 +142,10 @@ case x$do_ntlm in
 esac
 
 extrasub=s%@HTTPS_SRC@%$HTTPS_SRC%g
+
+AC_ARG_WITH(aso,
+          [  --with-aso              Amiga Style Outbound (ASO) support (default no)],
+          AC_DEFINE(AMIGADOS_4D_OUTBOUND), )
 
 dnl -------------------------------------------------------------------------
 
