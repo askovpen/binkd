@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.67.2.16 2004/10/18 15:18:16 gul Exp $
+ * $Id: protocol.c,v 2.67.2.17 2004/10/21 17:02:03 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.67.2.17  2004/10/21 17:02:03  gul
+ * Rename trunc() -> trunc_file() due to conflicts under OS/2 EMX and SuSE
+ *
  * Revision 2.67.2.16  2004/10/18 15:18:16  gul
  * Minor bugfix (patch from Victor Levenets <aq@takas.lt>)
  *
@@ -730,7 +733,7 @@ static int perform_action (STATE *state, char *path, char action)
   }
   else if (action == 't')
   {
-    trunc (path);
+    trunc_file (path);
   }
   else if (action == 's')
   {
