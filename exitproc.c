@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.14 2003/06/02 08:26:00 gul Exp $
+ * $Id: exitproc.c,v 2.15 2003/06/04 10:36:58 stas Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.15  2003/06/04 10:36:58  stas
+ * Thread-safety tcperr() implementation on Win32
+ *
  * Revision 2.14  2003/06/02 08:26:00  gul
  * Fix hang on exit with big loglevel
  *
@@ -156,4 +159,5 @@ void exitfunc (void)
 #ifdef OS2
   CleanSem (&fhsem);
 #endif
+  ReleaseErrorList();
 }
