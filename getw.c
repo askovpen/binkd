@@ -3,9 +3,12 @@
  * (c) 1995,1996,1997 <maloff@tts.magadan.su>
  */
 /*
- * $Id: getw.c,v 2.6 2003/08/26 21:01:10 gul Exp $
+ * $Id: getw.c,v 2.7 2003/10/29 21:08:38 gul Exp $
  *
  * $Log: getw.c,v $
+ * Revision 2.7  2003/10/29 21:08:38  gul
+ * Change include-files structure, relax dependences
+ *
  * Revision 2.6  2003/08/26 21:01:10  gul
  * Fix compilation under unix
  *
@@ -35,7 +38,7 @@
 #include <sys/types.h>
 #include <stddef.h>
 
-#include "readcfg.h"
+#include "Config.h"
 #include "tools.h"
 
 char *getwordx2 (char *src, int n, int flags, char *fldsep, char *fldskip)

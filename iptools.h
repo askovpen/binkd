@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: iptools.h,v 2.6 2003/08/26 16:06:26 stream Exp $
+ * $Id: iptools.h,v 2.7 2003/10/29 21:08:39 gul Exp $
  *
  * $Log: iptools.h,v $
+ * Revision 2.7  2003/10/29 21:08:39  gul
+ * Change include-files structure, relax dependences
+ *
  * Revision 2.6  2003/08/26 16:06:26  stream
  * Reload configuration on-the fly.
  *
@@ -50,7 +53,7 @@
 /*
  * Finds ASCIIZ address
  */
-const char *get_hostname (struct sockaddr_in * addr, char *host, int len, BINKD_CONFIG *config);
+const char *get_hostname (struct sockaddr_in * addr, char *host, int len, int backresolv);
 
 #ifdef HAVE_THREADS
 struct hostent *copy_hostent(struct hostent *dest, struct hostent *src);

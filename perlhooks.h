@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: perlhooks.h,v 2.5 2003/09/05 06:49:06 val Exp $
+ * $Id: perlhooks.h,v 2.6 2003/10/29 21:08:39 gul Exp $
  *
  * $Log: perlhooks.h,v $
+ * Revision 2.6  2003/10/29 21:08:39  gul
+ * Change include-files structure, relax dependences
+ *
  * Revision 2.5  2003/09/05 06:49:06  val
  * Perl support restored after config reloading patch
  *
@@ -38,7 +41,6 @@
 #define _PERLHOOKS_H_
 
 #include "prothlp.h"
-#include "protocol.h"
 #include "protoco2.h"
 
 enum perl_skip_type { SKIP_ND=1, SKIP_D=2 };

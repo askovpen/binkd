@@ -12,9 +12,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: https.c,v 2.18 2003/09/05 08:33:58 gul Exp $
+ * $Id: https.c,v 2.19 2003/10/29 21:08:38 gul Exp $
  *
  * $Log: https.c,v $
+ * Revision 2.19  2003/10/29 21:08:38  gul
+ * Change include-files structure, relax dependences
+ *
  * Revision 2.18  2003/09/05 08:33:58  gul
  * Fix work with proxy under OS/2
  *
@@ -89,8 +92,8 @@
 
 #include "readcfg.h"
 #include "https.h"
-
 #include "tools.h"
+#include "iphdr.h"
 #include "iptools.h"
 #include "sem.h"
 #ifdef NTLM

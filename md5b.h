@@ -24,9 +24,12 @@ documentation and/or software.
  */
 
 /*
- * $Id: md5b.h,v 2.5 2003/08/26 16:06:26 stream Exp $
+ * $Id: md5b.h,v 2.6 2003/10/29 21:08:39 gul Exp $
  *
  * $Log: md5b.h,v $
+ * Revision 2.6  2003/10/29 21:08:39  gul
+ * Change include-files structure, relax dependences
+ *
  * Revision 2.5  2003/08/26 16:06:26  stream
  * Reload configuration on-the fly.
  *
@@ -108,7 +111,6 @@ typedef struct {
 typedef unsigned char MDcaddr_t[MD5_DIGEST_LEN];
 
 #define MD_CHALLENGE_LEN 16
-#include "protoco2.h"
 
 unsigned char *MD_getChallenge(char *src, STATE *st);
 char *MD_buildDigest(char *pw, unsigned char *challenge);

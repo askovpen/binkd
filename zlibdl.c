@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: zlibdl.c,v 2.13 2003/10/27 23:22:54 gul Exp $
+ * $Id: zlibdl.c,v 2.14 2003/10/29 21:08:40 gul Exp $
  *
  * $Log: zlibdl.c,v $
+ * Revision 2.14  2003/10/29 21:08:40  gul
+ * Change include-files structure, relax dependences
+ *
  * Revision 2.13  2003/10/27 23:22:54  gul
  * Fix OS/2 compilation
  *
@@ -60,6 +63,8 @@
 #define INCL_DOSMODULEMGR
 #include <os2.h>
 #endif
+
+#include "compress.h"
 
 #if defined(WIN32)
 #define LOADFUNC(name)	if (loaded && (dl_##name = (void *)GetProcAddress(hl, #name)) == NULL) loaded = 0;

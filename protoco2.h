@@ -1,7 +1,10 @@
 /*
- * $Id: protoco2.h,v 2.16 2003/10/19 12:21:47 gul Exp $
+ * $Id: protoco2.h,v 2.17 2003/10/29 21:08:39 gul Exp $
  *
  * $Log: protoco2.h,v $
+ * Revision 2.17  2003/10/29 21:08:39  gul
+ * Change include-files structure, relax dependences
+ *
  * Revision 2.16  2003/10/19 12:21:47  gul
  * Stream compression
  *
@@ -78,7 +81,8 @@
 #ifndef _PROTOCO2_H_
 #define _PROTOCO2_H_
 
-#include "prothlp.h"
+#include "btypes.h"
+#include "iphdr.h"
 
 #define BLK_HDR_SIZE 2
 
