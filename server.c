@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: server.c,v 2.10 2003/03/03 23:41:20 gul Exp $
+ * $Id: server.c,v 2.11 2003/03/05 13:21:51 gul Exp $
  *
  * $Log: server.c,v $
+ * Revision 2.11  2003/03/05 13:21:51  gul
+ * Fix warnings
+ *
  * Revision 2.10  2003/03/03 23:41:20  gul
  * Try to resolve problem with active threads while exitproc running
  *
@@ -186,7 +189,7 @@ void servmgr (void *arg)
 {
   SOCKET new_sockfd;
   int pid;
-  int client_addr_len;
+  size_t client_addr_len;
   struct sockaddr_in serv_addr, client_addr;
   int opt = 1;
 

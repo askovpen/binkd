@@ -24,9 +24,12 @@ documentation and/or software.
  */
 
 /*
- * $Id: md5b.h,v 2.2 2003/03/02 08:08:49 gul Exp $
+ * $Id: md5b.h,v 2.3 2003/03/05 13:21:50 gul Exp $
  *
  * $Log: md5b.h,v $
+ * Revision 2.3  2003/03/05 13:21:50  gul
+ * Fix warnings
+ *
  * Revision 2.2  2003/03/02 08:08:49  gul
  * Added CVS ID and Revision
  *
@@ -102,6 +105,6 @@ typedef unsigned char MDcaddr_t[MD5_DIGEST_LEN];
 #include "iphdr.h"
 #include "protoco2.h"
 
-char *MD_getChallenge(char *src, STATE *st);
+unsigned char *MD_getChallenge(char *src, STATE *st);
 char *MD_buildDigest(char *pw, unsigned char *challenge);
 void MD_toString(char *rs, int len, unsigned char *digest);
