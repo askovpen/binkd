@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: breaksig.c,v 2.0 2001/01/10 12:12:40 gul Exp $
+ * $Id: breaksig.c,v 2.1 2001/09/24 10:31:39 gul Exp $
  *
  * Revision history:
  * $Log: breaksig.c,v $
+ * Revision 2.1  2001/09/24 10:31:39  gul
+ * Build under mingw32
+ *
  * Revision 2.0  2001/01/10 12:12:40  gul
  * Binkd is under CVS again
  *
@@ -36,13 +39,14 @@
  */
 
  static const char rcsid[] =
-      "$Id: breaksig.c,v 2.0 2001/01/10 12:12:40 gul Exp $";
+      "$Id: breaksig.c,v 2.1 2001/09/24 10:31:39 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */
 /*--------------------------------------------------------------------*/
 
 #include <windows.h>
+#include <stdlib.h>
 
 /*--------------------------------------------------------------------*/
 /*                        Local include files                         */
