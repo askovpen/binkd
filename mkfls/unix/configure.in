@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.9 2003/03/25 09:04:55 gul Exp $
+dnl $Id: configure.in,v 2.10 2003/03/30 10:14:41 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -35,6 +35,11 @@ esac
 AC_CHECK_SIZEOF(short, 0)
 AC_CHECK_SIZEOF(int, 0)
 AC_CHECK_SIZEOF(long, 0)
+
+dnl check for socklen_t
+dnl 
+AC_MSG_CHECKING(for socklen_t)
+AC_TRY_COMPILE([#include <sys/socket.h>], [socklen_t i;], AC_DEFINE(HAVE_SOCKLEN_T) AC_MSG_RESULT(yes), AC_MSG_RESULT(no), AC_MSG_RESULT(cross-compiling. No assumptions made))
 
 dnl -------------------------------------------------------------------------
 dnl Signal handling
