@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: TCPErr.c,v 2.9.2.2 2003/06/21 07:59:05 gul Exp $
+ * $Id: TCPErr.c,v 2.9.2.3 2003/06/21 15:35:35 hbrew Exp $
  *
  * Revision history:
  * $Log: TCPErr.c,v $
+ * Revision 2.9.2.3  2003/06/21 15:35:35  hbrew
+ * Fix running on Win9x-systems.
+ *
  * Revision 2.9.2.2  2003/06/21 07:59:05  gul
  * Fix typo in error report string
  *
@@ -73,7 +76,7 @@
  */
 
  static const char rcsid[] =
-      "$Id: TCPErr.c,v 2.9.2.2 2003/06/21 07:59:05 gul Exp $";
+      "$Id: TCPErr.c,v 2.9.2.3 2003/06/21 15:35:35 hbrew Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */
@@ -102,6 +105,7 @@
 /*                           Local variables                          */
 /*--------------------------------------------------------------------*/
 
+#ifdef BINKDW9X
 /* Windows version test
  * Parameter: Platform ID (VER_PLATFORM_WIN32_NT or VER_PLATFORM_WIN32_WINDOWS,
  *            see GetVersionEx() if MSDN)
@@ -116,6 +120,7 @@ int W32_CheckOS(unsigned long PlatformId)
     return os_ver.dwPlatformId != PlatformId;
   return 1;
 }
+#endif
 
 static char err_sem_init = 0;
 static MUTEXSEM err_sem;
