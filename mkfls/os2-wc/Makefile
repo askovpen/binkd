@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.15 2003/10/19 22:03:51 gul Exp $
+# $Id: Makefile,v 2.16 2003/10/20 19:13:37 gul Exp $
 #
 # Usage: wmake [DEBUG=1] [NOFORK=1] [ZLIB=1] [BZLIB2=1] [ZLIBDL=1]
 #
@@ -42,7 +42,7 @@ LIBS      += z.lib
 !endif
 !endif
 
-!ifeq BZLIB1 1
+!ifeq BZLIB2 1
 CFLAGS    += -DWITH_BZLIB2
 COMPRESS  = 1
 !ifeq ZLIBDL 1
