@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: sem.c,v 2.0 2001/01/10 12:12:40 gul Exp $
+ * $Id: sem.c,v 2.1 2003/02/13 19:44:45 gul Exp $
  *
  * Revision history:
  * $Log: sem.c,v $
+ * Revision 2.1  2003/02/13 19:44:45  gul
+ * Change \r\n -> \n
+ *
  * Revision 2.0  2001/01/10 12:12:40  gul
  * Binkd is under CVS again
  *
@@ -39,7 +42,7 @@
  */
 
  static const char rcsid[] =
-      "$Id: sem.c,v 2.0 2001/01/10 12:12:40 gul Exp $";
+      "$Id: sem.c,v 2.1 2003/02/13 19:44:45 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */

@@ -1,5 +1,5 @@
 # Microsoft Developer Studio Generated NMAKE File, Based on binkd.dsp
-# $Id: Makefile,v 2.5 2002/11/12 16:55:58 gul Exp $
+# $Id: Makefile,v 2.6 2003/02/13 19:44:44 gul Exp $
 !IFNDEF BINKD9X
 !MESSAGE To make binkd9x, you can specify BINKD9X macros when running NMAKE
 !MESSAGE by defining the macro BINKD9X on the command line. For example:
