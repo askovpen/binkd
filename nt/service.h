@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.h,v 2.5 2003/07/18 10:30:34 stas Exp $
+ * $Id: service.h,v 2.6 2003/10/05 09:37:43 stas Exp $
  *
  * $Log: service.h,v $
+ * Revision 2.6  2003/10/05 09:37:43  stas
+ * Optimize binkd/nt start: use hack to determine if we're running as a service without waiting for the service control manager to fail
+ *
  * Revision 2.5  2003/07/18 10:30:34  stas
  * New functions: IsNT(), Is9x(); small code cleanup
  *
@@ -76,6 +79,14 @@ extern char *service_name;
  */
 int checkservice(void);
 
+/* A hack to determine if we're running as a service without waiting for
+ * the SCM to fail.
+ * Idea taken from Apache sources
+ */
+int isService();
+
+/* main service code
+ */
 int service(int argc, char **argv, char **envp);
 
 /* Try connect to NT service controller
