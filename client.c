@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: client.c,v 2.55 2004/10/18 15:22:19 gul Exp $
+ * $Id: client.c,v 2.56 2004/11/01 13:05:31 gul Exp $
  *
  * $Log: client.c,v $
+ * Revision 2.56  2004/11/01 13:05:31  gul
+ * Bugfix in connect-timeout
+ *
  * Revision 2.55  2004/10/18 15:22:19  gul
  * Change handle perl errors method
  *
@@ -262,6 +265,10 @@ static void chld (int signo)
 {
 #define CHILDCOUNT n_clients
 #include "reapchld.inc"
+}
+
+static void alrm (int signo)
+{
 }
 
 #endif
@@ -571,7 +578,10 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
       }
 #ifdef HAVE_FORK
       if (config->connect_timeout)
+      {
+	signal(SIGALRM, alrm);
 	alarm(config->connect_timeout);
+      }
 #endif
       if (connect (sockfd, (struct sockaddr *) & sin, sizeof (sin)) == 0)
       {
