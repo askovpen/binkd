@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: zlibdl.h,v 2.8 2003/09/25 06:41:43 val Exp $
+ * $Id: zlibdl.h,v 2.9 2003/09/25 09:01:28 gul Exp $
  *
- * $Log $
+ * $Log: zlibdl.h,v $
+ * Revision 2.9  2003/09/25 09:01:28  gul
+ * Fix CVS macro again
+ *
  *
  */
 
