@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: TCPErr.c,v 2.9.2.3 2003/06/21 15:35:35 hbrew Exp $
+ * $Id: TCPErr.c,v 2.9.2.4 2003/08/05 05:38:43 hbrew Exp $
  *
  * Revision history:
  * $Log: TCPErr.c,v $
+ * Revision 2.9.2.4  2003/08/05 05:38:43  hbrew
+ * 'static const char rcsid[]' removed
+ *
  * Revision 2.9.2.3  2003/06/21 15:35:35  hbrew
  * Fix running on Win9x-systems.
  *
@@ -74,9 +77,6 @@
  *      First revision
  *
  */
-
- static const char rcsid[] =
-      "$Id: TCPErr.c,v 2.9.2.3 2003/06/21 15:35:35 hbrew Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */

@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: breaksig.c,v 2.4 2003/03/10 18:19:51 gul Exp $
+ * $Id: breaksig.c,v 2.4.2.1 2003/08/05 05:38:43 hbrew Exp $
  *
  * Revision history:
  * $Log: breaksig.c,v $
+ * Revision 2.4.2.1  2003/08/05 05:38:43  hbrew
+ * 'static const char rcsid[]' removed
+ *
  * Revision 2.4  2003/03/10 18:19:51  gul
  * Use common.h
  *
@@ -48,9 +51,6 @@
  *      First revision
  *
  */
-
- static const char rcsid[] =
-      "$Id: breaksig.c,v 2.4 2003/03/10 18:19:51 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */

@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: sem.c,v 2.6 2003/03/31 22:11:34 gul Exp $
+ * $Id: sem.c,v 2.6.2.1 2003/08/05 05:38:43 hbrew Exp $
  *
  * Revision history:
  * $Log: sem.c,v $
+ * Revision 2.6.2.1  2003/08/05 05:38:43  hbrew
+ * 'static const char rcsid[]' removed
+ *
  * Revision 2.6  2003/03/31 22:11:34  gul
  * Fixed semaphores usage
  *
@@ -55,9 +58,6 @@
  *      First revision
  *
  */
-
- static const char rcsid[] =
-      "$Id: sem.c,v 2.6 2003/03/31 22:11:34 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */
