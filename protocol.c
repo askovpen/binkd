@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.67.2.1 2003/06/06 16:27:44 gul Exp $
+ * $Id: protocol.c,v 2.67.2.2 2003/06/21 19:36:13 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.67.2.2  2003/06/21 19:36:13  gul
+ * Fixed remote ip check
+ *
  * Revision 2.67.2.1  2003/06/06 16:27:44  gul
  * Workaround winsock bug - giveup CPU when sending file
  *
@@ -966,8 +969,8 @@ static int ADR (STATE *state, char *s, int sz)
         ipok = 2;
       }
 
-      for (i = 1; ipok == 0 && n.hosts && (rc = get_host_and_port
-		  (i, host, &port, n.hosts, &n.fa)) != -1; ++i)
+      for (i = 1; n.hosts &&
+           (rc = get_host_and_port(i, host, &port, n.hosts, &n.fa)) != -1; ++i)
       {
 	if (rc == 0)
 	{
