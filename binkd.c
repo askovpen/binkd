@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: binkd.c,v 2.70 2003/10/20 19:17:52 gul Exp $
+ * $Id: binkd.c,v 2.71 2003/10/20 20:27:06 gul Exp $
  *
  * $Log: binkd.c,v $
+ * Revision 2.71  2003/10/20 20:27:06  gul
+ * format output
+ *
  * Revision 2.70  2003/10/20 19:17:52  gul
  * Print optional compiled-in extensions by -vv command-line switch
  *
@@ -775,7 +778,7 @@ int main (int argc, char *argv[], char *envp[])
       printf ("	DEBUG\n");
 #endif
 #ifdef DEBUGCHILD
-      printf (" DEBUGCHILD\n");
+      printf ("	DEBUGCHILD\n");
 #endif
     }
     exit (0);
