@@ -12,9 +12,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: https.c,v 2.7 2003/02/22 19:29:40 gul Exp $
+ * $Id: https.c,v 2.8 2003/02/28 08:53:38 gul Exp $
  *
  * $Log: https.c,v $
+ * Revision 2.8  2003/02/28 08:53:38  gul
+ * Fixed proxy usage
+ *
  * Revision 2.7  2003/02/22 19:29:40  gul
  * Fix typo
  *
@@ -246,12 +249,12 @@ int h_connect(int so, char *host)
 			port = oport; /* should never happens */
 		if (!sauth)
 		{
-			if ((hp = find_host(host, &he, alist)) == NULL)
+			if ((hp=find_host(host, &he, alist, &defaddr)) == NULL)
 				return 1;
 		}
 		else
 		{
-			hp = find_host("127.0.0.1", &he, alist);
+			hp = find_host("127.0.0.1", &he, alist, &defaddr);
 			sauth=strdup(sauth);
 			sp=strchr(sauth, '/');
 			buf[0]=5;
