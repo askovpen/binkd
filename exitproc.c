@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.24 2003/09/07 04:49:41 hbrew Exp $
+ * $Id: exitproc.c,v 2.25 2003/09/08 06:36:51 val Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.25  2003/09/08 06:36:51  val
+ * (a) don't call exitfunc for perlhook fork'ed process
+ * (b) many compilation warnings in perlhooks.c fixed
+ *
  * Revision 2.24  2003/09/07 04:49:41  hbrew
  * Remove binkd9x restart-on-config-change code; move binkd9x deinit to exitfunc()
  *
@@ -141,10 +145,17 @@ int del_socket(SOCKET sockfd)
 
 #endif
 
+#if defined(WITH_PERL) && defined(HAVE_FORK)
+extern int perl_skipexitfunc;
+#endif
+
 void exitfunc (void)
 {
   BINKD_CONFIG *config;
 
+#if defined(WITH_PERL) && defined(HAVE_FORK)
+  if (perl_skipexitfunc) return;
+#endif
   Log(7, "exitfunc()");
 #ifdef HAVE_FORK
   if (pidcmgr)
