@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: iptools.c,v 2.6 2003/03/26 10:44:40 gul Exp $
+ * $Id: iptools.c,v 2.7 2003/03/26 12:59:16 gul Exp $
  *
  * $Log: iptools.c,v $
+ * Revision 2.7  2003/03/26 12:59:16  gul
+ * Fix previous patch
+ *
  * Revision 2.6  2003/03/26 10:44:40  gul
  * Code cleanup
  *
@@ -61,8 +64,6 @@
 #include "tools.h"
 #include "readcfg.h"
 #include "sem.h"
-
-static char *alist[2];
 
 /*
  * Finds ASCIIZ address
@@ -178,6 +179,8 @@ int find_port (char *s)
 struct hostent *find_host(char *host, struct hostent *he, struct in_addr *defaddr)
 {
   struct hostent *hp;
+  static struct hostent ht;
+  static char *alist[2];
 
   if (!isdigit(host[0]) ||
       (defaddr->s_addr = inet_addr (host)) == INADDR_NONE)
@@ -197,7 +200,7 @@ struct hostent *find_host(char *host, struct hostent *he, struct in_addr *defadd
   }
   /* Raw ip address, fake */
   lockhostsem();
-  hp = he;
+  hp = &ht;
   hp->h_name = host;
   hp->h_aliases = 0;
   hp->h_addrtype = AF_INET;
@@ -209,4 +212,3 @@ struct hostent *find_host(char *host, struct hostent *he, struct in_addr *defadd
   releasehostsem();
   return hp;
 }
-
