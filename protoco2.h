@@ -1,7 +1,10 @@
 /*
- * $Id: protoco2.h,v 2.2 2001/02/15 16:05:59 gul Exp $
+ * $Id: protoco2.h,v 2.3 2002/02/22 00:18:34 gul Exp $
  *
  * $Log: protoco2.h,v $
+ * Revision 2.3  2002/02/22 00:18:34  gul
+ * Run by-file events with the same command-line once after session
+ *
  * Revision 2.2  2001/02/15 16:05:59  gul
  * crypt bugfix
  *
@@ -133,6 +136,7 @@ struct _STATE
   int crypt_flag;		/* Is session encrypted? */
   unsigned long keys_out[3];	/* Encription keys for outbound */
   unsigned long keys_in[3];	/* Encription keys for inbound */
+  EVTQ *evt_queue;		/* Queue of by-files events */
 };
 #define STATE_DEFINED 1
 

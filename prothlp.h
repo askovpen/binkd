@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: prothlp.h,v 2.0 2001/01/10 12:12:38 gul Exp $
+ * $Id: prothlp.h,v 2.1 2002/02/22 00:18:34 gul Exp $
  *
  * $Log: prothlp.h,v $
+ * Revision 2.1  2002/02/22 00:18:34  gul
+ * Run by-file events with the same command-line once after session
+ *
  * Revision 2.0  2001/01/10 12:12:38  gul
  * Binkd is under CVS again
  *
@@ -55,6 +58,13 @@ struct _KILLLIST
   char cond;				    /* after 's'uccessful session,
 					     * '\0' -- in any case */
 };
+
+typedef struct _EVTQ
+{
+  char *path;
+  struct _EVTQ *next;
+  char evt_type;
+} EVTQ;
 
 /* Adds a file to killlist */
 void add_to_killlist (KILLLIST **killlist, int *n_killlist, char *name, int cond);
