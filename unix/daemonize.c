@@ -1,8 +1,11 @@
 /*
- * $Id: daemonize.c,v 1.1 2001/01/15 22:04:52 gul Exp $
+ * $Id: daemonize.c,v 2.0 2001/01/16 03:49:26 gul Exp $
  *
  * Revision history:
  * $Log: daemonize.c,v $
+ * Revision 2.0  2001/01/16 03:49:26  gul
+ * *** empty log message ***
+ *
  * Revision 1.1  2001/01/15 22:04:52  gul
  * Added -D switch (run as daemon)
  *
