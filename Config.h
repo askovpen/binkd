@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.79 2003/07/18 10:30:36 stas Exp $
+ * $Id: Config.h,v 2.80 2003/07/18 10:31:06 stas Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.80  2003/07/18 10:31:06  stas
+ * Auto increase patchlevel, set 0.9.6a-69
+ * New functions: IsNT(), Is9x(); small code cleanup
+ *
  * Revision 2.79  2003/07/18 10:30:36  stas
  * Auto increase patchlevel, set 0.9.6a-68
  * New functions: IsNT(), Is9x(); small code cleanup
@@ -331,7 +335,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-68"
+#define MYVER "0.9.6a-69"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
