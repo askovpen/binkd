@@ -11,9 +11,13 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: perlhooks.h,v 2.6 2003/10/29 21:08:39 gul Exp $
+ * $Id: perlhooks.h,v 2.7 2003/10/30 10:37:00 gul Exp $
  *
  * $Log: perlhooks.h,v $
+ * Revision 2.7  2003/10/30 10:37:00  gul
+ * Do not append file partially received from busy remote aka,
+ * non-destructive skip it.
+ *
  * Revision 2.6  2003/10/29 21:08:39  gul
  * Change include-files structure, relax dependences
  *
@@ -72,8 +76,7 @@ void perl_after_session(STATE *, char *); /* after session done */
 
 int perl_before_recv(STATE *, off_t offs); /* before receiving file */
 int perl_after_recv(STATE *, char *netname, off_t size, time_t time, 
-                    FTN_ADDR *fa, int nfa, char *tmp_name, 
-                    char *real_name);  /* after file has been received */
+         char *tmp_name, char *real_name);  /* after file has been received */
 int perl_before_send(STATE *);         /* before sending file */
 int perl_after_sent(STATE *, int);     /* after file has been sent */
 
