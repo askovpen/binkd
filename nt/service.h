@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.h,v 2.12 2003/10/18 18:50:48 stas Exp $
+ * $Id: service.h,v 2.13 2003/10/28 20:20:10 stas Exp $
  *
  * $Log: service.h,v $
+ * Revision 2.13  2003/10/28 20:20:10  stas
+ * Rewrite NT service code, remove obsoleted code and add some checks. Found a thread-not-safety problem.
+ *
  * Revision 2.12  2003/10/18 18:50:48  stas
  * Move to new 'tray.c' file several functions when is related with 'minimize to tray' feature
  *
@@ -62,14 +65,15 @@
 
 /* service_main types of call */
 enum service_main_types{
-   service_main_services  = 0, /* Check: we can operate with services */
-   service_main_testinstalled, /* Check: installed or not */
+//   service_main_services  = 0, /* Check: we can operate with services */
+//   service_main_testinstalled, /* Check: installed or not */
    service_main_install      , /* Install service */
    service_main_uninstall    , /* Uninstall service */
    service_main_start        , /* Start service */
    service_main_installstart , /* Install and start service */
-   service_main_testrunning  , /* Check: service is running */
+//   service_main_testrunning  , /* Check: service is running */
    service_main_stop         , /* Stop service */
+   service_main_stop_uninstall /* Stop and uninstall service */
 };
 
 /* service_main return values */
@@ -84,7 +88,7 @@ enum service_main_retcodes{
    service_main_ret_faildelete , /* Service delete failed */
    service_main_ret_fail       , /* Can't check service: QueryServiceStatus() fail */
    service_main_ret_not        , /* Can't operate: OpenSCManagerA() dont exist (incompatible OS) */
-   service_main_ret_failcontrol, /* OpenSCManager failed */
+   service_main_ret_failcontrol  /* OpenSCManager failed */
 };
 
 extern char *service_name;
