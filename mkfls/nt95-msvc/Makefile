@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.10 2003/03/19 14:17:10 gul Exp $
+# $Id: Makefile,v 2.11 2003/03/20 08:43:25 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [BINKD9X=1]
 #
@@ -129,4 +129,3 @@ distclean: clean
 !if exists("Makefile.dep")
 !include "Makefile.dep"
 !endif
-          
