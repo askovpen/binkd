@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: client.c,v 2.34 2003/04/22 20:13:49 gul Exp $
+ * $Id: client.c,v 2.35 2003/04/22 22:26:17 gul Exp $
  *
  * $Log: client.c,v $
+ * Revision 2.35  2003/04/22 22:26:17  gul
+ * Fix previous patch
+ *
  * Revision 2.34  2003/04/22 20:13:49  gul
  * Fixed possible premature exit in -p mode
  *
@@ -301,7 +304,7 @@ void clientmgr (void *arg)
       }
       else
       {
-	if (poll_flag && n_cl <= 0 && q_not_empty () == 0)
+	if (poll_flag && n_cl <= 0 && n_clients <= 0 && q_not_empty () == 0)
 	{
 	  Log (4, "the queue is empty, quitting...");
 	  break;
