@@ -16,10 +16,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: w32tools.c,v 2.7 2003/08/26 22:18:49 gul Exp $
+ * $Id: w32tools.c,v 2.8 2003/10/06 17:16:47 stas Exp $
  *
  * Revision history:
  * $Log: w32tools.c,v $
+ * Revision 2.8  2003/10/06 17:16:47  stas
+ * (Cosmetics) Rename tcperr() to w32err() for win32/win9x versions
+ *
  * Revision 2.7  2003/08/26 22:18:49  gul
  * Fix compilation under w32-mingw and os2-emx
  *
@@ -148,7 +151,7 @@ int build_service_arguments(char **asp, char *argv[], int use_argv0)
   if (!use_argv0)
   {
     if (!(pathlen = GetModuleFileName(NULL, pathname, MAXPATHLEN)))
-      Log(0, "Error in GetModuleFileName()=%s\n", tcperr(GetLastError()) );
+      Log(0, "Error in GetModuleFileName()=%s\n", w32err(GetLastError()) );
     l += pathlen+1;
     argc++;
   }
