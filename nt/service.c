@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.c,v 2.34 2003/10/09 17:26:15 stas Exp $
+ * $Id: service.c,v 2.35 2003/10/10 05:30:17 stas Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.35  2003/10/10 05:30:17  stas
+ * Initialize variable (fix)
+ *
  * Revision 2.34  2003/10/09 17:26:15  stas
  * Unload icon after use (if loaded from file)
  *
@@ -567,7 +570,7 @@ static void wndthread(void *par)
     char bn[20];
     ATOM wa;
     HWND wnd;
-    HICON hi,loaded_icon;
+    HICON hi,loaded_icon=NULL;
     HANDLE in, out;
     int i;
 
