@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnnode.c,v 2.7 2003/03/31 19:35:16 gul Exp $
+ * $Id: ftnnode.c,v 2.8 2003/03/31 19:51:29 gul Exp $
  *
  * $Log: ftnnode.c,v $
+ * Revision 2.8  2003/03/31 19:51:29  gul
+ * Fix prev patch
+ *
  * Revision 2.7  2003/03/31 19:35:16  gul
  * Clean semaphores usage
  *
@@ -88,7 +91,7 @@ void releasenodesem (void)
 
 void nodes_deinit(void)
 {
-  if (NSem) CleanSem (&NSem);
+  CleanSem (&NSem);
 }
 
 /*
