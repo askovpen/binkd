@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.h,v 2.3 2003/07/16 15:08:49 stas Exp $
+ * $Id: service.h,v 2.4 2003/07/16 15:50:44 stas Exp $
  *
  * $Log: service.h,v $
+ * Revision 2.4  2003/07/16 15:50:44  stas
+ * Fix: restore "Minimise to tray"
+ *
  * Revision 2.3  2003/07/16 15:08:49  stas
  * Fix NT services to use getopt(). Improve logging for service
  *
@@ -50,3 +53,7 @@ int service(int argc, char **argv, char **envp);
  * Return 1 if program running standalone or system error
  */
 int tell_start_ntservice(void);
+
+/* Minimise to tray
+ */
+void do_tray_flag(void);
