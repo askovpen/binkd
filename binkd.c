@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: binkd.c,v 2.40 2003/07/06 06:49:43 gul Exp $
+ * $Id: binkd.c,v 2.41 2003/07/07 08:33:25 val Exp $
  *
  * $Log: binkd.c,v $
+ * Revision 2.41  2003/07/07 08:33:25  val
+ * `perl-hooks' config keyword to specify perl script
+ *
  * Revision 2.40  2003/07/06 06:49:43  gul
  * Code cleanup
  *
@@ -760,7 +763,7 @@ int main (int argc, char *argv[], char *envp[])
     Log (0, "cannot install break handlers");
 
 #ifdef WITH_PERL
-  perl_init("test.pl");
+  if (*perl_script) perl_init(perl_script);
 #endif
 
 #ifdef HAVE_FORK
