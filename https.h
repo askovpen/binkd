@@ -12,9 +12,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: https.h,v 2.1 2003/02/22 11:45:41 gul Exp $
+ * $Id: https.h,v 2.2 2003/03/01 18:16:04 gul Exp $
  *
  * $Log: https.h,v $
+ * Revision 2.2  2003/03/01 18:16:04  gul
+ * Use HAVE_SYS_TIME_H macro
+ *
  * Revision 2.1  2003/02/22 11:45:41  gul
  * Do not resolve hosts if proxy or socks5 using
  *
@@ -25,7 +28,3 @@
  */
 
 int h_connect(int socket, char *host);
-
-#if !defined(WIN32)
-#include <sys/time.h>
-#endif
