@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: srif.c,v 2.9.2.1 2003/09/11 17:04:00 stream Exp $
+ * $Id: srif.c,v 2.9.2.2 2004/02/29 08:54:41 gul Exp $
  *
  * $Log: srif.c,v $
+ * Revision 2.9.2.2  2004/02/29 08:54:41  gul
+ * Fix *A@ macro on call events
+ * (patch by Victor Levenets).
+ *
  * Revision 2.9.2.1  2003/09/11 17:04:00  stream
  * Memory leak in evt_queue()
  *
@@ -333,7 +337,7 @@ static EVTQ *run_args(EVTQ *eq, char *cmd, char *filename0, FTN_ADDR *fa,
 	    pa += strlen(pa);
 	  }
 	  aka[2]=sp[2];
-	  w = ed (w, aka, adr, &sw);
+	  w = ed (w, aka, addrlist, &sw);
 	  free(addrlist);
 	  break;
 	}
