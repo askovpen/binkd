@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: client.c,v 2.54 2004/08/04 19:51:40 gul Exp $
+ * $Id: client.c,v 2.55 2004/10/18 15:22:19 gul Exp $
  *
  * $Log: client.c,v $
+ * Revision 2.55  2004/10/18 15:22:19  gul
+ * Change handle perl errors method
+ *
  * Revision 2.54  2004/08/04 19:51:40  gul
  * Change SIGCHLD handling, make signal handler more clean,
  * prevent occasional hanging (mutex deadlock) under linux kernel 2.6.
@@ -325,7 +328,7 @@ static int do_client(BINKD_CONFIG *config, int *pq_empty)
     if (config->printq)
     {
       LockSem (&lsem);
-      q_list (my_stderr, SCAN_LISTED, config);
+      q_list (stderr, SCAN_LISTED, config);
       ReleaseSem (&lsem);
       Log (-1, "idle\r");
     }

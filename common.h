@@ -10,9 +10,12 @@
  */
 
 /*
- * $Id: common.h,v 2.12 2004/02/07 14:06:06 hbrew Exp $
+ * $Id: common.h,v 2.13 2004/10/18 15:22:19 gul Exp $
  *
  * $Log: common.h,v $
+ * Revision 2.13  2004/10/18 15:22:19  gul
+ * Change handle perl errors method
+ *
  * Revision 2.12  2004/02/07 14:06:06  hbrew
  * Macros: RTLDLL-->RTLSTATIC, BINKDW9X-->BINKD9X
  *
@@ -137,13 +140,6 @@ extern int daemon_flag;
 #ifndef BINKD9X
 extern int tray_flag;
 #endif
-#endif
-
-#ifdef WITH_PERL
-extern FILE *perl_olderr;
-#define my_stderr (perl_olderr ? perl_olderr : stderr)
-#else
-#define my_stderr stderr
 #endif
 
 #endif
