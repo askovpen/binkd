@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: breaksig.c,v 2.8 2003/08/24 17:28:31 hbrew Exp $
+ * $Id: breaksig.c,v 2.9 2003/08/24 18:05:59 hbrew Exp $
  *
  * Revision history:
  * $Log: breaksig.c,v $
+ * Revision 2.9  2003/08/24 18:05:59  hbrew
+ * Update for previous patch
+ *
  * Revision 2.8  2003/08/24 17:28:31  hbrew
  * Fix work with sighandler on win32
  *
@@ -144,14 +147,15 @@ BOOL SigHandler(DWORD SigType) {
 /*--------------------------------------------------------------------*/
 /*    BOOL SigHandlerExit(DWORD SigType)                              */
 /*                                                                    */
-/*    Signal handler, exit(0) after SigHandler() call                 */
+/*    Signal handler, exit(0) after (SigHandler()==FALSE) call        */
 /*--------------------------------------------------------------------*/
 
 BOOL SigHandlerExit(DWORD SigType) {
    Log(8, "SigHandlerExit(%lu)", SigType);
-   SigHandler(SigType);
-   exit(0);
-   return FALSE;
+   if (!SigHandler(SigType))
+     exit(0);
+
+   return TRUE;
 }
 
 /*--------------------------------------------------------------------*/
