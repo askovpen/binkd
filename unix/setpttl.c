@@ -4,10 +4,13 @@
  * Edited a bit by Dima Maloff for Binkd/0.9.3
  */
 /*
- * $Id: setpttl.c,v 2.0 2001/01/10 12:12:40 gul Exp $
+ * $Id: setpttl.c,v 2.1 2001/10/27 08:31:30 gul Exp $
  *
  * Revision history:
  * $Log: setpttl.c,v $
+ * Revision 2.1  2001/10/27 08:31:30  gul
+ * minor fix
+ *
  * Revision 2.0  2001/01/10 12:12:40  gul
  * Binkd is under CVS again
  *
@@ -231,6 +234,9 @@ void setproctitle(const char *fmt, ...)
 		(void) write(kmem, buf, PSARGSZ);
 #  endif
 #  if SPT_TYPE == SPT_REUSEARGV
+	if (LastArgv == NULL)
+		return;
+
 	if (i > LastArgv - Argv[0] - 2)
 	{
 		i = LastArgv - Argv[0] - 2;
