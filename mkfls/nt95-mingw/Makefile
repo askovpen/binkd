@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.9 2003/03/10 15:59:15 gul Exp $
+# $Id: Makefile,v 2.10 2003/03/11 11:42:23 gul Exp $
 #
 ifeq ($(OSTYPE),msys)
 SHELL=sh.exe
@@ -45,7 +45,8 @@ clean:
 	-del *.ini >nul
 	-del *.err >nul
 	-del core  >nul
-	-rm -f *.RES *.obj *.o  nt/*.o ntlm/*.o *.map *.bak *.b *.ini *.err core
+	-rm -f *.RES *.obj *.o
+	-rm -f nt/*.o ntlm/*.o *.map *.bak *.b *.ini *.err core
 
 depend	Makefile.dep:
 	gcc -MM $(CFLAGS) $(SRCS) | tee Makefile.dep
