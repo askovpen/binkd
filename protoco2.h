@@ -1,7 +1,10 @@
 /*
- * $Id: protoco2.h,v 2.7 2003/06/20 10:37:02 val Exp $
+ * $Id: protoco2.h,v 2.8 2003/07/02 18:16:43 gul Exp $
  *
  * $Log: protoco2.h,v $
+ * Revision 2.8  2003/07/02 18:16:43  gul
+ * Bugfix fot patch about send status without NR-mode
+ *
  * Revision 2.7  2003/06/20 10:37:02  val
  * Perl hooks for binkd - initial revision
  *
@@ -148,7 +151,6 @@ struct _STATE
   char *ND_status;              /* ND status file name */
   TFILE in_complete;            /* M_GOT sent, need to rename */
   FTN_ADDR ND_addr;             /* Address for current ND status */
-  FTN_ADDR out_addr;            /* Currently precessing remote AKA */
   int crypt_flag;		/* Is session encrypted? */
   unsigned long keys_out[3];	/* Encription keys for outbound */
   unsigned long keys_in[3];	/* Encription keys for inbound */
