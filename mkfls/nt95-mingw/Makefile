@@ -1,18 +1,18 @@
-# $Id: Makefile,v 2.14.2.1 2003/08/27 11:07:28 stas Exp $
+# $Id: Makefile,v 2.14.2.2 2003/08/28 06:23:55 hbrew Exp $
 #
 ifeq ($(OSTYPE),msys)
-SHELL=sh.exe
+SHELL=sh
 else
-SHELL=bash.exe
+SHELL=bash
 endif
 
 ifdef BINKD9X
 BINKD9X_SRC=nt/win9x.c
 BINKD9X_DEFINES=-DBINKDW9X
 BINKD9X_SUBSYSTEM=-Wl,--subsystem,windows
-BINKDEXE=binkd9x.exe
+BINKDEXE=binkd9x-mingw.exe
 else
-BINKDEXE=binkd.exe
+BINKDEXE=binkd-mingw.exe
 NT_SERVICE=nt/service.c
 endif
 
