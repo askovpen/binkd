@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: perlhooks.c,v 2.27 2003/09/24 07:32:16 val Exp $
+ * $Id: perlhooks.c,v 2.28 2003/10/04 00:46:53 hbrew Exp $
  *
  * $Log: perlhooks.c,v $
+ * Revision 2.28  2003/10/04 00:46:53  hbrew
+ * Avoid warning in perl.h
+ *
  * Revision 2.27  2003/09/24 07:32:16  val
  * bzlib2 compression support, new compression keyword: zlevel
  *
@@ -231,6 +234,10 @@
 # define Perl_TXpv_ptr			(*dl_Perl_TXpv_ptr)
 # define boot_DynaLoader		(*dl_boot_DynaLoader)
 #endif
+#endif
+
+#ifdef DEBUG
+#  undef DEBUG
 #endif
 
 #include <EXTERN.h>
