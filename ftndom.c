@@ -12,9 +12,14 @@
  */
 
 /*
- * $Id: ftndom.c,v 2.0 2001/01/10 12:12:37 gul Exp $
+ * $Id: ftndom.c,v 2.1 2003/02/28 20:39:08 gul Exp $
  *
  * $Log: ftndom.c,v $
+ * Revision 2.1  2003/02/28 20:39:08  gul
+ * Code cleanup:
+ * change "()" to "(void)" in function declarations;
+ * change C++-style comments to C-style
+ *
  * Revision 2.0  2001/01/10 12:12:37  gul
  * Binkd is under CVS again
  *
@@ -47,7 +52,7 @@ FTN_DOMAIN *get_domain_info (char *domain_name)
 /*
  * Returns the default domain
  */
-FTN_DOMAIN *get_def_domain ()
+FTN_DOMAIN *get_def_domain (void)
 {
   FTN_DOMAIN *curr;
 

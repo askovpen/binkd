@@ -20,10 +20,15 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: TCPErr.c,v 2.1 2003/02/13 19:44:44 gul Exp $
+ * $Id: TCPErr.c,v 2.2 2003/02/28 20:39:08 gul Exp $
  *
  * Revision history:
  * $Log: TCPErr.c,v $
+ * Revision 2.2  2003/02/28 20:39:08  gul
+ * Code cleanup:
+ * change "()" to "(void)" in function declarations;
+ * change C++-style comments to C-style
+ *
  * Revision 2.1  2003/02/13 19:44:44  gul
  * Change \r\n -> \n
  *
@@ -41,7 +46,7 @@
  */
 
  static const char rcsid[] =
-      "$Id: TCPErr.c,v 2.1 2003/02/13 19:44:44 gul Exp $";
+      "$Id: TCPErr.c,v 2.2 2003/02/28 20:39:08 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */
@@ -68,19 +73,19 @@
 /*--------------------------------------------------------------------*/
 static const char *sockerrors[] =
 {
-  "Error 0",                                 // 0
-  "Error 1",                                 // 1
-  "Error 2",                                 // 2
-  "Error 3",                                 // 3
+  "Error 0",                                 /* 0 */
+  "Error 1",                                 /* 1 */
+  "Error 2",                                 /* 2 */
+  "Error 3",                                 /* 3 */
   "The (blocking) call was canceled via WSACancelBlockingCall().", /* +4 */
-  "Error 5",                                 // 5
+  "Error 5",                                 /* 5 */
   "No such device or address",		    /* SOCBASEERR+6 */
-  "Error 7",                                 // 7
-  "Error 8",                                 // 8 
+  "Error 7",                                 /* 7 */
+  "Error 8",                                 /* 8 */
   "Bad file number",			    /* SOCBASEERR+9 */
-  "Error 10",                                // 10
-  "Error 11",                                // 11
-  "Error 12",                                // 12
+  "Error 10",                                /* 10 */
+  "Error 11",                                /* 11 */
+  "Error 12",                                /* 12 */
   "Permission denied",			    /* SOCBASEERR+13 */
   "Bad address",			    /* SOCBASEERR+14 */
   "Error 15",
