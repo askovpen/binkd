@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.18 2003/08/14 08:08:06 gul Exp $
+dnl $Id: configure.in,v 2.19 2003/09/05 08:15:25 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -116,7 +116,7 @@ dnl Optional features
 
 AC_ARG_WITH(debug,
             [  --with-debug            produce debug info (default no)],
-            [CFLAGS="-g $CFLAGS"], [CFLAGS="-O2 $CFLAGS"])
+            [CFLAGS="-g -DDEBUG $CFLAGS"], [CFLAGS="-O2 $CFLAGS"])
 
 AC_ARG_WITH(https,
             [  --with-https            https support (default no)],
