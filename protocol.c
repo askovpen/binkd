@@ -1,4 +1,3 @@
-#define VAL_STYLE
 /*
  *  protocol.c -- binkp implementation
  *
@@ -13,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.121 2003/09/16 06:38:44 val Exp $
+ * $Id: protocol.c,v 2.122 2003/09/17 07:04:45 val Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.122  2003/09/17 07:04:45  val
+ * Cosmetics and comment on #define VAL_STYLE
+ *
  * Revision 2.121  2003/09/16 06:38:44  val
  * correct IP checking algorithms (gul's one is buggy), correct get_defnode_info()
  *
@@ -487,6 +489,10 @@
 #  include "zlib.h"
 # endif
 #endif
+
+/* define to enable val's code for -ip checks (default is gul's code) */
+/* warning: there were serious bugs in gul's code  */
+#define VAL_STYLE
 
 static char *scommand[] = {"NUL", "ADR", "PWD", "FILE", "OK", "EOB",
                            "GOT", "ERR", "BSY", "GET", "SKIP"};
