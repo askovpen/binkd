@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.11 2003/03/25 09:29:43 gul Exp $
+# $Id: Makefile,v 2.12 2003/03/25 09:31:35 gul Exp $
 #
 ifeq ($(OSTYPE),msys)
 SHELL=sh.exe
@@ -32,6 +32,11 @@ $(BINKDEXE): $(OBJS)
 	$(CC) $(BINKD9X_SUBSYSTEM) $(CFLAGS) -o $(BINKDEXE) $(OBJS) -lwsock32
 
 install: all clean
+
+html: binkd.html
+
+binkd.html: binkd.8
+	groff -Thtml -mman binkd.8 >binkd.html
 
 clean:
 	-del *.RES >nul
