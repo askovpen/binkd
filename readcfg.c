@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.c,v 2.25 2003/05/28 08:56:33 gul Exp $
+ * $Id: readcfg.c,v 2.26 2003/05/28 09:03:17 gul Exp $
  *
  * $Log: readcfg.c,v $
+ * Revision 2.26  2003/05/28 09:03:17  gul
+ * Typo in prev patch
+ *
  * Revision 2.25  2003/05/28 08:56:33  gul
  * Reread config if passwords file changed when -C switch specified
  *
@@ -565,7 +568,7 @@ static void passwords (KEYWORD *key, char *s)
     Log (0, "%s: %i: unable to open password file (%s)", path, line, w);
 
   if (checkcfg_flag)
-    add_to_config_list (path);
+    add_to_config_list (w);
 
   free(w);
 
