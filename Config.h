@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.115 2003/08/17 08:12:07 gul Exp $
+ * $Id: Config.h,v 2.116 2003/08/17 10:38:57 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.116  2003/08/17 10:38:57  gul
+ * Auto increase patchlevel, set 0.9.6a-103
+ * Return semaphoring for log and binlog
+ *
  * Revision 2.115  2003/08/17 08:12:07  gul
  * Auto increase patchlevel, set 0.9.6a-102
  * Fix typo
@@ -494,7 +498,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-102"
+#define MYVER "0.9.6a-103"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
