@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.15 2003/07/07 10:13:51 gul Exp $
+# $Id: Makefile,v 2.16 2003/07/18 10:30:33 stas Exp $
 #
 ifeq ($(OSTYPE),msys)
 SHELL=sh.exe
@@ -20,7 +20,7 @@ CC=gcc
 DEFINES=-DHAVE_THREADS -DHAVE_SNPRINTF -DHAVE_UNISTD -DWIN32 -DHAVE_IO_H -DHAVE_DOS_H -DHAVE_WAITPID -DHTTPS -DNTLM -DAMIGADOS_4D_OUTBOUND
 CFLAGS=$(DEFINES) $(BINKD9X_DEFINES) -mno-cygwin -mthreads -Wall -funsigned-char -Wno-char-subscripts
 NTLM_SRC=ntlm/des_enc.c ntlm/helpers.c ntlm/ecb_enc.c ntlm/md4_dgst.c ntlm/set_key.c
-SRCS=binkd.c readcfg.c tools.c ftnaddr.c ftnq.c client.c server.c protocol.c bsy.c inbound.c branch.c ftndom.c ftnnode.c srif.c pmatch.c readflo.c prothlp.c iptools.c run.c binlog.c exitproc.c getw.c xalloc.c setpttl.c https.c md5b.c crypt.c getopt.c nt/breaksig.c nt/getfree.c nt/sem.c nt/TCPErr.c nt/WSock.c $(NT_SERVICE) $(NTLM_SRC) $(BINKD9X_SRC)
+SRCS=binkd.c readcfg.c tools.c ftnaddr.c ftnq.c client.c server.c protocol.c bsy.c inbound.c branch.c ftndom.c ftnnode.c srif.c pmatch.c readflo.c prothlp.c iptools.c run.c binlog.c exitproc.c getw.c xalloc.c setpttl.c https.c md5b.c crypt.c getopt.c nt/breaksig.c nt/getfree.c nt/sem.c nt/TCPErr.c nt/WSock.c nt/w32tools.c $(NT_SERVICE) $(NTLM_SRC) $(BINKD9X_SRC)
 OBJS=${SRCS:.c=.o}
 
 ifdef DEBUG
