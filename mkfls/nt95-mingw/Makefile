@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.3 2002/11/13 15:29:04 gul Exp $
+# $Id: Makefile,v 2.4 2002/11/14 09:54:34 gul Exp $
 #
 SHELL=bash.exe
 
@@ -41,6 +41,7 @@ clean:
 	-del /n *.ini >nul
 	-del /n *.err >nul
 	-del /n core  >nul
+	-rm -f *.RES *.obj *.o  nt/*.o ntlm/*.o *.map *.bak *.b *.ini *.err core
 
 depend	Makefile.dep:
 	gcc -MM $(CFLAGS) $(SRCS) | tee Makefile.dep
