@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.62 2003/07/11 15:06:44 gul Exp $
+ * $Id: Config.h,v 2.63 2003/07/12 18:06:45 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.63  2003/07/12 18:06:45  gul
+ * Auto increase patchlevel, set 0.9.6a-52
+ * Fixed node output on debugcfg
+ *
  * Revision 2.62  2003/07/11 15:06:44  gul
  * Auto increase patchlevel, set 0.9.6a-51
  * Fix building with libc5
@@ -261,7 +265,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-51"
+#define MYVER "0.9.6a-52"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
