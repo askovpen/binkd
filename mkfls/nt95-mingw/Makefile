@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.38 2004/01/18 23:23:55 gul Exp $
+# $Id: Makefile,v 2.39 2004/01/25 00:36:43 hbrew Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -16,30 +16,19 @@
 
 # =============================================================================
 
-CC=gcc
 WINDRES=windres
-
-ifeq ($(OSTYPE),msys)
-SHELL=sh
-else
-SHELL=bash
-endif
 
 OUTDIR=bin/mingw32
 BINKDTYPE=mingw32
 
 CFLAGS+= -mno-cygwin -mthreads -pipe -funsigned-char \
-	-Wall -Wno-char-subscripts -Wno-comment
-CDEFS+= -DHAVE_THREADS -DHAVE_UNISTD        \
-        -DWIN32 -DHAVE_IO_H -DHAVE_DOS_H -DHAVE_STDARG_H     \
-        -DHAVE_WAITPID -DHTTPS -DNTLM                        \
-        -DAMIGADOS_4D_OUTBOUND -DHASATTRIBUTE -DNONAMELESSUNION
+         -Wall -Wno-char-subscripts -Wno-comment
+CDEFS+=  -DHAVE_THREADS -DHAVE_UNISTD        \
+         -DWIN32 -DHAVE_IO_H -DHAVE_DOS_H -DHAVE_STDARG_H     \
+         -DHAVE_WAITPID -DHTTPS -DNTLM                        \
+         -DAMIGADOS_4D_OUTBOUND -DHASATTRIBUTE -DNONAMELESSUNION
 
-C_DIRS=
-
-LFLAGS=
-L_DIRS=
-LIBS=-lwsock32
+LIBS+=   -lwsock32
 
 SRCS= binkd.c readcfg.c tools.c ftnaddr.c ftnq.c client.c server.c protocol.c \
       bsy.c inbound.c branch.c ftndom.c ftnnode.c srif.c pmatch.c readflo.c   \
@@ -197,7 +186,7 @@ BINKDEXE = $(BINKDNAME).exe
 OBJS=$(addprefix $(OBJDIR)/,$(patsubst %.c,%.o, $(SRCS)))
 RESOBJS=$(addprefix $(OBJDIR)/, $(patsubst %.rc,%.o, $(RES)))
 
-.PHONY : all printinfo install html clean distclean makedirs
+.PHONY: all printinfo install html clean distclean makedirs
 
 all: printinfo makedirs $(OUTDIR)/$(BINKDEXE)
 
