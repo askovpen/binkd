@@ -14,9 +14,12 @@
  */
 
 /*
- * $Id: sys.h,v 2.8 2003/03/11 00:04:26 gul Exp $
+ * $Id: sys.h,v 2.9 2003/03/11 09:21:30 gul Exp $
  *
  * $Log: sys.h,v $
+ * Revision 2.9  2003/03/11 09:21:30  gul
+ * Fixed OS/2 Watcom compilation
+ *
  * Revision 2.8  2003/03/11 00:04:26  gul
  * Use patches for compile under MSDOS by MSC 6.0 with IBMTCPIP
  *
@@ -61,6 +64,11 @@
 #endif
 #ifdef HAVE_IO_H
   #include <io.h>
+#endif
+
+#if defined(__WATCOMC__) && !defined(__IBMC__)
+  #define __IBMC__ 0
+  #define __IBMCPP__ 0
 #endif
 
 #if defined(WIN32)

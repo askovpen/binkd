@@ -3,9 +3,12 @@
  * code is working in VERY diff. ways in forking vs. threading versions!!
  */
 /*
- * $Id: bsy.c,v 2.3 2003/03/03 22:11:27 gul Exp $
+ * $Id: bsy.c,v 2.4 2003/03/11 09:21:29 gul Exp $
  *
  * $Log: bsy.c,v $
+ * Revision 2.4  2003/03/11 09:21:29  gul
+ * Fixed OS/2 Watcom compilation
+ *
  * Revision 2.3  2003/03/03 22:11:27  gul
  * Fix compilation by msvc/2
  *
@@ -31,6 +34,9 @@
 #include <io.h>
 #include <fcntl.h>
 #endif
+
+#include "sys.h"
+
 #ifdef OS2
 #define INCL_DOS
 #include <os2.h>
@@ -40,7 +46,6 @@
 #include "bsy.h"
 #include "tools.h"
 #include "sem.h"
-#include "sys.h"
 #include "assert.h"
 #include "readdir.h" /* for rmdir() */
 

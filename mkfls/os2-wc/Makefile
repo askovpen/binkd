@@ -1,5 +1,5 @@
 # from "Pavel Gulchouck" <gul@gul.kiev.ua>
-# $Id: Makefile,v 2.8 2003/03/10 12:16:54 gul Exp $
+# $Id: Makefile,v 2.9 2003/03/11 09:21:30 gul Exp $
 
 .SUFFIXES:
 .SUFFIXES: .res .rc .lst .obj .c .asm .hlp .itl .ipf .cpp
@@ -9,7 +9,7 @@ PP         = wpp386 -D_Optlink=
 
 AFLAGS  = /Mx -t -z
 ASM     = ml /c /Zm
-LFLAGS  = /bm /k1024k
+LFLAGS  = /x /bm /k1024k
 CFLAGS  = -DOS2 -DHAVE_THREADS -DHAVE_IO_H -DHAVE_SYS_TIME_H -DHAVE_SYS_IOCTL_H -DHAVE_DOS_H -DHAVE_SNPRINTF -Dsnprintf=_bprintf -Dvsnprintf=_vbprintf -DIBMTCPIP -DVOID_SLEEP -DHTTPS -DNTLM -DAMIGADOS_4D_OUTBOUND /w4 /ox /bm
 LINK    = wcl386
 NTLM_SRC=ntlm/des_enc.c ntlm/helpers.c ntlm/ecb_enc.c ntlm/md4_dgst.c ntlm/set_key.c

@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.8 2003/03/10 10:39:23 gul Exp $
+ * $Id: exitproc.c,v 2.9 2003/03/11 09:21:30 gul Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.9  2003/03/11 09:21:30  gul
+ * Fixed OS/2 Watcom compilation
+ *
  * Revision 2.8  2003/03/10 10:39:23  gul
  * New include file common.h
  *
@@ -56,8 +59,8 @@
 #include "sys.h"
 #include "common.h"
 #include "bsy.h"
-#include "tools.h"
 #include "iphdr.h"
+#include "tools.h"
 #include "readcfg.h"
 #include "binlog.h"
 #include "sem.h"

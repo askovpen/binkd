@@ -22,10 +22,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: binlog.c,v 2.1 2003/03/05 13:21:50 gul Exp $
+ * $Id: binlog.c,v 2.2 2003/03/11 09:21:29 gul Exp $
  *
  * Revision history:
  * $Log: binlog.c,v $
+ * Revision 2.2  2003/03/11 09:21:29  gul
+ * Fixed OS/2 Watcom compilation
+ *
  * Revision 2.1  2003/03/05 13:21:50  gul
  * Fix warnings
  *
@@ -46,7 +49,6 @@
 
 #include <time.h>
 #include <stdio.h>
-#include "Config.h"
 /*--------------------------------------------------------------------*/
 /*                        Local include files                         */
 /*--------------------------------------------------------------------*/
