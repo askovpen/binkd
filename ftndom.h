@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftndom.h,v 2.2 2003/03/10 10:57:45 gul Exp $
+ * $Id: ftndom.h,v 2.3 2003/08/18 17:19:13 stream Exp $
  *
  * $Log: ftndom.h,v $
+ * Revision 2.3  2003/08/18 17:19:13  stream
+ * Partially implemented new configuration parser logic (required for config reload)
+ *
  * Revision 2.2  2003/03/10 10:57:45  gul
  * Extern declarations moved to header files
  *
@@ -42,7 +45,7 @@ struct _FTN_DOMAIN
   char *path;				    /* Outbound dir's path, ie
 					     * "/var/spool/fido" */
   char *dir;				    /* Outbound dir's name, ie "outb" */
-  int *z;
+  int z[2];
   FTN_DOMAIN *alias4;
   FTN_DOMAIN *next;
 };
