@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.h,v 2.10 2003/10/09 09:41:07 stas Exp $
+ * $Id: service.h,v 2.11 2003/10/18 06:45:23 stas Exp $
  *
  * $Log: service.h,v $
+ * Revision 2.11  2003/10/18 06:45:23  stas
+ * Fix a semaphore usage in exitfunc()
+ *
  * Revision 2.10  2003/10/09 09:41:07  stas
  * Change service stop sequence
  *
@@ -52,6 +55,8 @@
  *
  */
 
+#include "../sem.h"
+
 /* service_main types of call */
 enum service_main_types{
    service_main_services  = 0, /* Check: we can operate with services */
@@ -80,7 +85,7 @@ enum service_main_retcodes{
 };
 
 extern char *service_name;
-
+extern MUTEXSEM exitsem;
 
 /* checkservice() return values */
 #define CHKSRV_CANT_INSTALL  -1
