@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: TCPErr.c,v 2.9.2.1 2003/06/17 15:48:00 stas Exp $
+ * $Id: TCPErr.c,v 2.9.2.2 2003/06/21 07:59:05 gul Exp $
  *
  * Revision history:
  * $Log: TCPErr.c,v $
+ * Revision 2.9.2.2  2003/06/21 07:59:05  gul
+ * Fix typo in error report string
+ *
  * Revision 2.9.2.1  2003/06/17 15:48:00  stas
  * Prevent service operations on incompatible OS (NT and 9x)
  *
@@ -70,7 +73,7 @@
  */
 
  static const char rcsid[] =
-      "$Id: TCPErr.c,v 2.9.2.1 2003/06/17 15:48:00 stas Exp $";
+      "$Id: TCPErr.c,v 2.9.2.2 2003/06/21 07:59:05 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */
@@ -386,7 +389,7 @@ const char *tcperr (int errnum) {
 /*     Str = "{10060} A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond"; */
      break;
   case 10061:
-     Str = "{10060} Connection refused";
+     Str = "{10061} Connection refused";
 /*     Str = "{10061} No connection could be made because the target machine actively refused it";*/
      break;
   case 10062:
