@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: perlhooks.c,v 2.30 2003/10/19 12:21:46 gul Exp $
+ * $Id: perlhooks.c,v 2.31 2003/10/20 12:08:07 gul Exp $
  *
  * $Log: perlhooks.c,v $
+ * Revision 2.31  2003/10/20 12:08:07  gul
+ * Minor bugfix in perl error handling under win32
+ *
  * Revision 2.30  2003/10/19 12:21:46  gul
  * Stream compression
  *
@@ -689,7 +692,7 @@ static void err_thread(void *arg) {
 
 /* set up perl errors handler, redirect stderr to pipe */
 static void handle_perlerr2(void) {
-  int errpipe[2];
+  static int errpipe[2];
 #ifdef HAVE_FORK
   int try = 0;
 
