@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.c,v 2.11 2002/11/12 16:55:58 gul Exp $
+ * $Id: tools.c,v 2.12 2002/11/14 09:46:59 gul Exp $
  *
  * $Log: tools.c,v $
+ * Revision 2.12  2002/11/14 09:46:59  gul
+ * Minor BINKDW9X fix
+ *
  * Revision 2.11  2002/11/12 16:55:58  gul
  * Run as service under win9x
  *
@@ -126,7 +129,7 @@
 #include "readcfg.h"
 #include "sem.h"
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(BINKDW9X)
 extern int isService;
 #endif
 
