@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: client.c,v 2.43 2003/08/26 21:01:09 gul Exp $
+ * $Id: client.c,v 2.44 2003/09/05 06:49:06 val Exp $
  *
  * $Log: client.c,v $
+ * Revision 2.44  2003/09/05 06:49:06  val
+ * Perl support restored after config reloading patch
+ *
  * Revision 2.43  2003/08/26 21:01:09  gul
  * Fix compilation under unix
  *
@@ -602,7 +605,7 @@ static void call (void *arg)
 #endif
 
 #if defined(WITH_PERL) && defined(HAVE_THREADS)
-  cperl = perl_init_clone();
+  cperl = perl_init_clone(a->config);
 #endif
   if (bsy_add (&a->node->fa, F_CSY, a->config))
   {
