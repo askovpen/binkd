@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: iptools.c,v 2.8 2003/05/04 08:45:30 gul Exp $
+ * $Id: iptools.c,v 2.9 2003/05/26 20:34:38 gul Exp $
  *
  * $Log: iptools.c,v $
+ * Revision 2.9  2003/05/26 20:34:38  gul
+ * Bugfix on resolving raw IP when HAVE_FORK
+ *
  * Revision 2.8  2003/05/04 08:45:30  gul
  * Lock semaphores more safely for resolve and IP-addr print
  *
@@ -190,8 +193,13 @@ int find_port (char *s)
 struct hostent *find_host(char *host, struct hostent *he, struct in_addr *defaddr)
 {
   struct hostent *hp;
+#ifdef HAVE_THREAD
   struct hostent ht;
   char *alist[2];
+#else
+  static struct hostent ht;
+  static char *alist[2];
+#endif
 
   if (!isdigit(host[0]) ||
       (defaddr->s_addr = inet_addr (host)) == INADDR_NONE)
