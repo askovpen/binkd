@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: breaksig.c,v 2.3 2003/02/28 20:39:08 gul Exp $
+ * $Id: breaksig.c,v 2.4 2003/03/10 18:19:51 gul Exp $
  *
  * Revision history:
  * $Log: breaksig.c,v $
+ * Revision 2.4  2003/03/10 18:19:51  gul
+ * Use common.h
+ *
  * Revision 2.3  2003/02/28 20:39:08  gul
  * Code cleanup:
  * change "()" to "(void)" in function declarations;
@@ -47,7 +50,7 @@
  */
 
  static const char rcsid[] =
-      "$Id: breaksig.c,v 2.3 2003/02/28 20:39:08 gul Exp $";
+      "$Id: breaksig.c,v 2.4 2003/03/10 18:19:51 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */
@@ -61,6 +64,7 @@
 /*--------------------------------------------------------------------*/
 
 #include "..\sys.h"
+#include "..\common.h"
 #include "..\tools.h"
 #include "..\iphdr.h"
 #include "..\bsy.h"
