@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: breaksig.c,v 2.4 2003/03/10 18:19:51 gul Exp $
+ * $Id: breaksig.c,v 2.5 2003/07/16 15:08:49 stas Exp $
  *
  * Revision history:
  * $Log: breaksig.c,v $
+ * Revision 2.5  2003/07/16 15:08:49  stas
+ * Fix NT services to use getopt(). Improve logging for service
+ *
  * Revision 2.4  2003/03/10 18:19:51  gul
  * Use common.h
  *
@@ -50,7 +53,7 @@
  */
 
  static const char rcsid[] =
-      "$Id: breaksig.c,v 2.4 2003/03/10 18:19:51 gul Exp $";
+      "$Id: breaksig.c,v 2.5 2003/07/16 15:08:49 stas Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */
@@ -118,14 +121,12 @@ BOOL SigHandler(DWORD SigType) {
       case CTRL_SHUTDOWN_EVENT:
          Log(1,"Interrupted by Shutdown");
          break;
-#ifdef BINKDW9X
-      case 254:
+      case CTRL_SERVICESTOP_EVENT:
          Log(1, "Interrupted by service stop");
          break;
-      case 255:
+      case CTRL_SERVICERESTART_EVENT:
          Log(1, "Interrupted by service restart");
          break;
-#endif
       default:
          Log(1,"Interrupted by unknown signal");
          break;

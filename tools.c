@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.c,v 2.29 2003/07/12 18:22:06 gul Exp $
+ * $Id: tools.c,v 2.30 2003/07/16 15:08:49 stas Exp $
  *
  * $Log: tools.c,v $
+ * Revision 2.30  2003/07/16 15:08:49  stas
+ * Fix NT services to use getopt(). Improve logging for service
+ *
  * Revision 2.29  2003/07/12 18:22:06  gul
  * Fix typo in comment
  *
@@ -487,7 +490,7 @@ void Log (int lev, char *s,...)
 #ifdef BINKDW9X
   if(!lev)
 #else
-  if((!lev)&&(isService))
+  if((lev<1)&&(isService))
 #endif
   {
     char tmp[256];
