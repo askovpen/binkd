@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.89 2003/08/11 08:36:41 gul Exp $
+ * $Id: protocol.c,v 2.90 2003/08/13 08:02:51 val Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.90  2003/08/13 08:02:51  val
+ * define DELAY_ADR ifdef WITH_PERL (todo: provide more flexible logic)
+ *
  * Revision 2.89  2003/08/11 08:36:41  gul
  * workaround winsock bug
  *
@@ -373,7 +376,8 @@
 #include "md5b.h"
 #include "crypt.h"
 #ifdef WITH_PERL
-#include "perlhooks.h"
+# include "perlhooks.h"
+# define DELAY_ADR
 #endif
 
 static char *scommand[] = {"NUL", "ADR", "PWD", "FILE", "OK", "EOB",
