@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: iphdr.h,v 2.2 2003/03/01 18:37:08 gul Exp $
+ * $Id: iphdr.h,v 2.3 2003/03/01 20:16:27 gul Exp $
  *
  * $Log: iphdr.h,v $
+ * Revision 2.3  2003/03/01 20:16:27  gul
+ * OS/2 IBM C support
+ *
  * Revision 2.2  2003/03/01 18:37:08  gul
  * Use HAVE_SYS_PARAM_H macro
  *
@@ -48,6 +51,9 @@
   #include <netinet/in.h>
   #include <netdb.h>			    /* One of these two should have
 					     * MAXHOSTNAMELEN */
+  #if defined(IBMTCPIP)
+    #include <types.h>
+  #endif
 #endif
 
 #ifdef HAVE_ARPA_INET_H
