@@ -14,9 +14,12 @@
  */
 
 /*
- * $Id: sys.h,v 2.22 2004/08/24 11:31:22 gul Exp $
+ * $Id: sys.h,v 2.23 2005/04/05 07:31:12 gul Exp $
  *
  * $Log: sys.h,v $
+ * Revision 2.23  2005/04/05 07:31:12  gul
+ * Fixed bug in have_intmax_t detection
+ *
  * Revision 2.22  2004/08/24 11:31:22  gul
  * Fix typo in prev patch
  *
@@ -109,6 +112,9 @@
 
 #ifdef HAVE_INTTYPES_H
   #include <inttypes.h>
+#endif
+#ifdef HAVE_STDINT_H
+  #include <stdint.h>
 #endif
 #ifdef HAVE_UNISTD_H
   #include <unistd.h>
