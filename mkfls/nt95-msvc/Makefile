@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.33 2003/10/24 06:39:30 val Exp $
+# $Id: Makefile,v 2.34 2003/10/24 21:54:44 hbrew Exp $
 #
 # Usage: nmake [DEBUG=1] [DLLRTL=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1]
@@ -197,6 +197,7 @@ clean:
 	-@del "$(OUTDIR)\*.sbr"
 	-@del "$(OUTDIR)\*.idb"
 	-@del "$(OUTDIR)\$(BINKDEXE).ilk"
+	-@del "$(OUTDIR)\*.res"
 
 distclean: clean
 	-@del "$(OUTDIR)\$(BINKDEXE).exe"
