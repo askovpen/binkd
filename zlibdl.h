@@ -11,7 +11,7 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: zlibdl.h,v 2.3 2003/09/15 06:57:09 val Exp $
+ * $Id: zlibdl.h,v 2.4 2003/09/23 22:02:36 gul Exp $
  */
 
 #ifndef _ZLIBDL_H_
@@ -22,7 +22,7 @@
 #endif
 
 /* type for compress() and decompress() */
-typedef int ZLIB_CALLCONV zlib_compress_func(char *, int *, const char *, int);
+typedef int ZLIB_CALLCONV zlib_compress_func(char *, unsigned long *, const char *, int);
 
 /* actual compress() and decompress() */
 extern zlib_compress_func *dl_compress, *dl_uncompress;
