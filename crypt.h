@@ -1,8 +1,11 @@
 /*
- * $Id: crypt.h,v 2.1 2001/02/20 12:01:50 gul Exp $
+ * $Id: crypt.h,v 2.2 2001/02/21 06:25:21 gul Exp $
  *
  * Revision history:
  * $Log: crypt.h,v $
+ * Revision 2.2  2001/02/21 06:25:21  gul
+ * changed crlf to cr in the source file
+ *
  * Revision 2.1  2001/02/20 12:01:50  gul
  * rename encrypt to encrypt_buf to avoid conflict with unistd.h
  *

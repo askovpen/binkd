@@ -15,9 +15,12 @@
  *  Roger Schlafly.
  */
 /*
- * $Id: crypt.c,v 2.2 2001/02/20 12:01:50 gul Exp $
+ * $Id: crypt.c,v 2.3 2001/02/21 06:25:21 gul Exp $
  *
  * $Log: crypt.c,v $
+ * Revision 2.3  2001/02/21 06:25:21  gul
+ * changed crlf to cr in the source file
+ *
  * Revision 2.2  2001/02/20 12:01:50  gul
  * rename encrypt to encrypt_buf to avoid conflict with unistd.h
  *
