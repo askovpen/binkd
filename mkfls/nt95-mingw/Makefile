@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.2 2002/11/12 16:55:58 gul Exp $
+# $Id: Makefile,v 2.3 2002/11/13 15:29:04 gul Exp $
 #
 SHELL=bash.exe
 
@@ -30,7 +30,17 @@ binkd.exe: $(OBJS)
 install: all clean
 
 clean:
-	-del /n *.RES *.obj *.o nt\*.o ntlm\*.o *.map *~ *.bak *.b *.ini *.err core >nul 2> nul
+	-del /n *.RES >nul
+	-del /n *.obj >nul
+	-del /n *.o   >nul
+	-del /n nt\*.o   >nul
+	-del /n ntlm\*.o >nul
+	-del /n *.map >nul
+	-del /n *.bak >nul
+	-del /n *.b   >nul
+	-del /n *.ini >nul
+	-del /n *.err >nul
+	-del /n core  >nul
 
 depend	Makefile.dep:
 	gcc -MM $(CFLAGS) $(SRCS) | tee Makefile.dep
