@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.354 2004/01/03 11:17:00 stas Exp $
+ * $Id: Config.h,v 2.355 2004/01/03 12:17:43 stas Exp $
  */
 
 #ifndef _Config_h
@@ -50,6 +50,9 @@
 
 /* Enviromant variables */
 #define BINKD_LOGPATH_ENVIRON "BINKD_LOG"
+/* Icon file: you places this file into binkd directory and 
+   binkd loads it for tray icon */
+#define BINKD_ICON_FILE "binkd.ico"
 
 /* Please, no spaces here! */
 #define PRTCLNAME "binkp"

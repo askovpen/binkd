@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: sem.h,v 2.11 2003/08/26 16:06:27 stream Exp $
+ * $Id: sem.h,v 2.12 2004/01/03 12:17:43 stas Exp $
  *
  * $Log: sem.h,v $
+ * Revision 2.12  2004/01/03 12:17:43  stas
+ * Implement full icon support (winNT/2k/XP)
+ *
  * Revision 2.11  2003/08/26 16:06:27  stream
  * Reload configuration on-the fly.
  *
@@ -171,6 +174,9 @@ extern EVENTSEM exitcmgr;
 #define threadsafe(exp)		LockSem(&varsem); exp; ReleaseSem(&varsem)
 #ifdef OS2
 extern MUTEXSEM fhsem;
+#endif
+#ifdef WIN32
+extern MUTEXSEM iconsem;
 #endif
 #else
 #define lockhostsem()
