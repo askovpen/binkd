@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: protocol.c,v 1.1 2001/01/10 11:34:58 gul Exp $
+ * $Id: protocol.c,v 1.1.1.1 2001/01/10 11:34:58 gul Exp $
  *
  * $Log: protocol.c,v $
- * Revision 1.1  2001/01/10 11:34:58  gul
- * Initial revision
+ * Revision 1.1.1.1  2001/01/10 11:34:58  gul
+ * BinkD sources are under CVS again
  *
  * Revision 1.35  1997/11/04  23:37:11  mff
  * send_block() changed to send as many msgs as possible with one send()

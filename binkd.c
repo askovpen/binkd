@@ -12,11 +12,11 @@
  */
 
 /*
- *  $Id: binkd.c,v 1.1 2001/01/10 11:34:57 gul Exp $
+ *  $Id: binkd.c,v 1.1.1.1 2001/01/10 11:34:57 gul Exp $
  *
  *  $Log: binkd.c,v $
- *  Revision 1.1  2001/01/10 11:34:57  gul
- *  Initial revision
+ *  Revision 1.1.1.1  2001/01/10 11:34:57  gul
+ *  BinkD sources are under CVS again
  *
  *
  * nsoveiko@doe.carleton.ca 1998/12/14

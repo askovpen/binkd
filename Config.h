@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: Config.h,v 1.1 2001/01/10 11:34:57 gul Exp $
+ * $Id: Config.h,v 1.1.1.1 2001/01/10 11:34:57 gul Exp $
  *
  * $Log: Config.h,v $
- * Revision 1.1  2001/01/10 11:34:57  gul
- * Initial revision
+ * Revision 1.1.1.1  2001/01/10 11:34:57  gul
+ * BinkD sources are under CVS again
  *
  * Revision 1.6  1997/10/23  04:22:28  mff
  * Important -- MAX_BLKSIZE is now 0x7FFF (32*1024 was error)

@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: run.c,v 1.1 2001/01/10 11:34:58 gul Exp $
+ * $Id: run.c,v 1.1.1.1 2001/01/10 11:34:58 gul Exp $
  *
  * $Log: run.c,v $
- * Revision 1.1  2001/01/10 11:34:58  gul
- * Initial revision
+ * Revision 1.1.1.1  2001/01/10 11:34:58  gul
+ * BinkD sources are under CVS again
  *
  * Revision 1.1  1997/03/28  06:16:56  mff
  * Initial revision

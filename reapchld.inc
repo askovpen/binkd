@@ -1,4 +1,4 @@
-/* $Id: reapchld.inc,v 1.1 2001/01/10 11:34:59 gul Exp $ */
+/* $Id: reapchld.inc,v 1.1.1.1 2001/01/10 11:34:59 gul Exp $ */
 /*
  * Common part of SIGCHLD handling for diff.parts of binkd
  * Should be included in chld()

@@ -20,12 +20,12 @@
 /*--------------------------------------------------------------------*/
 
 /*
- *    $Id: sem.c,v 1.1 2001/01/10 11:35:00 gul Exp $
+ *    $Id: sem.c,v 1.1.1.1 2001/01/10 11:35:00 gul Exp $
  *
  *    Revision history:
  *    $Log: sem.c,v $
- *    Revision 1.1  2001/01/10 11:35:00  gul
- *    Initial revision
+ *    Revision 1.1.1.1  2001/01/10 11:35:00  gul
+ *    BinkD sources are under CVS again
  *
  *
  * Revision 0.01  1996/12/04  14:52:58  ufm
@@ -42,7 +42,7 @@
  */
 
  static const char rcsid[] =
-      "$Id: sem.c,v 1.1 2001/01/10 11:35:00 gul Exp $";
+      "$Id: sem.c,v 1.1.1.1 2001/01/10 11:35:00 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */

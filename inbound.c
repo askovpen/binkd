@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: inbound.c,v 1.1 2001/01/10 11:34:58 gul Exp $
+ * $Id: inbound.c,v 1.1.1.1 2001/01/10 11:34:58 gul Exp $
  *
  * $Log: inbound.c,v $
- * Revision 1.1  2001/01/10 11:34:58  gul
- * Initial revision
+ * Revision 1.1.1.1  2001/01/10 11:34:58  gul
+ * BinkD sources are under CVS again
  *
  * Revision 1.10  1997/10/23  04:03:07  mff
  * minor fixes

@@ -20,12 +20,12 @@
 /*--------------------------------------------------------------------*/
 
 /*
- *    $Id: breaksig.c,v 1.1 2001/01/10 11:34:59 gul Exp $
+ *    $Id: breaksig.c,v 1.1.1.1 2001/01/10 11:34:59 gul Exp $
  *
  *    Revision history:
  *    $Log: breaksig.c,v $
- *    Revision 1.1  2001/01/10 11:34:59  gul
- *    Initial revision
+ *    Revision 1.1.1.1  2001/01/10 11:34:59  gul
+ *    BinkD sources are under CVS again
  *
  *
  * Revision 1.02  1997/05/25  19:15:45 ufm
@@ -37,7 +37,7 @@
  */
 
  static const char rcsid[] =
-      "$Id: breaksig.c,v 1.1 2001/01/10 11:34:59 gul Exp $";
+      "$Id: breaksig.c,v 1.1.1.1 2001/01/10 11:34:59 gul Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */

@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: ftnnode.h,v 1.1 2001/01/10 11:34:58 gul Exp $
+ * $Id: ftnnode.h,v 1.1.1.1 2001/01/10 11:34:58 gul Exp $
  *
  * $Log: ftnnode.h,v $
- * Revision 1.1  2001/01/10 11:34:58  gul
- * Initial revision
+ * Revision 1.1.1.1  2001/01/10 11:34:58  gul
+ * BinkD sources are under CVS again
  *
  * Revision 1.6  1997/11/03  06:10:39  mff
  * +nodes_init()

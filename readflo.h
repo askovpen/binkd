@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: readflo.h,v 1.1 2001/01/10 11:34:59 gul Exp $
+ * $Id: readflo.h,v 1.1.1.1 2001/01/10 11:34:59 gul Exp $
  *
  * $Log: readflo.h,v $
- * Revision 1.1  2001/01/10 11:34:59  gul
- * Initial revision
+ * Revision 1.1.1.1  2001/01/10 11:34:59  gul
+ * BinkD sources are under CVS again
  *
  * Revision 1.1  1997/03/28  06:20:30  mff
  * Initial revision

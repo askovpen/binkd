@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: ftnaddr.c,v 1.1 2001/01/10 11:34:58 gul Exp $
+ * $Id: ftnaddr.c,v 1.1.1.1 2001/01/10 11:34:58 gul Exp $
  *
  * $Log: ftnaddr.c,v $
- * Revision 1.1  2001/01/10 11:34:58  gul
- * Initial revision
+ * Revision 1.1.1.1  2001/01/10 11:34:58  gul
+ * BinkD sources are under CVS again
  *
  * Revision 1.4  1997/10/23  04:11:58  mff
  * +ftnaddress_to_domain()

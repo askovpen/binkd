@@ -12,11 +12,11 @@
  */
 
 /*
- * $Id: assert.h,v 1.1 2001/01/10 11:34:57 gul Exp $
+ * $Id: assert.h,v 1.1.1.1 2001/01/10 11:34:57 gul Exp $
  *
  * $Log: assert.h,v $
- * Revision 1.1  2001/01/10 11:34:57  gul
- * Initial revision
+ * Revision 1.1.1.1  2001/01/10 11:34:57  gul
+ * BinkD sources are under CVS again
  *
  * Revision 1.1  1997/03/28  06:56:22  mff
  * Initial revision
