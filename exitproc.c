@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.5 2003/03/06 18:30:28 gul Exp $
+ * $Id: exitproc.c,v 2.6 2003/03/09 18:19:32 gul Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.6  2003/03/09 18:19:32  gul
+ * Bugfix
+ *
  * Revision 2.5  2003/03/06 18:30:28  gul
  * A bit optimize
  *
@@ -66,8 +69,8 @@ static SOCKET max_socket;
 int add_socket(SOCKET sockfd)
 {
   FD_SET (sockfd, &sockets);
-  if (sockfd > max_socket)
-    max_socket = sockfd;
+  if (sockfd >= max_socket)
+    max_socket = sockfd + 1;
   return 0;
 }
 
