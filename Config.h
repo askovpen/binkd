@@ -12,9 +12,14 @@
  */
 
 /*
- * $Id: Config.h,v 2.131 2003/08/21 07:24:42 gul Exp $
+ * $Id: Config.h,v 2.132 2003/08/21 15:40:37 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.132  2003/08/21 15:40:37  gul
+ * Auto increase patchlevel, set 0.9.6a-119
+ * Change building commandline for service under win32
+ * (patch by Alexander Reznikov)
+ *
  * Revision 2.131  2003/08/21 07:24:42  gul
  * Auto increase patchlevel, set 0.9.6a-118
  * Use local buffer in Log() with HAVE_FORK
@@ -568,7 +573,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-118"
+#define MYVER "0.9.6a-119"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
