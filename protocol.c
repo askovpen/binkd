@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.84 2003/07/03 05:43:41 gul Exp $
+ * $Id: protocol.c,v 2.85 2003/07/06 06:48:25 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.85  2003/07/06 06:48:25  gul
+ * Using state->out.fa bugfix
+ *
  * Revision 2.84  2003/07/03 05:43:41  gul
  * Another fix for previous patch
  *
@@ -2373,6 +2376,7 @@ static int start_file_transfer (STATE *state, FTNQ *file)
       {
         state->flo.action = file->action;
         strcpy (state->flo.path, file->path);
+        memcpy (&state->flo.fa, &file->fa, sizeof(FTN_ADDR));
         state->flo.f = f;
       }
     }
