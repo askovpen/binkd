@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.c,v 2.43 2003/10/29 06:41:24 stas Exp $
+ * $Id: service.c,v 2.44 2003/10/29 06:44:34 stas Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.44  2003/10/29 06:44:34  stas
+ * Remove unused header file
+ *
  * Revision 2.43  2003/10/29 06:41:24  stas
  * Remove unused types; small optimizes code
  *
@@ -175,7 +178,6 @@
 #include "../sys.h"
 #include "service.h"
 #include "w32tools.h"
-#include "brw32sig.h"
 #include "tray.h"
 
 #define args_REG_type REG_BINARY /* REG_MULTI_SZ */
