@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.156 2004/09/02 08:56:19 val Exp $
+ * $Id: protocol.c,v 2.157 2004/09/02 09:31:52 val Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.157  2004/09/02 09:31:52  val
+ * release CPU when limiting bandwidth on Win32
+ *
  * Revision 2.156  2004/09/02 08:56:19  val
  * bandwidth limiting config parameter 'limit-rate'
  *
@@ -883,9 +886,9 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
       Log (7, "send: current bps is %u, avg. bps is %u", bps, state->bw_bps);
     }
     else if (state->bw_send && state->bw_bytes > state->bw_send) 
-      return 1; /* !!! val: temp !!! */
+      return 2; /* !!! val: temp !!! */
     if (state->bw_send && state->bw_bps > state->bw_send) 
-      return 1; /* !!! val: temp measures !!! */
+      return 2; /* !!! val: temp measures !!! */
 #endif
     Log (7, "sending %i byte(s)", state->oleft);
     n = send (state->s, state->optr, state->oleft, 0);
