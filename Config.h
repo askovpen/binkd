@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.73 2003/07/17 02:42:20 hbrew Exp $
+ * $Id: Config.h,v 2.74 2003/07/17 02:53:07 hbrew Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.74  2003/07/17 02:53:07  hbrew
+ * Auto increase patchlevel, set 0.9.6a-63
+ * Fix MSVC warnings & errors
+ *
  * Revision 2.73  2003/07/17 02:42:20  hbrew
  * Auto increase patchlevel, set 0.9.6a-62
  * Compability with nt/service.c & nt/win9x.c.
@@ -307,7 +311,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-62"
+#define MYVER "0.9.6a-63"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
