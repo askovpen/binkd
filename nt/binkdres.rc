@@ -12,10 +12,13 @@
  */
 
 /*
- * $Id: binkdres.rc,v 1.2 2003/10/21 08:35:06 hbrew Exp $
+ * $Id: binkdres.rc,v 1.3 2003/10/24 18:18:40 stas Exp $
  *
  * Revision history:
  * $Log: binkdres.rc,v $
+ * Revision 1.3  2003/10/24 18:18:40  stas
+ * use macro instead number; remove unused comparision
+ *
  * Revision 1.2  2003/10/21 08:35:06  hbrew
  * Cosmetics
  *
@@ -27,7 +30,7 @@
 
 #include <winver.h>
 #include "../Config.h"
-/* !!! Todo: confopt.h 
+/* !!! Todo: confopt.h
 #include "../confopt.h"
 */
 
