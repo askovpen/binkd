@@ -11,7 +11,7 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: zlibdl.h,v 2.5 2003/09/24 07:32:17 val Exp $
+ * $Id: zlibdl.h,v 2.6 2003/09/24 09:53:16 val Exp $
  *
  * $Log $
  *
@@ -34,13 +34,15 @@ int do_decompress(int type, char *dst, int *dst_len, char *src, int src_len);
 #else
 
 #define Z_DEFAULT_COMPRESSION 6
+typedef uLong unsigned long;
+typedef uLongf *uLong;
 #ifdef WIN32
 # define ZLIB_CALLCONV __stdcall
 #endif
 
 /* type for compress() and decompress() */
-typedef int ZLIB_CALLCONV zlib_compress_func(char *, unsigned long *, const char *, int, int);
-typedef int ZLIB_CALLCONV zlib_uncompress_func(char *, unsigned long *, const char *, int);
+typedef int ZLIB_CALLCONV zlib_compress_func(char *, uLongf, const char *, int, int);
+typedef int ZLIB_CALLCONV zlib_uncompress_func(char *, uLongf, const char *, int);
 
 /* actual compress() and decompress() */
 extern zlib_compress_func *dl_compress;
