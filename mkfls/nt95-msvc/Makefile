@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.17 2003/07/28 10:23:34 val Exp $
+# $Id: Makefile,v 2.18 2003/08/14 08:19:27 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [DLLRTL=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #
@@ -55,7 +55,7 @@ PERL_OBJS= $(OUTDIR)\perlhooks.obj
 !endif
 
 CC=        cl
-CDEFS=     $(CDEBUG) $(BINKD9X_DEFINES) $(PERL_CDEFS) -D"HTTPS" -D"WIN32" -D"HAVE_THREADS" -D"HAVE_IO_H" -D"HAVE_DOS_H" -D"VISUALCPP" -D"AMIGADOS_4D_OUTBOUND"
+CDEFS=     $(CDEBUG) $(BINKD9X_DEFINES) $(PERL_CDEFS) -D"HTTPS" -D"WIN32" -D"HAVE_THREADS" -D"HAVE_IO_H" -D"HAVE_DOS_H" -D"HAVE_STDARG_H" -D"HAVE_SNPRINTF" -D"HAVE_VSNPRINTF" -D"VISUALCPP" -D"AMIGADOS_4D_OUTBOUND"
 COPT=      $(BINKDSBR) $(PERL_COPT) -Fo"$(OUTDIR)\\" -Fp"$(OUTDIR)\$(BINKDEXE).pch" -YX -Fd"$(OUTDIR)\\"
 LINK=      link
 LFLAGS=    /nologo /machine:I386
