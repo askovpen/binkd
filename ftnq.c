@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnq.c,v 2.17 2003/04/22 22:30:18 gul Exp $
+ * $Id: ftnq.c,v 2.18 2003/04/24 20:07:38 gul Exp $
  *
  * $Log: ftnq.c,v $
+ * Revision 2.18  2003/04/24 20:07:38  gul
+ * Send freq first
+ *
  * Revision 2.17  2003/04/22 22:30:18  gul
  * rtl workaround, incorrect diagnostics if poll already exists
  *
@@ -860,9 +863,19 @@ FTNQ *select_next_file (FTNQ *q, FTN_ADDR *fa, int nAka)
 	return curr;
       }
     }
+    for (curr = q; curr; curr = curr->next)	/* Freq before netmail */
+    {
+      if (!curr->sent &&
+	  (FA_ISNULL (&curr->fa) || !ftnaddress_cmp (&curr->fa, fa + k)) &&
+	  curr->type == 'r')
+      {
+	curr->sent = 1;
+	return curr;
+      }
+    }
     for (j = 0; prio[j]; ++j)
     {
-      for (curr = q; curr; curr = curr->next)	/* Netmail first */
+      for (curr = q; curr; curr = curr->next)	/* Netmail before files */
       {
 	if (!curr->sent &&
 	    (FA_ISNULL (&curr->fa) || !ftnaddress_cmp (&curr->fa, fa + k)) &&
