@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.36 2003/12/05 22:16:33 stas Exp $
+# $Id: Makefile,v 2.37 2003/12/24 00:44:05 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [DLLRTL=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1]
@@ -7,9 +7,12 @@
 #
 
 # define path to perl sources if using PERL=1
-!ifdef PERL
+!if defined(PERL) || defined(PERLDL)
 PERL_BASE=c:\programs\Perl   # set perl package base path
 PERL_VER=56                  # set perl version (56 for 5.6, 58 for 5.8)
+!ifndef PERL
+PERL=1
+!endif
 !endif
 
 # define path to zlib sources if using ZLIB=1 without ZLIBDL
