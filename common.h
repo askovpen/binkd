@@ -10,9 +10,13 @@
  */
 
 /*
- * $Id: common.h,v 2.9 2003/08/26 16:06:26 stream Exp $
+ * $Id: common.h,v 2.10 2003/09/21 17:34:26 gul Exp $
  *
  * $Log: common.h,v $
+ * Revision 2.10  2003/09/21 17:34:26  gul
+ * Change perl stderr handling for thread vertions,
+ * some small changes.
+ *
  * Revision 2.9  2003/08/26 16:06:26  stream
  * Reload configuration on-the fly.
  *
@@ -128,6 +132,13 @@ extern int daemon_flag;
 extern int tray_flag;
 extern int isService;
 #endif
+#endif
+
+#ifdef WITH_PERL
+extern FILE *perl_olderr;
+#define my_stderr (perl_olderr ? perl_olderr : stderr)
+#else
+#define my_stderr stderr
 #endif
 
 #endif
