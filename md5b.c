@@ -23,6 +23,15 @@ These notices must be retained in any copies of any part of this
 documentation and/or software.
  */
 
+/*
+ * $Id: md5b.c,v 2.3 2003/03/02 08:08:49 gul Exp $
+ *
+ * $Log: md5b.c,v $
+ * Revision 2.3  2003/03/02 08:08:49  gul
+ * Added CVS ID and Revision
+ *
+ */
+
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
