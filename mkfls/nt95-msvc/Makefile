@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.23 2003/10/04 21:22:05 hbrew Exp $
+# $Id: Makefile,v 2.24 2003/10/04 21:48:05 hbrew Exp $
 #
 # Usage: nmake [DEBUG=1] [DLLRTL=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [DEBUGCHILD=1]
@@ -48,7 +48,7 @@ LDEBUG=    /incremental:yes /map:"$(OUTDIR)\$(BINKDEXE).map" /debug
 !endif
 
 !ifdef DEBUGCHILD
-DEBUGCHILD_CDEFS=-D"CDEBUGCHILD"
+DEBUGCHILD_CDEFS= -D"DEBUGCHILD"
 !endif
 
 !ifdef PERL
