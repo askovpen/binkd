@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.26 2003/02/23 16:31:21 gul Exp $
+ * $Id: protocol.c,v 2.27 2003/02/23 16:47:07 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.27  2003/02/23 16:47:07  gul
+ * change restrictIP logic
+ *
  * Revision 2.26  2003/02/23 16:31:21  gul
  * Add "-sip" option in node string.
  * Change "-ip" check logic.
@@ -872,6 +875,10 @@ static int ADR (STATE *state, char *s, int sz)
         msg_send2 (state, M_ERR, "Bad source IP", 0);
 	return 0;
       }
+    }
+    else
+    { /* no check ip -> reset restrict */
+      ip_verified = 1;
     }
 
     if (bsy_add (&fa, F_BSY))
