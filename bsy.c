@@ -3,9 +3,12 @@
  * code is working in VERY diff. ways in forking vs. threading versions!!
  */
 /*
- * $Id: bsy.c,v 2.7 2003/08/26 21:01:09 gul Exp $
+ * $Id: bsy.c,v 2.8 2003/08/26 22:18:47 gul Exp $
  *
  * $Log: bsy.c,v $
+ * Revision 2.8  2003/08/26 22:18:47  gul
+ * Fix compilation under w32-mingw and os2-emx
+ *
  * Revision 2.7  2003/08/26 21:01:09  gul
  * Fix compilation under unix
  *
@@ -38,6 +41,7 @@
  *
  */
 
+#include <stdlib.h>
 #include <string.h>
 #include <fcntl.h>
 

@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: xalloc.c,v 2.2 2003/08/26 16:06:27 stream Exp $
+ * $Id: xalloc.c,v 2.3 2003/08/26 22:18:48 gul Exp $
  *
  * $Log: xalloc.c,v $
+ * Revision 2.3  2003/08/26 22:18:48  gul
+ * Fix compilation under w32-mingw and os2-emx
+ *
  * Revision 2.2  2003/08/26 16:06:27  stream
  * Reload configuration on-the fly.
  *
@@ -34,6 +37,7 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include "readcfg.h"
 #include "tools.h"
 
 void *xalloc (size_t size)

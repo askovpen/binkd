@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: server.c,v 2.30 2003/08/26 21:01:10 gul Exp $
+ * $Id: server.c,v 2.31 2003/08/26 22:18:48 gul Exp $
  *
  * $Log: server.c,v $
+ * Revision 2.31  2003/08/26 22:18:48  gul
+ * Fix compilation under w32-mingw and os2-emx
+ *
  * Revision 2.30  2003/08/26 21:01:10  gul
  * Fix compilation under unix
  *
@@ -142,6 +145,9 @@
 #include <sys/time.h>
 #else
 #include <time.h>
+#endif
+#ifdef HAVE_FORK
+#include <signal.h>
 #endif
 
 #include "readcfg.h"

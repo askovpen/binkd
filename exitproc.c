@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.22 2003/08/26 16:06:26 stream Exp $
+ * $Id: exitproc.c,v 2.23 2003/08/26 22:18:47 gul Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.23  2003/08/26 22:18:47  gul
+ * Fix compilation under w32-mingw and os2-emx
+ *
  * Revision 2.22  2003/08/26 16:06:26  stream
  * Reload configuration on-the fly.
  *
@@ -93,6 +96,8 @@
  * Revision 1.1  1997/08/12  21:42:54  mff
  * Initial revision
  */
+
+#include <signal.h>
 
 #include "readcfg.h"
 #include "common.h"

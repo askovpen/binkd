@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnq.c,v 2.24 2003/08/26 21:01:10 gul Exp $
+ * $Id: ftnq.c,v 2.25 2003/08/26 22:18:48 gul Exp $
  *
  * $Log: ftnq.c,v $
+ * Revision 2.25  2003/08/26 22:18:48  gul
+ * Fix compilation under w32-mingw and os2-emx
+ *
  * Revision 2.24  2003/08/26 21:01:10  gul
  * Fix compilation under unix
  *
@@ -127,6 +130,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 
 #include "readcfg.h"

@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.c,v 2.17 2003/08/21 15:40:34 gul Exp $
+ * $Id: service.c,v 2.18 2003/08/26 22:18:49 gul Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.18  2003/08/26 22:18:49  gul
+ * Fix compilation under w32-mingw and os2-emx
+ *
  * Revision 2.17  2003/08/21 15:40:34  gul
  * Change building commandline for service under win32
  * (patch by Alexander Reznikov)
@@ -93,7 +96,7 @@
 #include <direct.h>
 #include <string.h>
 #include <malloc.h>
-#include "../Config.h"
+#include "../readcfg.h"
 #include "../tools.h"
 #include "../common.h"
 #include "../iphdr.h"

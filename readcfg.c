@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.c,v 2.48 2003/08/26 21:01:10 gul Exp $
+ * $Id: readcfg.c,v 2.49 2003/08/26 22:18:48 gul Exp $
  *
  * $Log: readcfg.c,v $
+ * Revision 2.49  2003/08/26 22:18:48  gul
+ * Fix compilation under w32-mingw and os2-emx
+ *
  * Revision 2.48  2003/08/26 21:01:10  gul
  * Fix compilation under unix
  *
@@ -216,6 +219,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <sys/types.h>
 #include <sys/stat.h>
 #if defined (HAVE_VSYSLOG) && defined (HAVE_FACILITYNAMES)
 #define SYSLOG_NAMES

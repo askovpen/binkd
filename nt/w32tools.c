@@ -16,10 +16,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: w32tools.c,v 2.6 2003/08/21 15:40:34 gul Exp $
+ * $Id: w32tools.c,v 2.7 2003/08/26 22:18:49 gul Exp $
  *
  * Revision history:
  * $Log: w32tools.c,v $
+ * Revision 2.7  2003/08/26 22:18:49  gul
+ * Fix compilation under w32-mingw and os2-emx
+ *
  * Revision 2.6  2003/08/21 15:40:34  gul
  * Change building commandline for service under win32
  * (patch by Alexander Reznikov)
@@ -31,7 +34,7 @@
 
 #include <stdlib.h>
 #include <windows.h>
-#include "../Config.h"
+#include "../readcfg.h"
 #include "../common.h"
 #include "../tools.h"
 #include "service.h"
