@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: breaksig.c,v 2.16 2003/10/08 05:48:57 stas Exp $
+ * $Id: breaksig.c,v 2.17 2003/10/08 11:10:49 stas Exp $
  *
  * Revision history:
  * $Log: breaksig.c,v $
+ * Revision 2.17  2003/10/08 11:10:49  stas
+ * remove illegal call
+ *
  * Revision 2.16  2003/10/08 05:48:57  stas
  * Fix w9x compilation
  *
@@ -175,7 +178,6 @@ BOOL SigHandlerExit(DWORD SigType) {
    Log(10, "SigHandlerExit(%lu)", SigType);
    if (SigHandler(SigType)==FALSE)
    {
-     atexit(NULL);
 #if !defined(BINKDW9X)
      if(!isService())
 #endif
