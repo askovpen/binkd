@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.h,v 2.33 2004/11/07 07:26:36 gul Exp $
+ * $Id: readcfg.h,v 2.34 2004/11/07 13:52:40 stream Exp $
  *
  * $Log: readcfg.h,v $
+ * Revision 2.34  2004/11/07 13:52:40  stream
+ * Automatically rescan outbound after reload of configuration
+ *
  * Revision 2.33  2004/11/07 07:26:36  gul
  * New config options zlib-dll and bzlib2-dll
  *
@@ -215,6 +218,7 @@ struct _BINKD_CONFIG
   int        nNod;           /* number of nodes */
   FTN_NODE   **pNodArray;    /* array of pointers to nodes  */
   int        nNodSorted;     /* internal flag   */
+  int        q_present;      /* BSO scan: queue not empty */
 
   int        iport;
   int        oport;
