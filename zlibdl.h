@@ -11,11 +11,18 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: zlibdl.h,v 2.2 2003/09/12 09:09:38 val Exp $
+ * $Id: zlibdl.h,v 2.3 2003/09/15 06:57:09 val Exp $
  */
 
+#ifndef _ZLIBDL_H_
+#define _ZLIBDL_H_
+
+#ifdef WIN32
+# define ZLIB_CALLCONV __stdcall
+#endif
+
 /* type for compress() and decompress() */
-typedef int __stdcall zlib_compress_func(char *, int *, const char *, int);
+typedef int ZLIB_CALLCONV zlib_compress_func(char *, int *, const char *, int);
 
 /* actual compress() and decompress() */
 extern zlib_compress_func *dl_compress, *dl_uncompress;
@@ -25,3 +32,5 @@ extern zlib_compress_func *dl_compress, *dl_uncompress;
 
 /* loading function */
 int zlib_init(const char *dll_name);
+
+#endif
