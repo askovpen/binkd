@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: readcfg.h,v 2.27 2003/10/29 21:08:39 gul Exp $
+ * $Id: readcfg.h,v 2.28 2003/12/26 20:11:32 gul Exp $
  *
  * $Log: readcfg.h,v $
+ * Revision 2.28  2003/12/26 20:11:32  gul
+ * Add -d commandline switch - dump parsed config and exit;
+ * remove 'debugcfg' config token.
+ *
  * Revision 2.27  2003/10/29 21:08:39  gul
  * Change include-files structure, relax dependences
  *
@@ -293,6 +297,11 @@ int readcfg (char *path);
  * Return 1 if config has been reloaded Ok
  */
 int checkcfg (void);
+
+/*
+ * Dump parsed config
+ */
+void debug_readcfg (void);
 
 /*
  * Locks current config structure and return pointer to it in one
