@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.13 2002/05/11 10:27:22 gul Exp $
+ * $Id: protocol.c,v 2.14 2002/05/11 10:28:11 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.14  2002/05/11 10:28:11  gul
+ * fix spelling
+ *
  * Revision 2.13  2002/05/11 10:27:22  gul
  * Do not send empty (60-bytes) pkt-files
  *
@@ -1037,7 +1040,7 @@ static int OK (STATE *state, char *buf, int sz)
 {
   state->state = !strcmp (state->to->pwd, "-") ? P_NONSECURE : P_SECURE;
   if (state->state == P_SECURE && strcmp(buf, "non-secure") == 0)
-    Log (1, "Warning: remote set UNSECURE sesion");
+    Log (1, "Warning: remote set UNSECURE session");
   complete_login (state);
   return 1;
 }
