@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.21 2003/10/09 00:48:56 hbrew Exp $
+# $Id: Makefile,v 2.22 2003/10/09 00:54:06 hbrew Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1] [ZLIB=1] [BZLIB2=1]
@@ -77,7 +77,7 @@ endif
 ifdef PERL
 
 ifdef PERL_BASE
-PERL_INCL:=$(PERL_BASE)/lib/CORE
+PERL_INCL=$(PERL_BASE)/lib/CORE
 else
 PERL_INCL=${shell perl -mConfig -e '$$_ = $$Config::Config{libpth}; s!\\!/!g; print;'}
 endif
@@ -98,7 +98,7 @@ PERL_LIB=${shell perl -mConfig -e 'print $$Config::Config{libperl};'}
 endif
 
 L_DIRS+= "$(PERL_INCL)"
-LIBS+= l$(PERL_LIB)
+LIBS+= -l$(PERL_LIB)
 BINKDNAME:=$(BINKDNAME)-perl
 OUTDIR:=$(OUTDIR)-perl
 BINKDTYPE:=$(BINKDTYPE), perl
