@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.14 2003/06/05 00:46:57 hbrew Exp $
+# $Id: Makefile,v 2.14.2.1 2003/08/27 11:07:28 stas Exp $
 #
 ifeq ($(OSTYPE),msys)
 SHELL=sh.exe
@@ -48,18 +48,14 @@ binkd.html: binkd.8
 
 clean:
 	-del *.RES >nul
-	-del *.obj >nul
 	-del *.o   >nul
 	-del nt\*.o   >nul
 	-del ntlm\*.o >nul
 	-del *.map >nul
 	-del *.bak >nul
-	-del *.b   >nul
 	-del *.ini >nul
 	-del *.err >nul
-	-del core  >nul
-	-rm -f *.RES *.obj *.o
-	-rm -f nt/*.o ntlm/*.o *.map *.bak *.b *.ini *.err core
+	-rm -f *.RES *.obj *.o nt/*.o ntlm/*.o *.map *.bak *.ini *.err core
 
 depend	Makefile.dep:
 	gcc -MM $(CFLAGS) $(SRCS) | tee Makefile.dep
