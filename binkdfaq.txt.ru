@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2004/10/25 09:31:09 $
+        $Date: 2004/10/25 09:32:54 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -59,7 +59,7 @@
     ftp://cvs.happy.kiev.ua/pub/fidosoft/mailer/binkd/
     Зеркала 
     ftp://fido.thunderdome.ws/pub/mirror/binkd/  (Matt Bedynek 1:106/1):
-    ftp://cheetah.itpark.com.ua/pub/fido/binkd
+    ftp://cheetah.itpark.com.ua/pub/fido/binkd/
 
     Бэты:
     Публичный CVS
