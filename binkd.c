@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: binkd.c,v 2.10 2002/12/10 22:05:29 gul Exp $
+ * $Id: binkd.c,v 2.11 2003/02/21 16:47:57 gul Exp $
  *
  * $Log: binkd.c,v $
+ * Revision 2.11  2003/02/21 16:47:57  gul
+ * Remove <socks.h> file and USE_SOCKS macro
+ *
  * Revision 2.10  2002/12/10 22:05:29  gul
  * binkd/win32 bugfix
  *
@@ -117,10 +120,6 @@
 #ifdef BINKDW9X
 #include "nt/win9x.h"
 #endif
-#endif
-
-#ifdef USE_SOCKS
-#include "socks.h"
 #endif
 
 #ifdef HAVE_THREADS
