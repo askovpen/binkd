@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.106 2003/08/14 07:42:40 val Exp $
+ * $Id: Config.h,v 2.107 2003/08/14 08:29:24 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.107  2003/08/14 08:29:24  gul
+ * Auto increase patchlevel, set 0.9.6a-94
+ * Use snprintf() from sprintf.c if no such libc function
+ *
  * Revision 2.106  2003/08/14 07:42:40  val
  * Auto increase patchlevel, set 0.9.6a-93
  * vsnprintf() function, taken from libsasl sources
@@ -458,7 +462,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-93"
+#define MYVER "0.9.6a-94"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
