@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.c,v 2.22 2003/04/02 13:12:57 gul Exp $
+ * $Id: tools.c,v 2.22.2.1 2003/06/30 22:46:03 hbrew Exp $
  *
  * $Log: tools.c,v $
+ * Revision 2.22.2.1  2003/06/30 22:46:03  hbrew
+ * Print only binkd name (without path) in error messages
+ *
  * Revision 2.22  2003/04/02 13:12:57  gul
  * Try to use workaround for buggy windows time functions (timezone)
  *
@@ -942,4 +945,11 @@ char *makeinboundcase (char *s)
   }
 
   return s;
+}
+
+/* Extract filename from path */
+char *extract_filename(char *s)
+{
+  char *tmp = max(max(strrchr(s, '\\'), strrchr(s, '/')), strrchr(s, ':'));
+  return tmp? tmp+1: s;
 }
