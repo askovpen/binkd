@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: Config.h,v 2.3 2002/11/12 16:55:58 gul Exp $
+ * $Id: Config.h,v 2.4 2003/02/22 21:53:39 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.4  2003/02/22 21:53:39  gul
+ * Typo in comment
+ *
  * Revision 2.3  2002/11/12 16:55:58  gul
  * Run as service under win9x
  *
@@ -59,7 +62,7 @@
 #define MYNAME "binkd"
 #define MYVER "0.9.5a"
 
-/* Enveronment */
+/* Environment */
 #define MAX_ENV_VAR_NAME 256
 #if defined(OS2) || defined(WIN32)
   #define PATH_SEPARATOR "\\"
