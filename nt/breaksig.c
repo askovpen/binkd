@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: breaksig.c,v 2.6 2003/08/05 05:36:14 hbrew Exp $
+ * $Id: breaksig.c,v 2.7 2003/08/19 18:08:08 gul Exp $
  *
  * Revision history:
  * $Log: breaksig.c,v $
+ * Revision 2.7  2003/08/19 18:08:08  gul
+ * Avoid double exitfunc() call
+ *
  * Revision 2.6  2003/08/05 05:36:14  hbrew
  * 'static const char rcsid[]' removed
  *
@@ -131,10 +134,6 @@ BOOL SigHandler(DWORD SigType) {
          Log(1,"Interrupted by unknown signal");
          break;
    }
-   exitfunc();
-#ifdef BINKDW9X
-   ExitProcess(0); /* Sometime binkd9x exit incorrectly (may be others threads still work) */
-#endif
    return (FALSE);
 }
 
