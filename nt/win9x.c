@@ -12,10 +12,13 @@
  */
 
 /*
- * $Id: win9x.c,v 2.20 2003/09/07 04:37:02 hbrew Exp $
+ * $Id: win9x.c,v 2.21 2003/09/07 04:39:16 hbrew Exp $
  *
  * Revision history:
  * $Log: win9x.c,v $
+ * Revision 2.21  2003/09/07 04:39:16  hbrew
+ * Memory leak (binkd9x service startup)
+ *
  * Revision 2.20  2003/09/07 04:37:02  hbrew
  * Close process and thread handles after CreateProcess()
  *
@@ -277,6 +280,7 @@ int win9x_process(int argc, char **argv)
         }
         RegCloseKey(hk);
       }
+      free(tmp);
 
       if (!path)
       { /* extract current directory from argv[0] */
