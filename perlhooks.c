@@ -11,9 +11,13 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: perlhooks.c,v 2.42 2003/12/24 00:37:26 gul Exp $
+ * $Id: perlhooks.c,v 2.43 2004/01/07 12:23:39 gul Exp $
  *
  * $Log: perlhooks.c,v $
+ * Revision 2.43  2004/01/07 12:23:39  gul
+ * Remove zaccept keyword, receiving compressed files possibility
+ * is always on now if binkd was compiled with zlib/bzip2 support.
+ *
  * Revision 2.42  2003/12/24 00:37:26  gul
  * Fixed mingw with PERLDL compilation
  *
@@ -1284,7 +1288,6 @@ void perl_setup(BINKD_CONFIG *cfg) {
   VK_ADD_HASH_int(hv, sv, "check_pkthdr", cfg->pkthdr_type);
   VK_ADD_HASH_str(hv, sv, "pkthdr_badext", cfg->pkthdr_bad);
 #if defined(WITH_ZLIB) || defined(WITH_BZLIB2)
-  VK_ADD_HASH_intz(hv, sv, "zaccept", cfg->zaccept);
   VK_ADD_HASH_intz(hv, sv, "zminsize", cfg->zminsize);
 #endif
   Log(LL_DBG2, "perl_setup(): %%config done");
