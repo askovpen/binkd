@@ -1,5 +1,5 @@
 # Microsoft Developer Studio Generated NMAKE File, Based on binkd.dsp
-# $Id: Makefile,v 2.3 2001/06/19 15:49:42 da Exp $
+# $Id: Makefile,v 2.4 2001/07/28 10:43:28 gul Exp $
 !IF "$(CFG)" == ""
 CFG=binkd - Win32 Release
 !MESSAGE No configuration specified. Defaulting to binkd - Win32 Release.
@@ -25,8 +25,6 @@ NULL=
 !ELSE 
 NULL=nul
 !ENDIF 
-
-NTLM_FLAGS=-DL_ENDIAN
 
 !IF  "$(CFG)" == "binkd - Win32 Debug"
 
