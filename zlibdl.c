@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: zlibdl.c,v 2.14 2003/10/29 21:08:40 gul Exp $
+ * $Id: zlibdl.c,v 2.15 2004/01/08 12:46:01 val Exp $
  *
  * $Log: zlibdl.c,v $
+ * Revision 2.15  2004/01/08 12:46:01  val
+ * correct macrodef for msvc (_msc_ver instead of __msc__)
+ *
  * Revision 2.14  2003/10/29 21:08:40  gul
  * Change include-files structure, relax dependences
  *
@@ -54,7 +57,7 @@
 
 #ifdef WIN32
 #include <windows.h>
-#ifdef __MSC__
+#ifdef _MSC_VER
 #pragma optimize("", off)
 #endif
 #endif
