@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.c,v 2.4.2.4 2003/08/27 10:27:57 stas Exp $
+ * $Id: service.c,v 2.4.2.5 2003/08/27 12:59:36 stas Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.4.2.5  2003/08/27 12:59:36  stas
+ * Update usage(), optimize code
+ *
  * Revision 2.4.2.4  2003/08/27 10:27:57  stas
  * Prevent duplicated -S option at service call
  *
@@ -553,7 +556,7 @@ int service(int argc, char **argv, char **envp)
   char *esp=NULL, *asp=NULL;
   HKEY hk=0;
 
-  for(i=0;i<argc;i++)
+  for(i=1;i<argc;i++)
   {
     if(argv[i][0]=='-')
     {
@@ -581,7 +584,7 @@ int service(int argc, char **argv, char **envp)
     }
   }
 
-  if ((argv[1][0] == 1))
+  if (argc>1 && (argv[1][0] == 1))
   {
     SERVICE_TABLE_ENTRY dt[]= { {srvname, (LPSERVICE_MAIN_FUNCTION)ServiceMain}, {NULL, NULL}};
     if(service_main(6)) return argc;
