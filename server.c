@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: server.c,v 2.15 2003/03/10 12:16:54 gul Exp $
+ * $Id: server.c,v 2.16 2003/03/10 17:32:37 gul Exp $
  *
  * $Log: server.c,v $
+ * Revision 2.16  2003/03/10 17:32:37  gul
+ * Use socklen_t
+ *
  * Revision 2.15  2003/03/10 12:16:54  gul
  * Use HAVE_DOS_H macro
  *
@@ -200,7 +203,7 @@ void servmgr (void *arg)
 {
   SOCKET new_sockfd;
   int pid;
-  size_t client_addr_len;
+  socklen_t client_addr_len;
   struct sockaddr_in serv_addr, client_addr;
   int opt = 1;
 
