@@ -1,5 +1,5 @@
 /*****************************************************************************
-$Id: brw32sig.h,v 2.2 2003/10/05 14:48:24 hbrew Exp $
+$Id: brw32sig.h,v 2.3 2003/10/06 17:42:27 stas Exp $
 Part of BinkD project
 Handle Ctrl-C & Ctrl-Break signals on Win32 declarations
 
@@ -14,8 +14,10 @@ the Free Software Foundation; either version 2 of the License, or
 ******************************************************************************/
 #include <windows.h>
 
-/* Signal handler, exit(0) after (SigHandler()==FALSE) call */
-BOOL SigHandlerExit(DWORD SigType);
+/* exit(0) after (SigHandler()==FALSE) call
+  (Wrapper for SigHandlerExit() to prevent mingw compiler warnings)
+*/
+void SigExit(DWORD SigType);
 
 /* Set signal handler */
 int set_break_handlers(void);
