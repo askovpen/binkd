@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.c,v 2.62 2003/12/26 20:11:32 gul Exp $
+ * $Id: readcfg.c,v 2.63 2004/01/07 12:07:47 gul Exp $
  *
  * $Log: readcfg.c,v $
+ * Revision 2.63  2004/01/07 12:07:47  gul
+ * New function free_nodes()
+ *
  * Revision 2.62  2003/12/26 20:11:32  gul
  * Add -d commandline switch - dump parsed config and exit;
  * remove 'debugcfg' config token.
@@ -477,19 +480,9 @@ void unlock_config_structure(BINKD_CONFIG *c)
   {
     /* Free all dynamic data here */
 
-    int i;
-    FTN_NODE *node;
-
     xfree(c->pAddr);
 
-    for (i = 0; i < c->nNod; i++)
-    {
-      node = c->pNodArray[i];
-      xfree(node->hosts);
-      xfree(node->obox);
-      xfree(node->ibox);
-      free(node);
-    }
+    free_nodes(c);
     xfree(c->pNodArray);
     xfree(c->pkthdr_bad);
 
