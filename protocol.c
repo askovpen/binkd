@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.53 2003/05/03 08:41:16 gul Exp $
+ * $Id: protocol.c,v 2.54 2003/05/03 10:56:00 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.54  2003/05/03 10:56:00  gul
+ * Bugfix in protocol logic (when file already exists)
+ *
  * Revision 2.53  2003/05/03 08:41:16  gul
  * bugfix in protocol, when file already exists
  *
@@ -1568,7 +1571,7 @@ static int GOT (STATE *state, char *args, int sz)
 	else
 	  rc = ND_set_status(status, &state->ND_addr, state);
       }
-      state->waiting_for_GOT = 0;
+      state->waiting_for_GOT = state->off_req_sent = 0;
       Log(9, "Don't waiting for M_GOT");
       remove_from_spool (state, state->out.flo,
 			 state->out.path, state->out.action);
