@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: branch.c,v 2.8 2003/09/05 08:15:24 gul Exp $
+ * $Id: branch.c,v 2.9 2003/09/21 17:51:08 gul Exp $
  *
  * $Log: branch.c,v $
+ * Revision 2.9  2003/09/21 17:51:08  gul
+ * Fixed PID in logfile for perl stderr handled messages in fork version.
+ *
  * Revision 2.8  2003/09/05 08:15:24  gul
  * Make DEBUG-version single-thread
  *
@@ -105,6 +108,7 @@ again:
   if (!(rc = fork ()))
   {
     /* new process */
+    mypid = getpid();
     F (arg);
     exit (0);
   }
