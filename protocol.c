@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.152 2004/01/08 13:27:47 val Exp $
+ * $Id: protocol.c,v 2.153 2004/01/23 18:09:31 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.153  2004/01/23 18:09:31  gul
+ * Fixed erroneous "Unknown option ... ignored" message
+ *
  * Revision 2.152  2004/01/08 13:27:47  val
  * * extend struct dirent for dos and win32 in order to get file attribute
  * * ignore hidden files in boxes for dos/win32/os2
@@ -2427,7 +2430,7 @@ static int GET (STATE *state, char *args, int sz, BINKD_CONFIG *config)
 
   UNUSED_ARG(sz);
 
-  if (parse_msg_args (argc, argv, args, "M_GET", state))
+  if ((args = parse_msg_args (argc, argv, args, "M_GET", state)) != NULL)
   { {char *errmesg = NULL;
       fsize = atol (argv[1]);
       ftime = safe_atol (argv[2], &errmesg);
