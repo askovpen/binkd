@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.30 2003/10/23 10:16:10 hbrew Exp $
+# $Id: Makefile,v 2.31 2003/10/24 21:50:37 hbrew Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -235,7 +235,7 @@ $(OBJDIR)/%.o: %.c
 
 $(OBJDIR)/%.o: %.rc
 	@echo Compiling $<...
-	@$(WINDRES) --use-temp-file $(CDEFS) -D"BINKDNAME=$(BINKDNAME)" -D"BINKDEXE=$(BINKDEXE)" $< $@
+	@$(WINDRES) $(CDEFS) -D"BINKDNAME=$(BINKDNAME)" -D"BINKDEXE=$(BINKDEXE)" $< $@
 
 $(OUTDIR)/$(BINKDEXE): $(OBJS) $(RESOBJS)
 	@echo Linking $(BINKDEXE)...
