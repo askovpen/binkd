@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.23 2003/10/09 01:07:39 hbrew Exp $
+# $Id: Makefile,v 2.24 2003/10/17 04:25:59 hbrew Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1] [ZLIB=1] [BZLIB2=1]
@@ -74,6 +74,13 @@ OUTDIR:=$(OUTDIR)-debugchild
 BINKDTYPE:=$(BINKDTYPE), debugchild
 endif
 
+# PERLDL implies PERL
+ifdef PERLDL
+ifndef PERL
+PERL=1
+endif
+endif
+
 ifdef PERL
 
 ifdef PERL_BASE
@@ -86,7 +93,7 @@ CDEFS+= -DWITH_PERL -DNDEBUG -DNO_STRICT -DHAVE_DES_FCRYPT -DPERL_IMPLICIT_CONTE
 SRCS+= perlhooks.c
 C_DIRS+= -idirafter "$(PERL_INCL)"
 
-ifdef PERL_DL
+ifdef PERLDL
 CDEFS+= -DPERLDL
 BINKDNAME:=$(BINKDNAME)-perldl
 OUTDIR:=$(OUTDIR)-perldl
@@ -140,7 +147,7 @@ printinfo:
 	@echo "binkd exe  : $(BINKDEXE)"
 ifdef PERL
 	@echo "perlincl   : $(PERL_INCL)"
-ifndef PERL_DL
+ifndef PERLDL
 	@echo "perllib    : $(PERL_LIB)"
 endif
 endif
