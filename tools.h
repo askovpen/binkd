@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.h,v 2.20 2003/08/26 16:06:27 stream Exp $
+ * $Id: tools.h,v 2.21 2003/09/24 07:39:49 val Exp $
  *
  * $Log: tools.h,v $
+ * Revision 2.21  2003/09/24 07:39:49  val
+ * fix warning
+ *
  * Revision 2.20  2003/08/26 16:06:27  stream
  * Reload configuration on-the fly.
  *
@@ -109,6 +112,7 @@
 #endif
 
 #include "getw.h"
+#include "readcfg.h"
 
 #ifndef min
 #define min(x,y) ((x) < (y) ? (x) : (y))
