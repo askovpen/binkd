@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2004/04/15 17:38:16 $
+        $Date: 2004/07/07 07:20:50 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -59,15 +59,20 @@
     Бэты:
     Публичный CVS
        :pserver:binkd@cvs.happy.kiev.ua:/cvs , модуль binkd, пароль пустой
+
        Примеры команд.
        Залогиниться на сервер cvs:
        cvs -d :pserver:binkd@cvs.happy.kiev.ua:/cvs login
-       Получить последние исходники ветки current:
+       Получить последние исходники ветки current (на настоящий момент это 1.0):
        cvs -d :pserver:binkd@cvs.happy.kiev.ua:/cvs co binkd
        Получить последние исходники ветки binkd 0.9.5-stable:
        cvs -d :pserver:binkd@cvs.happy.kiev.ua:/cvs co -r binkd-0_9_5-stable binkd
        Получить исходники binkd 0.9.6-release:
        cvs -d :pserver:binkd@cvs.happy.kiev.ua:/cvs co -r binkd-0_9_6 binkd
+       Получить исходники binkd 0.9.7-release:
+       cvs -d :pserver:binkd@cvs.happy.kiev.ua:/cvs co -r binkd-0_9_7 binkd
+
+    Анонимный FTP:
     ftp://cvs.happy.kiev.ua/pub/fidosoft/mailer/binkd/snapshot (основной)
     ftp://ftp.grumbler.org/pub/binkd/current (зеркало, обновляется 23:50 UTC+5)
 
