@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2003/10/17 05:19:55 $
+        $Date: 2003/10/17 11:59:05 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -84,9 +84,9 @@ OS, компилятор и способ сборки.
     binkd.exe, binkdw32.exe - binkd/w32, консольный, скомпилирован MS Visual C
     binkd-dll.exe   - binkd/w32, консольный, MS Visual C, требует msvcrt.dll
     binkd-mingw.exe - binkd/w32, консольный, MinGW32, требует msvcrt.dll
-    binkd9x.exe     - binkd/w9x, безконсольный, скомпилирован MS Visual C
-    binkd9x-dll.exe - binkd/w9x, безконсольный, MS Visual C, требует msvcrt.dll
-    binkd9x-mingw.exe - binkd/w9x, безконсольный, MinGW32, требует msvcrt.dll
+    binkd9x.exe     - binkd/w9x, бесконсольный, скомпилирован MS Visual C
+    binkd9x-dll.exe - binkd/w9x, бесконсольный, MS Visual C, требует msvcrt.dll
+    binkd9x-mingw.exe - binkd/w9x, бесконсольный, MinGW32, требует msvcrt.dll
 
     Версии для OS/2:
     binkd2.exe   - компилятор Watcom C, перла нет
