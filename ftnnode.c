@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnnode.c,v 2.1 2001/02/15 11:03:18 gul Exp $
+ * $Id: ftnnode.c,v 2.2 2002/05/10 17:46:06 gul Exp $
  *
  * $Log: ftnnode.c,v $
+ * Revision 2.2  2002/05/10 17:46:06  gul
+ * passwords file usage bugfix
+ *
  * Revision 2.1  2001/02/15 11:03:18  gul
  * Added crypt traffic possibility
  *
@@ -209,7 +212,7 @@ int add_node (FTN_ADDR *fa, char *hosts, char *pwd, char obox_flvr,
     pNod[cn].hosts = xstrdup (hosts);
   }
 
-  if (pwd && *pwd)
+  if (pwd && *pwd && strcmp(pwd, "-"))
   {
     strnzcpy (pNod[cn].pwd, pwd, sizeof (pNod[cn].pwd));
   }
