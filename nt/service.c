@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.c,v 2.50 2004/01/04 15:19:36 stas Exp $
+ * $Id: service.c,v 2.51 2004/01/04 16:55:00 stas Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.51  2004/01/04 16:55:00  stas
+ * Move declarations of the 'binkd_main' into one place (nt/w32tools.h)
+ *
  * Revision 2.50  2004/01/04 15:19:36  stas
  * Use Service Display Name to display (log, windows title)
  *
@@ -399,7 +402,6 @@ static char* NTServiceDisplayName(char*ServiceName)
 }
 
 
-int binkd_main(int argc, char **argv, char **envp);
 static void ServiceStart()
 {
   HKEY hk=NULL;
