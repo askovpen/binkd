@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.c,v 2.35 2003/08/14 08:29:22 gul Exp $
+ * $Id: tools.c,v 2.36 2003/08/14 11:43:19 val Exp $
  *
  * $Log: tools.c,v $
+ * Revision 2.36  2003/08/14 11:43:19  val
+ * free allocated log buffer in exitfunc()
+ *
  * Revision 2.35  2003/08/14 08:29:22  gul
  * Use snprintf() from sprintf.c if no such libc function
  *
@@ -446,7 +449,7 @@ void Log (int lev, char *s,...)
     InitSem (&LSem);
     buf = xalloc(1024);
   }
-  else if (lev == -1001) { free(buf); return; }
+  else if (lev == 0xfade) { free(buf); return; }
 
   /* make string in buffer */
   va_start(ap, s);
