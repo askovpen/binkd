@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.19 2003/08/16 06:21:12 gul Exp $
+ * $Id: exitproc.c,v 2.20 2003/08/16 09:08:33 gul Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.20  2003/08/16 09:08:33  gul
+ * Binlog semaphoring removed
+ *
  * Revision 2.19  2003/08/16 06:21:12  gul
  * Log() semaphoring removed
  *
@@ -162,7 +165,6 @@ void exitfunc (void)
   }
   bsy_remove_all ();
   sock_deinit ();
-  BinLogDeInit ();
   nodes_deinit ();
 #ifdef WITH_PERL
 #  ifdef HAVE_FORK
