@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.24 2003/10/04 20:46:57 gul Exp $
+dnl $Id: configure.in,v 2.25 2003/10/19 12:21:49 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -270,9 +270,9 @@ if test ".$do_zlib" != ".no" ; then
 	if test ".$found_zlib" != ".no"; then
 	  AC_MSG_RESULT(yes: $found_zlib)
 	  AC_DEFINE(WITH_ZLIB)
-          if test ".$zlibdl_inc." != ".yes." ; then
-            OPT_SRC="$OPT_SRC zlibdl.c"
-            zlibdl_inc=yes
+          if test ".$compress_inc." != ".yes." ; then
+            OPT_SRC="$OPT_SRC compress.c"
+            compress_inc=yes
           fi
 	else
 	  AC_MSG_RESULT(no)
@@ -331,9 +331,9 @@ if test ".$do_bzlib2" != ".no" ; then
 	if test ".$found_bzlib2" != ".no"; then
 	  AC_MSG_RESULT(yes: $found_bzlib2)
 	  AC_DEFINE(WITH_BZLIB2)
-          if test ".$zlibdl_inc." != ".yes." ; then
-            OPT_SRC="$OPT_SRC zlibdl.c"
-            zlibdl_inc=yes
+          if test ".$compress_inc." != ".yes." ; then
+            OPT_SRC="$OPT_SRC compress.c"
+            compress_inc=yes
           fi
 	else
 	  AC_MSG_RESULT(no)

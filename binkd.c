@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: binkd.c,v 2.68 2003/10/18 18:50:47 stas Exp $
+ * $Id: binkd.c,v 2.69 2003/10/19 12:21:46 gul Exp $
  *
  * $Log: binkd.c,v $
+ * Revision 2.69  2003/10/19 12:21:46  gul
+ * Stream compression
+ *
  * Revision 2.68  2003/10/18 18:50:47  stas
  * Move to new 'tray.c' file several functions when is related with 'minimize to tray' feature
  *
@@ -305,8 +308,8 @@
 #include "perlhooks.h"
 #endif
 
-#if defined(ZLIBDL)
-#include "zlibdl.h"
+#ifdef ZLIBDL
+#include "compress.h"
 #endif
 
 #ifdef UNIX

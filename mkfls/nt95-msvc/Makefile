@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.26 2003/10/19 10:28:57 val Exp $
+# $Id: Makefile,v 2.27 2003/10/19 12:21:48 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [DLLRTL=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1]
@@ -73,7 +73,7 @@ PERL_OBJS= $(OUTDIR)\perlhooks.obj
 !endif
 
 !if defined(ZLIB) || defined(BZLIB2)
-ZLIB_OBJS = $(OUTDIR)\zlibdl.obj
+ZLIB_OBJS = $(OUTDIR)\compress.obj
 !endif
 !if defined(ZLIB)
 ZLIB_CDEFS= $(ZLIB_CDEFS) -DWITH_ZLIB
@@ -83,6 +83,7 @@ ZLIB_CDEFS= $(ZLIB_CDEFS) -DWITH_BZLIB2
 !endif
 !ifdef ZLIBDL
 ZLIB_CDEFS= $(ZLIB_CDEFS) -DZLIBDL
+ZLIBDL_OBJDS = $(OUTDIR)\zlibdl.obj
 !else
 ! if defined(ZLIB)
 ZLIB_COPT= -I"$(ZLIB_SRC)"
@@ -131,7 +132,7 @@ OBJS= \
  "$(OUTDIR)\getw.obj"     "$(OUTDIR)\xalloc.obj"   "$(OUTDIR)\setpttl.obj" \
  "$(OUTDIR)\https.obj"    "$(OUTDIR)\md5b.obj"     "$(OUTDIR)\crypt.obj"   \
  "$(OUTDIR)\getopt.obj"                                                    \
- $(NT_OBJS) $(NTSERVICE_OBJ) $(BINKD9X_OBJ) $(NTLM_OBJS) $(PERL_OBJS) $(ZLIB_OBJS)
+ $(NT_OBJS) $(NTSERVICE_OBJ) $(BINKD9X_OBJ) $(NTLM_OBJS) $(PERL_OBJS) $(ZLIB_OBJS) $(ZLIBDL_OBJS)
 
 !ifdef DEBUG
 SBRS= $(OBJS:.obj=.sbr)

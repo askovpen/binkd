@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.h,v 2.25 2003/10/14 07:20:40 gul Exp $
+ * $Id: readcfg.h,v 2.26 2003/10/19 12:21:47 gul Exp $
  *
  * $Log: readcfg.h,v $
+ * Revision 2.26  2003/10/19 12:21:47  gul
+ * Stream compression
+ *
  * Revision 2.25  2003/10/14 07:20:40  gul
  * Fixed typo
  *
@@ -202,7 +205,6 @@ struct _BINKD_CONFIG
   int        oport;
   int        oblksize;
 #if defined(WITH_ZLIB) || defined(WITH_BZLIB2)
-  int        zblksize;
   int        zminsize;
   int        zaccept;
   int        zlevel;
