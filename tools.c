@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.c,v 2.41 2003/08/18 07:29:09 val Exp $
+ * $Id: tools.c,v 2.42 2003/08/18 08:23:02 gul Exp $
  *
  * $Log: tools.c,v $
+ * Revision 2.42  2003/08/18 08:23:02  gul
+ * Return log semaphoring
+ *
  * Revision 2.41  2003/08/18 07:29:09  val
  * multiple changes:
  * - perl error handling made via fork/thread
@@ -454,20 +457,24 @@ void Log (int lev, char *s,...)
   static int first_time = 1;
   static const char *month[] = { "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                                  "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-#ifndef HAVE_THREADS
-  static char *buf;
-#else
   static char buf[1024];
-#endif
   int ok = 1;
   va_list ap;
+#ifdef HAVE_THREADS
+  static int locktid=-1;
+  int locked = 0;
 
-  if (first_time == 1) {
-#ifndef HAVE_THREADS
-    buf = xalloc(1024);
-#endif
-    first_time = 2;
+  /* lock, possible reenter from perl via onlog() */
+  if (varsem) {
+    LockSem(&varsem);
+    if (locktid != (int) PID()) {
+      LockSem(&lsem);
+      locktid = (int) PID();
+      locked = 1;
+    }
+    ReleaseSem(&varsem);
   }
+#endif
   /* make string in buffer */
   va_start(ap, s);
   vsnprintf(buf, sizeof(buf), s, ap);
