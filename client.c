@@ -1,5 +1,5 @@
 /*
- *  client.c -- Outbound 
+ *  client.c -- Outbound calls
  *
  *  client.c is a part of binkd project
  *
@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: client.c,v 2.5 2003/02/22 19:30:22 gul Exp $
+ * $Id: client.c,v 2.6 2003/02/23 07:20:11 gul Exp $
  *
  * $Log: client.c,v $
+ * Revision 2.6  2003/02/23 07:20:11  gul
+ * Restore lost comment
+ *
  * Revision 2.5  2003/02/22 19:30:22  gul
  * Fix compiler warning
  *
