@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.140 2003/10/30 11:11:31 gul Exp $
+ * $Id: protocol.c,v 2.141 2003/11/20 16:21:17 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.141  2003/11/20 16:21:17  gul
+ * Bugfix in sending ND-status with compression
+ *
  * Revision 2.140  2003/10/30 11:11:31  gul
  * Drop incoming session if secure remote AKA is busy
  *
@@ -976,7 +979,7 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
         }
       }
 #if defined(WITH_ZLIB) || defined(WITH_BZLIB2)
-      if (state->z_send)
+      if (state->z_send && state->out.f)
       {
         int nput = 0;  /* number of compressed bytes */
         int nget = 0;  /* number of read uncompressed bytes from buffer */
