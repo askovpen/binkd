@@ -1,12 +1,12 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.12 2003/04/06 02:09:26 hbrew Exp $
+# $Id: Makefile,v 2.13 2003/04/07 02:10:22 hbrew Exp $
 #
 # Usage: nmake [DEBUG=1] [DLLRTL=1] [BINKD9X=1]
 #
 
 !ifdef DLLRTL
-RTLSUFFIX=-dll
 RTLTYPE=D
+RTLSUFFIX=-dll
 !else
 RTLTYPE=T
 RTLSUFFIX=
