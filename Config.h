@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: Config.h,v 2.21 2003/06/11 13:10:37 gul Exp $
+ * $Id: Config.h,v 2.22 2003/06/12 08:21:43 val Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.22  2003/06/12 08:21:43  val
+ * 'skipmask' is replaced with 'skip', which allows more skipping features
+ *
  * Revision 2.21  2003/06/11 13:10:37  gul
  * Auto increase patchlevel
  *
@@ -118,7 +121,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-10"
+#define MYVER "0.9.6a-11"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
