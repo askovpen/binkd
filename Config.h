@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.350 2004/01/02 18:02:42 stas Exp $
+ * $Id: Config.h,v 2.351 2004/01/02 20:58:56 stas Exp $
  */
 
 #ifndef _Config_h
@@ -47,6 +47,9 @@
 #else
   #include <sys/param.h>
 #endif
+
+/* Enviromant variables */
+#define BINKD_LOGPATH_ENVIRON "BINKD_LOG"
 
 /* Please, no spaces here! */
 #define PRTCLNAME "binkp"
