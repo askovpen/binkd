@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.324 2003/12/05 22:14:26 stas Exp $
+ * $Id: Config.h,v 2.325 2003/12/05 22:16:32 stas Exp $
  */
 
 #ifndef _Config_h
@@ -118,13 +118,9 @@
 
 #ifdef __MINGW32__
 #define sleep(sec) _sleep((sec)*1000ul)
-#define snprintf  _snprintf
-#define vsnprintf _vsnprintf
-#endif
-
-#if defined(WIN32) && defined(_MSC_VER)
-#define snprintf  _snprintf
-#define vsnprintf _vsnprintf
+/* MS VC RTL implementation of the _snprintf() and _vsnprintf() is very buggy
+   and may produce vulnerables. We well use true implementation.
+*/
 #endif
 
 #if defined(__WATCOMC__) || defined(__EMX__) /* expand list if necessary */
