@@ -14,9 +14,12 @@
  */
 
 /*
- * $Id: sys.h,v 2.11.2.1 2004/08/03 19:52:56 gul Exp $
+ * $Id: sys.h,v 2.11.2.2 2004/08/24 11:32:44 gul Exp $
  *
  * $Log: sys.h,v $
+ * Revision 2.11.2.2  2004/08/24 11:32:44  gul
+ * Fix typo in prev patch
+ *
  * Revision 2.11.2.1  2004/08/03 19:52:56  gul
  * Change SIGCHLD handling, make signal handler more clean,
  * prevent occasional hanging (mutex deadlock) under linux kernel 2.6.
@@ -126,7 +129,7 @@
 #if defined(HAVE_FORK) && defined(HAVE_SIGPROCMASK) && defined(HAVE_WAITPID) && defined(SIG_BLOCK)
 void switchsignal(int how);
 #define blockchld()	switchsignal(SIG_BLOCK)
-#define unblockchld()	switchsignal(SIG_BLOCK)
+#define unblockchld()	switchsignal(SIG_UNBLOCK)
 #define BLOCK_CHLD	1
 #else
 #define blockchld()
