@@ -24,9 +24,12 @@ documentation and/or software.
  */
 
 /*
- * $Id: md5b.c,v 2.6 2003/03/11 09:21:30 gul Exp $
+ * $Id: md5b.c,v 2.6.2.1 2004/10/18 10:45:30 gul Exp $
  *
  * $Log: md5b.c,v $
+ * Revision 2.6.2.1  2004/10/18 10:45:30  gul
+ * Bugfix in MD_getChallenge(), thanks to Victor Levenets <aq@takas.lt>
+ *
  * Revision 2.6  2003/03/11 09:21:30  gul
  * Fixed OS/2 Watcom compilation
  *
@@ -451,7 +454,7 @@ unsigned char *MD_getChallenge(char *str, STATE *rnd)
     for(i=1;i<(MD_CHALLENGE_LEN+1);i+=MD5_DIGEST_LEN) 
     {
       int k=MD5_DIGEST_LEN;
-      if(k>=i+MD_CHALLENGE_LEN) k=MD_CHALLENGE_LEN+1-i;
+      if(k>MD_CHALLENGE_LEN-i) k=MD_CHALLENGE_LEN-i;
       getrand(res+i, k, rnd);
     }
   }
