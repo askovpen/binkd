@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.422 2004/09/02 09:32:00 val Exp $
+ * $Id: Config.h,v 2.423 2004/09/06 10:47:14 val Exp $
  */
 
 #ifndef _Config_h
@@ -61,7 +61,7 @@
 #define MAJOR 1
 #define MINOR 0
 #define SUFFIX "a"
-#define PATCHLEVEL 396
+#define PATCHLEVEL 397
 #define MYVER_S(s) _MYVER_S(s)
 #define _MYVER_S(s) #s
 #define MYVER MYVER_S(MAJOR) "." MYVER_S(MINOR) SUFFIX "-" MYVER_S(PATCHLEVEL)
