@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.29 2004/08/04 08:26:39 gul Exp $
+dnl $Id: configure.in,v 2.30 2004/08/04 11:32:30 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -18,7 +18,9 @@ dnl Checks for typedefs, structures, and compiler characteristics.
 
 dnl Checks for library functions.
 AC_CHECK_FUNCS(snprintf vsnprintf vsyslog waitpid statvfs statfs uname)
-AC_CHECK_FUNCS(daemon setsid getopt localtime_r)
+AC_CHECK_FUNCS(daemon setsid getopt localtime_r strtoumax)
+AC_SYS_LARGEFILE
+AC_FUNC_FSEEKO
 
 dnl Checks for libraries.
 AC_CHECK_FUNC(socket)

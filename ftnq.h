@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 
-/* $Id: ftnq.h,v 2.8 2003/10/29 21:08:38 gul Exp $
+/* $Id: ftnq.h,v 2.9 2004/08/04 11:32:29 gul Exp $
  *
  * $Log: ftnq.h,v $
+ * Revision 2.9  2004/08/04 11:32:29  gul
+ * Attemp to support large files (>4G)
+ *
  * Revision 2.8  2003/10/29 21:08:38  gul
  * Change include-files structure, relax dependences
  *
@@ -129,7 +132,7 @@ void hold_node (FTN_ADDR *fa, time_t hold_until, BINKD_CONFIG *config);
 /*
  * get size of files in the queue
  */
-void q_get_sizes (FTNQ *q, unsigned long *netsize, unsigned long *filessize);
+void q_get_sizes (FTNQ *q, uintmax_t *netsize, uintmax_t *filessize);
 
 /* 
  * Calculate quantity of freqs in the queue
