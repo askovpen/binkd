@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.h,v 2.10 2003/06/10 07:28:25 gul Exp $
+ * $Id: tools.h,v 2.11 2003/06/10 07:43:35 gul Exp $
  *
  * $Log: tools.h,v $
+ * Revision 2.11  2003/06/10 07:43:35  gul
+ * sdelete() - reliable delete file (wait for lock)
+ *
  * Revision 2.10  2003/06/10 07:28:25  gul
  * Fix patch about commandline parsing
  *
@@ -182,6 +185,15 @@ char *ed (char *src, char *a, char *b, size_t *size);
  */
 int delete (char *);
 int trunc (char *);
+
+#ifdef UNIX
+#define sdelete(file) delete(file)
+#else
+/*
+ * reliable remove a file (wait for lock), log this
+ */
+int sdelete (char *);
+#endif
 
 /*
  * Get the string with OS name/version
