@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.32 2003/10/22 22:09:44 hbrew Exp $
+# $Id: Makefile,v 2.33 2003/10/24 06:39:30 val Exp $
 #
 # Usage: nmake [DEBUG=1] [DLLRTL=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1]
@@ -89,7 +89,7 @@ ZLIB_COPT= $(ZLIB_COPT) -I"$(BZLIB2_SRC)"
 !endif
 !ifdef ZLIBDL
 ZLIB_CDEFS= $(ZLIB_CDEFS) -DZLIBDL
-ZLIBDL_OBJS = $(OUTDIR)\zlibdl.obj
+ZLIB_OBJS = $(ZLIB_OBJS) $(OUTDIR)\zlibdl.obj
 !else
 ! if defined(ZLIB)
 ZLIB_LLIBS= $(ZLIB_LLIBS) $(ZLIB_SRC)\zlib.lib
@@ -137,7 +137,7 @@ OBJS= \
  "$(OUTDIR)\getw.obj"     "$(OUTDIR)\xalloc.obj"   "$(OUTDIR)\setpttl.obj" \
  "$(OUTDIR)\https.obj"    "$(OUTDIR)\md5b.obj"     "$(OUTDIR)\crypt.obj"   \
  "$(OUTDIR)\getopt.obj"                                                    \
- $(NT_OBJS) $(NTSERVICE_OBJ) $(BINKD9X_OBJ) $(NTLM_OBJS) $(PERL_OBJS) $(ZLIB_OBJS) $(ZLIBDL_OBJS)
+ $(NT_OBJS) $(NTSERVICE_OBJ) $(BINKD9X_OBJ) $(NTLM_OBJS) $(PERL_OBJS) $(ZLIB_OBJS)
 
 RESOBJS= \
  "$(OUTDIR)\binkdres.res"
