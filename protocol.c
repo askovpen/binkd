@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.134 2003/10/20 18:24:07 gul Exp $
+ * $Id: protocol.c,v 2.135 2003/10/20 18:44:51 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.135  2003/10/20 18:44:51  gul
+ * Inhibit incorrect error message
+ *
  * Revision 2.134  2003/10/20 18:24:07  gul
  * Compression bugfix
  *
@@ -2266,8 +2269,9 @@ static int ND_set_status(char *status, FTN_ADDR *fa, STATE *state, BINKD_CONFIG 
           fa->z, fa->net, fa->node, fa->p);
       return 1;
     }
-    if (errno != ENOENT)
-    { Log(1, "Can't unlink %s: %s!\n", buf, strerror(errno));
+    rc = errno;
+    if (access(buf, F_OK) == 0)
+    { Log(1, "Can't unlink %s: %s!\n", buf, strerror(rc));
       return 0;
     }
     return 1;
