@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: run.c,v 2.2 2003/04/06 07:54:41 gul Exp $
+ * $Id: run.c,v 2.3 2003/04/06 08:01:32 gul Exp $
  *
  * $Log: run.c,v $
+ * Revision 2.3  2003/04/06 08:01:32  gul
+ * Close handles after CreateProcess()
+ *
  * Revision 2.2  2003/04/06 07:54:41  gul
  * Change wait for child process function for win32
  *
@@ -103,6 +106,8 @@ int run (char *cmd)
       }
     }
   free(cs);
+  CloseHandle(pi.hProcess);
+  CloseHandle(pi.hThread);
 #endif
   return rc;
 }
