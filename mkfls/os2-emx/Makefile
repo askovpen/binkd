@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.16 2003/09/05 08:15:24 gul Exp $
+# $Id: Makefile,v 2.17 2003/10/07 20:44:59 gul Exp $
 #
 CC=gcc
 DEFINES=-DHAVE_FORK -DHAVE_SNPRINTF -DHAVE_VSNPRINTF -DHAVE_GETOPT -DHAVE_UNISTD -DOS2=2 -DHAVE_IO_H -DHAVE_ARPA_INET_H -DHAVE_SYS_TIME_H -DHAVE_SYS_PARAM_H -DHAVE_SYS_IOCTL_H -DHAVE_DOS_H -DHAVE_STDARG_H -DEMX -DEMXSIGNALS -DHAVE_WAITPID -DHTTPS -DNTLM -DAMIGADOS_4D_OUTBOUND
@@ -17,9 +17,12 @@ CFLAGS+=-O2 -s
 LFLAGS+=-O2 -s
 endif
 
+ifdef NOFORK
+CFLAGS+=-DDEBUGCHILD
+endif
+
 ifdef PERL
-#PERLDIR=`perl -MConfig -e "print \"PERLDIR=$Config{archlib}\""`
-PERLDIR=C:/PERL5/LIB/5.00553/os2
+PERLDIR=$(shell perl -MConfig -e "print $$Config{archlib}")
 CFLAGS+= -DWITH_PERL -DDOSISH -DPERL_IS_AOUT -DEMBED -I$(PERLDIR)/CORE
 LFLAGS+= -L$(PERLDIR)/CORE -Zsmall-conv -Zstack 16000
 PERLLIBS=$(PERLDIR)/auto/DB_File/DB_File.a \
@@ -36,8 +39,7 @@ PERLLIBS=$(PERLDIR)/auto/DB_File/DB_File.a \
 PERLSRC=perlhooks.c
 else
 ifdef PERLDL
-# Now segfault in perl_parse :(
-PERLDIR=C:/PERL5/LIB/5.00553/os2
+PERLDIR=$(shell perl -MConfig -e "print $$Config{archlib}")
 CFLAGS+= -Zmt -DWITH_PERL -DPERLDL -DDOSISH -DPERL_IS_AOUT -DEMBED -I$(PERLDIR)/CORE
 LFLAGS+= -Zmt -Zcrtdll -Zstack 16000
 PERLSRC=perlhooks.c
