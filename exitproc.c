@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.18 2003/08/14 12:56:29 gul Exp $
+ * $Id: exitproc.c,v 2.19 2003/08/16 06:21:12 gul Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.19  2003/08/16 06:21:12  gul
+ * Log() semaphoring removed
+ *
  * Revision 2.18  2003/08/14 12:56:29  gul
  * Make Log() thread-safe
  *
@@ -177,7 +180,6 @@ Log(7, "exitproc(): pid=%d, cmgr=%d, smgr=%d, inetd=%d", getpid(), pidCmgr, pids
   CleanSem (&hostsem);
   CleanSem (&resolvsem);
   CleanSem (&varsem);
-  CleanSem (&LSem);
   CleanEventSem (&eothread);
   CleanEventSem (&exitcmgr);
 #ifdef OS2
