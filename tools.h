@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.h,v 2.22 2003/10/14 07:34:28 gul Exp $
+ * $Id: tools.h,v 2.23 2003/10/19 22:44:17 gul Exp $
  *
  * $Log: tools.h,v $
+ * Revision 2.23  2003/10/19 22:44:17  gul
+ * Add xstrcat(), use dynamic strings for OPT
+ *
  * Revision 2.22  2003/10/14 07:34:28  gul
  * Use getwordx() for parse optional M_FILE params
  *
@@ -136,6 +139,7 @@ void InitLog(struct _BINKD_CONFIG *config);
 void *xalloc (size_t size);
 void *xrealloc (void *ptr, size_t size);
 void *xstrdup (const char *str);
+void *xstrcat (char **str, const char *s2);
 void xfree(void *ptr);
 
 /*
