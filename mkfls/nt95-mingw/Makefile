@@ -1,6 +1,10 @@
-# $Id: Makefile,v 2.5 2002/11/14 12:57:02 gul Exp $
+# $Id: Makefile,v 2.6 2002/12/11 09:44:57 gul Exp $
 #
+ifeq ($(TERM),msys)
+SHELL=sh.exe
+else
 SHELL=bash.exe
+endif
 
 ifdef BINKD9X
 BINKD9X_SRC=nt/win9x.c
