@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.4 2003/02/22 21:32:47 gul Exp $
+dnl $Id: configure.in,v 2.5 2003/02/28 08:59:39 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -6,6 +6,8 @@ dnl Checks for programs.
 AC_PROG_AWK
 AC_PROG_CC
 AC_PROG_INSTALL
+
+CFLAGS=
 
 dnl Checks for header files.
 AC_CHECK_HEADERS(unistd.h io.h)
@@ -117,6 +119,10 @@ AC_MSG_RESULT(cross-compiling. No assumptions made)
 
 dnl -------------------------------------------------------------------------
 dnl Optional features
+
+AC_ARG_WITH(debug,
+            [  --with-debug            produce debug info (default no)],
+            [CFLAGS="-g $CFLAGS"], [CFLAGS="-O2 $CFLAGS"])
 
 AC_ARG_WITH(https,
             [  --with-https            https support (default no)],
