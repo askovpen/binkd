@@ -12,9 +12,13 @@
  */
 
 /*
- * $Id: Config.h,v 2.130 2003/08/20 07:33:40 hbrew Exp $
+ * $Id: Config.h,v 2.131 2003/08/21 07:24:42 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.131  2003/08/21 07:24:42  gul
+ * Auto increase patchlevel, set 0.9.6a-118
+ * Use local buffer in Log() with HAVE_FORK
+ *
  * Revision 2.130  2003/08/20 07:33:40  hbrew
  * Auto increase patchlevel, set 0.9.6a-117
  * Addon for 'Avoid double exitfunc() call' patch
@@ -564,7 +568,7 @@
 #define PRTCLNAME "binkp"
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
-#define MYVER "0.9.6a-117"
+#define MYVER "0.9.6a-118"
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
