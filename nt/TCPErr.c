@@ -20,10 +20,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: TCPErr.c,v 2.9 2003/06/05 11:40:19 stas Exp $
+ * $Id: TCPErr.c,v 2.9.2.1 2003/06/17 15:48:00 stas Exp $
  *
  * Revision history:
  * $Log: TCPErr.c,v $
+ * Revision 2.9.2.1  2003/06/17 15:48:00  stas
+ * Prevent service operations on incompatible OS (NT and 9x)
+ *
  * Revision 2.9  2003/06/05 11:40:19  stas
  * Cosmetics
  *
@@ -67,7 +70,7 @@
  */
 
  static const char rcsid[] =
-      "$Id: TCPErr.c,v 2.9 2003/06/05 11:40:19 stas Exp $";
+      "$Id: TCPErr.c,v 2.9.2.1 2003/06/17 15:48:00 stas Exp $";
 
 /*--------------------------------------------------------------------*/
 /*                        System include files                        */
@@ -95,6 +98,21 @@
 /*--------------------------------------------------------------------*/
 /*                           Local variables                          */
 /*--------------------------------------------------------------------*/
+
+/* Windows version test
+ * Parameter: Platform ID (VER_PLATFORM_WIN32_NT or VER_PLATFORM_WIN32_WINDOWS,
+ *            see GetVersionEx() if MSDN)
+ * Return 0 if match OS, not zero (usually -1) if do not match OS,
+ * return 1 if can't retrieve OS version info.
+ */
+int W32_CheckOS(unsigned long PlatformId)
+{ OSVERSIONINFO os_ver;
+
+  os_ver.dwOSVersionInfoSize = sizeof(OSVERSIONINFO);
+  if( GetVersionEx(&os_ver) )
+    return os_ver.dwPlatformId != PlatformId;
+  return 1;
+}
 
 static char err_sem_init = 0;
 static MUTEXSEM err_sem;
