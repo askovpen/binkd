@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 2.9 2003/06/21 17:41:57 gul Exp $
+# $Id: Makefile.in,v 2.10 2003/10/09 12:32:05 gul Exp $
 APPL=binkd
 
 CC=@CC@
@@ -42,9 +42,8 @@ banner:
 	@echo " run \`configure --prefix=/another/path' and go to step 1.   "
 	@echo
 
-.version: Config.h
-	@$(AWK) -F '"' '/#define[\t ]*MYVER[\t ]*".*"/    \
-		{ print $$2; }' < Config.h > $@
+.version: $(APPL)
+	@./$(APPL) -v | $(AWK) '{ print $$2; }' > $@
 
 install: compile .version
 	./mkinstalldirs $(PREFIX)/sbin
