@@ -1,5 +1,5 @@
 /*****************************************************************************
-$Id: brw32sig.h,v 2.1 2003/10/05 07:37:47 stas Exp $
+$Id: brw32sig.h,v 2.2 2003/10/05 14:48:24 hbrew Exp $
 Part of BinkD project
 Handle Ctrl-C & Ctrl-Break signals on Win32 declarations
 
