@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.h,v 2.8 2003/04/02 13:12:58 gul Exp $
+ * $Id: tools.h,v 2.9 2003/04/04 07:33:11 gul Exp $
  *
  * $Log: tools.h,v $
+ * Revision 2.9  2003/04/04 07:33:11  gul
+ * Fix syntax error
+ *
  * Revision 2.8  2003/04/02 13:12:58  gul
  * Try to use workaround for buggy windows time functions (timezone)
  *
@@ -210,6 +213,6 @@ char *makeinboundcase (char *s);
  */
 struct tm *safe_localtime(time_t *t, struct tm *tm);
 struct tm *safe_gmtime(time_t *t, struct tm *tm);
-time_t safe_time(NULL);
+time_t safe_time(void);
 
 #endif
