@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.30 2003/10/07 20:50:07 gul Exp $
+ * $Id: exitproc.c,v 2.31 2003/10/08 10:30:34 gul Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.31  2003/10/08 10:30:34  gul
+ * Fixed debug logging (thx to Alexander Reznikov)
+ *
  * Revision 2.30  2003/10/07 20:50:07  gul
  * Wait for servmanager exit from exitproc()
  * (Patch from Alexander Reznikov)
@@ -226,9 +229,11 @@ void exitfunc (void)
 	  timeout = 0;
       }
       else
+      {
+	Log(8, "exitproc: all threads finished");
 	break;
+      }
   }
-  Log(8, "exitproc: all threads finished");
 #endif
 
   config = lock_current_config();
