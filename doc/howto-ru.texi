@@ -1,7 +1,7 @@
 \input texinfo   @c -*-texinfo-*-
 
 @c %**start of header
-@c $Id: howto-ru.texi,v 1.1 2003/10/12 10:47:38 stas Exp $
+@c $Id: howto-ru.texi,v 1.2 2003/10/12 12:01:48 stas Exp $
 @setfilename binkd-howto-ru.info
 @set BINKD binkd
 @set VERSION 1.0
@@ -10,7 +10,17 @@
 @setchapternewpage odd
 @documentlanguage ru
 @c @documentencoding KOI8-R
+@documentdescription
+@value{DESCR}
+@end documentdescription
 @c %**end of header
+
+@ifhtml
+@html
+<meta http-equiv="Content-Type" content="text/html; charset=koi8-r">
+@end html
+@end ifhtml
+
 
 @titlepage
 @title @value{DESCR}
@@ -20,12 +30,14 @@
 @c{empty page to get the page numbering right}
 @end titlepage
 
+@ifnotplaintext
 @ifinfo
 @dircategory Fidonet Software
 @direntry
 * @value{BINKD} How-To: (binkd-howto).               @value{DESCR} russian
 @end direntry
 @end ifinfo
+@end ifnotplaintext
 
 @iftex
 @parindent=0pt
@@ -34,8 +46,14 @@
 @afourpaper
 @end iftex
 
+@ifinfo
 @node Top, 01, (dir), (dir)
-@top @value{BINKD}
+@end ifinfo
+@ifnotinfo
+@node Top, 01, , (dir)
+@end ifnotinfo
+
+@top @value{DESCR}
 Этот документ описывает типичные действия по настройке @value{BINKD}
 @value{VERSION}.
 
