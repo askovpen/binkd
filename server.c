@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: server.c,v 2.6 2003/02/28 20:39:08 gul Exp $
+ * $Id: server.c,v 2.7 2003/03/01 15:55:02 gul Exp $
  *
  * $Log: server.c,v $
+ * Revision 2.7  2003/03/01 15:55:02  gul
+ * Current outgoing address is now attibute of session, but not node
+ *
  * Revision 2.6  2003/02/28 20:39:08  gul
  * Code cleanup:
  * change "()" to "(void)" in function declarations;
@@ -120,7 +123,7 @@ void serv (void *arg)
 #ifdef HAVE_FORK
   soclose(sockfd);
 #endif
-  protocol (h, 0);
+  protocol (h, 0, NULL);
   Log (5, "downing server...");
   soclose (h);
   free (arg);
