@@ -16,10 +16,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: w32tools.c,v 2.12 2004/01/03 12:17:44 stas Exp $
+ * $Id: w32tools.c,v 2.13 2004/01/03 18:39:28 stas Exp $
  *
  * Revision history:
  * $Log: w32tools.c,v $
+ * Revision 2.13  2004/01/03 18:39:28  stas
+ * Improve service identification
+ *
  * Revision 2.12  2004/01/03 12:17:44  stas
  * Implement full icon support (winNT/2k/XP)
  *
@@ -253,6 +256,7 @@ int isService()
   {
     FreeConsole();
     _isService = 1;
+    service_flag = w32_run_as_service;
   }
 
   return _isService;

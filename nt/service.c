@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.c,v 2.47 2004/01/03 15:46:09 stas Exp $
+ * $Id: service.c,v 2.48 2004/01/03 18:39:28 stas Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.48  2004/01/03 18:39:28  stas
+ * Improve service identification
+ *
  * Revision 2.47  2004/01/03 15:46:09  stas
  * Fix: do not load icon into service control window at binkd service starts
  *
@@ -429,6 +432,8 @@ static void WINAPI ServiceMain(DWORD argc,LPSTR* args)
 {
 
   if(argc && args && args[0]) srvname = strdup(args[0]); /* save service name */
+  service_name = strdup((const char *)srvname);
+  service_flag = w32_run_as_service;
 
   sshan=RegisterServiceCtrlHandler(srvname, ServiceCtrl);
   if(sshan)
