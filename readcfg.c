@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.c,v 2.13 2003/01/29 19:32:03 gul Exp $
+ * $Id: readcfg.c,v 2.14 2003/02/13 19:18:11 gul Exp $
  *
  * $Log: readcfg.c,v $
+ * Revision 2.14  2003/02/13 19:18:11  gul
+ * minor fix
+ *
  * Revision 2.13  2003/01/29 19:32:03  gul
  * Code cleanup, prevent segfault on bad config
  *
@@ -614,7 +617,7 @@ static void check_dir_path (char *s)
 
 static void read_node_info (KEYWORD *key, char *s)
 {
-#define ARGNUM 9
+#define ARGNUM 6
   char *w[ARGNUM], *tmp;
   int i, j, NR_flag = NR_USE_OLD, ND_flag = ND_USE_OLD;
   int MD_flag = 0, crypt_flag = CRYPT_USE_OLD, restrictIP = 0;
