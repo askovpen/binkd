@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.39 2004/01/25 00:36:43 hbrew Exp $
+# $Id: Makefile,v 2.40 2004/02/07 14:06:06 hbrew Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -46,7 +46,7 @@ MAKEDIRS= $(OUTDIR) $(MAKEDIRSONLY)
 # binkd9x +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ifdef BINKD9X
 SRCS+= nt/win9x.c
-CDEFS+= -DBINKDW9X
+CDEFS+= -DBINKD9X
 LFLAGS+= -Wl,--subsystem,windows
 BINKDNAME=binkd9x-mingw
 OUTDIR:=$(OUTDIR)-binkd9x
