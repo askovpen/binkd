@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnq.c,v 2.6 2003/02/28 20:39:08 gul Exp $
+ * $Id: ftnq.c,v 2.7 2003/03/01 15:17:48 gul Exp $
  *
  * $Log: ftnq.c,v $
+ * Revision 2.7  2003/03/01 15:17:48  gul
+ * *** empty log message ***
+ *
  * Revision 2.6  2003/02/28 20:39:08  gul
  * Code cleanup:
  * change "()" to "(void)" in function declarations;
@@ -136,9 +139,6 @@ void q_free (FTNQ *q)
  */
 static int qn_scan (FTN_NODE *fn, void *arg)
 {
-  char buf[FTN_ADDR_SZ + 1];
-
-  ftnaddress_to_str (buf, &fn->fa);
   *(FTNQ **) arg = q_scan_boxes (*(FTNQ **) arg, &fn->fa, 1);
   return 0;
 }
