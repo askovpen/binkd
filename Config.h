@@ -1,4 +1,4 @@
-/*
+1*
  *  Config.h -- misc defines
  *
  *  Config.h is a part of binkd project
@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: Config.h,v 2.10.2.1 2003/06/06 16:17:38 gul Exp $
+ * $Id: Config.h,v 2.10.2.2 2003/06/11 13:27:24 gul Exp $
  *
  * $Log: Config.h,v $
+ * Revision 2.10.2.2  2003/06/11 13:27:24  gul
+ * Auto increase patchlevel
+ *
  * Revision 2.10.2.1  2003/06/06 16:17:38  gul
  * Change version
  *
