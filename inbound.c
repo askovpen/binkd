@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: inbound.c,v 2.11 2003/03/05 13:21:50 gul Exp $
+ * $Id: inbound.c,v 2.12 2003/03/10 10:39:23 gul Exp $
  *
  * $Log: inbound.c,v $
+ * Revision 2.12  2003/03/10 10:39:23  gul
+ * New include file common.h
+ *
  * Revision 2.11  2003/03/05 13:21:50  gul
  * Fix warnings
  *
@@ -82,6 +85,7 @@
 
 #include "Config.h"
 #include "sys.h"
+#include "common.h"
 #include "readcfg.h"
 #include "inbound.h"
 #include "tools.h"
