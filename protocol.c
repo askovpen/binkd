@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.54 2003/05/03 10:56:00 gul Exp $
+ * $Id: protocol.c,v 2.55 2003/05/03 11:04:58 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.55  2003/05/03 11:04:58  gul
+ * Fix typo
+ *
  * Revision 2.54  2003/05/03 10:56:00  gul
  * Bugfix in protocol logic (when file already exists)
  *
