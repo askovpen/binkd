@@ -16,10 +16,13 @@
 /*--------------------------------------------------------------------*/
 
 /*
- * $Id: w32tools.c,v 2.16 2004/01/04 16:01:10 stas Exp $
+ * $Id: w32tools.c,v 2.17 2004/01/07 21:42:24 stas Exp $
  *
  * Revision history:
  * $Log: w32tools.c,v $
+ * Revision 2.17  2004/01/07 21:42:24  stas
+ * Don't export w32exitfunc()
+ *
  * Revision 2.16  2004/01/04 16:01:10  stas
  * Fix service name convertion: now Service Display Name may be content a comma
  *
@@ -380,7 +383,7 @@ void UnloadBinkdIcon(void)
 
 /* Cleanup actions for win32 and win9x versions of binkd
  */
-void w32exitfunc(void)
+static void w32exitfunc(void)
 {
   CleanSem (&iconsem);
 }
