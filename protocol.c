@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.67.2.18 2004/11/08 12:05:33 gul Exp $
+ * $Id: protocol.c,v 2.67.2.19 2005/06/06 17:01:02 stream Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.67.2.19  2005/06/06 17:01:02  stream
+ * Fixed broken ND-mode status.
+ *
  * Revision 2.67.2.18  2004/11/08 12:05:33  gul
  * 0.9.8 release
  *
@@ -1754,11 +1757,13 @@ static int GOT (STATE *state, char *args, int sz)
   char *argv[3];
   int n, rc=1;
   char *status = NULL;
+  char *saved_args;
 
+  saved_args = xstrdup(args);
   if (parse_msg_args (argc, argv, args, "M_GOT", state))
   {
     if (state->ND_flag & WE_ND)
-      status = strdup(args);
+      status = saved_args;
     else
       ND_set_status("", &state->ND_addr, state);
     if (!tfile_cmp (&state->out, argv[0], atol (argv[1]), atol (argv[2])))
@@ -1822,11 +1827,12 @@ static int GOT (STATE *state, char *args, int sz)
 	}
       }
     }
-    if (status) free(status);
-    return rc;
   }
   else
-    return 0;
+    rc = 0;
+  free(saved_args);
+
+  return rc;
 }
 
 static int EOB (STATE *state, char *buf, int sz)
