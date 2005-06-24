@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.13 2003/04/07 02:10:22 hbrew Exp $
+# $Id: Makefile,v 2.13.2.1 2005/06/24 10:55:53 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [DLLRTL=1] [BINKD9X=1]
 #
@@ -25,13 +25,13 @@ OUTDIRSUFFIX=
 !endif
 
 !ifndef DEBUG
-CFLAGS=    -nologo -M$(RTLTYPE)  -W3 -GX -Ox -c
+CFLAGS=    -nologo -M$(RTLTYPE)  -W3 -J -GX -Ox -c
 CDEBUG=
 OUTDIR=    .\Release$(OUTDIRSUFFIX)$(RTLSUFFIX)
 BINKDSBR=
 LDEBUG=
 !else
-CFLAGS=    -nologo -M$(RTLTYPE)d -W3 -Gm -GX -ZI -Od -c
+CFLAGS=    -nologo -M$(RTLTYPE)d -W3 -J -Gm -GX -ZI -Od -c
 CDEBUG=    -D"_DEBUG"
 OUTDIR=    .\Debug$(OUTDIRSUFFIX)$(RTLSUFFIX)
 BINKDSBR=  -FR"$(OUTDIR)\\"
