@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.43 2005/02/09 17:34:01 val Exp $
+# $Id: Makefile,v 2.44 2005/06/24 10:54:12 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [STATIC=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1] [BW_LIM=1]
@@ -34,7 +34,7 @@ OBJDIR= $(OUTDIR)\obj
 MAKEDIRSONLY= $(OBJDIR) $(OBJDIR)\nt $(OBJDIR)\ntlm
 MAKEDIRS= $(BINDIR) $(OUTDIR) $(MAKEDIRSONLY)
 
-CFLAGS=  $(CFLAGS) -nologo -M$(RTLTYPE) -W3 -GX -c -YX \
+CFLAGS=  $(CFLAGS) -nologo -M$(RTLTYPE) -W3 -GX -c -YX -J \
          -Fp"$(OBJDIR)\$(BINKDNAME).pch" -Fd"$(OBJDIR)\$(BINKDNAME)"
 CDEFS=   $(CDEFS) -DWIN32 -DHAVE_THREADS -DHAVE_IO_H -DHAVE_DOS_H \
          -DHAVE_STDARG_H -DVISUALCPP -DHTTPS -DAMIGADOS_4D_OUTBOUND -DNTLM
