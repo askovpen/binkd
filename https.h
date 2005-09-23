@@ -12,9 +12,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: https.h,v 2.3 2003/08/26 16:06:26 stream Exp $
+ * $Id: https.h,v 2.4 2005/09/23 13:32:46 gul Exp $
  *
  * $Log: https.h,v $
+ * Revision 2.4  2005/09/23 13:32:46  gul
+ * Bugfix in work via proxy with authorization
+ *
  * Revision 2.3  2003/08/26 16:06:26  stream
  * Reload configuration on-the fly.
  *
@@ -33,4 +36,5 @@
  *
  */
 
-int h_connect(int socket, char *host, BINKD_CONFIG *config);
+int h_connect(int socket, char *host, BINKD_CONFIG *config, char *proxy, char *socks);
+
