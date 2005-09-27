@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.c,v 2.67 2005/09/27 20:15:43 gul Exp $
+ * $Id: tools.c,v 2.68 2005/09/27 20:16:18 gul Exp $
  *
  * $Log: tools.c,v $
+ * Revision 2.68  2005/09/27 20:16:18  gul
+ * *** empty log message ***
+ *
  * Revision 2.67  2005/09/27 20:15:43  gul
  * Hopefully fixed compilation under windows
  *
@@ -1257,13 +1260,3 @@ int tz_off(time_t t, int tzoff)
   return (int)(((long)mktime(&tm)-(long)gt)/60);
 }
 
-#ifndef HAVE_GETTIMEOFDAY
-int gettvtime(struct timeval *tv)
-{
-  if (tv) {
-    tv->tv_sec = time(NULL);
-    tv->tv_usec = 0;
-  }
-  return 0;
-}
-#endif
