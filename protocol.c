@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.174 2005/09/27 20:15:43 gul Exp $
+ * $Id: protocol.c,v 2.175 2005/09/28 19:02:25 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.175  2005/09/28 19:02:25  gul
+ * Fixed unsigned int arithmetics in rate-limits
+ *
  * Revision 2.174  2005/09/27 20:15:43  gul
  * Hopefully fixed compilation under windows
  *
@@ -2288,7 +2291,7 @@ static int check_rate_limit(BW *bw, struct timeval *tv)
     else
       return 0;
   }
-  dt = ctime.tv_usec - bw->utime.tv_usec + (ctime.tv_sec - bw->utime.tv_sec) * 1000000ul;
+  dt = (ctime.tv_sec - bw->utime.tv_sec) * 1000000ul + ctime.tv_usec - bw->utime.tv_usec;
   cps = (bw->bytes * 1000000. / dt);
   bw->bytes = 0;
   bw->utime.tv_sec = ctime.tv_sec;
