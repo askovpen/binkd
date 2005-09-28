@@ -955,7 +955,7 @@ Brake!</FONT>&raquo;. Путь указывается параметром этой директивы.
 для ранее заданного домена.</P>
 <P>Первый формат:</P>
 <P><FONT FACE="Courier New, monospace">domain &lt;домен&gt; &lt;путь&gt;
-&lt;номер зоны&gt;</FONT></P>
+&lt;номер зоны&gt; [&lt;root-domain&gt;]</FONT></P>
 <P>Второй формат:</P>
 <P><FONT FACE="Courier New, monospace">domain &lt;псевдоним&gt;
 alias-for &lt;домен&gt;</FONT></P>
@@ -963,7 +963,7 @@ alias-for &lt;домен&gt;</FONT></P>
 <P>Примеры:</P>
 <P><FONT FACE="Courier New, monospace">domain fidonet
 c:\\bbs\\outbound\\fidonet 2<BR>domain musicnet
-c:\\bbs\\outbound\\musicnet 333<BR>domain fido alias-for
+c:\\bbs\\outbound\\musicnet 333 musicnet.ru<BR>domain fido alias-for
 fidonet<BR>domain fidonet.org alias-for fidonet</FONT></P>
 <P>В приведённых примерах для зоны 2 FTN-домена <FONT FACE="Courier New, monospace">fidonet</FONT>
 используется каталог <FONT FACE="Courier New, monospace">c:\bbs\outbound\fidonet</FONT>,
@@ -979,6 +979,7 @@ fidonet<BR>domain fidonet.org alias-for fidonet</FONT></P>
 используется домен <FONT FACE="Courier New, monospace">fidonet</FONT>.
 (Такая возможность реализована для устранения последствий ошибочных
 конфигураций на удалённых узлах.)</P>
+<P>Дополнительный необязательный параметр <FONT FACE="Courier New, monospace">&lt;root-domain&gt;</FONT> указывается для описания, какой интернетовский домен использовать для получения адреса узла, если в конфиге он прописан как &laquo;*&raquo;. Если этот параметр не указан, используется глобальный параметр <FONT FACE="Courier New, monospace">root-domain</FONT> (по умолчанию -  <FONT FACE="Courier New, monospace">fidonet.net</FONT>).</P>
 <H2>4.15. exec</H2>
 <P>Директива <FONT FACE="Courier New, monospace">exec</FONT>
 <FONT FACE="Times New Roman, serif">описывает <FONT FACE="Times New Roman, serif">условие
@@ -2236,7 +2237,7 @@ manager). Это подпрограмма, которая производит периодический просмотр
 	<TBODY>
 		<TR VALIGN=TOP>
 			<TH WIDTH=6%>
-				<P>№</P>
+				<P>&#8470;</P>
 			</TH>
 			<TH WIDTH=84%>
 				<P>Действие</P>
@@ -3225,6 +3226,6 @@ binkd и ответы на них&raquo; (&laquo;Binkd FAQ&raquo;), страничка <FONT FACE="Co
 является международной). Также имеющие отношение к <FONT FACE="Courier New, monospace">binkd</FONT>
 файлы распространяются по файлэхе <FONT FACE="Courier New, monospace">AFTNBINKD</FONT>.</P>
 <HR>
-$Id: binkd-ug-ru.htm,v 1.1 2005/05/14 07:18:20 stas Exp $
+$Id: binkd-ug-ru.htm,v 1.2 2005/09/28 20:40:45 gul Exp $
 </BODY>
 </HTML>

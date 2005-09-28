@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: btypes.h,v 2.6 2005/05/13 11:12:00 stas Exp $
+ * $Id: btypes.h,v 2.7 2005/09/28 20:40:45 gul Exp $
  *
  * $Log: btypes.h,v $
+ * Revision 2.7  2005/09/28 20:40:45  gul
+ * Optional parameter root-domain for domain config option.
+ *
  * Revision 2.6  2005/05/13 11:12:00  stas
  * update coment for struct _FTNQ
  *
@@ -67,6 +70,7 @@ struct _FTN_DOMAIN
 					     * "/var/spool/fido" */
   char *dir;				    /* Outbound dir's name, ie "outb" */
   int z[2];
+  char *idomain;			    /* internet root-domain */
   FTN_DOMAIN *alias4;
 };
 
