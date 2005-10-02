@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.175 2005/09/28 19:02:25 gul Exp $
+ * $Id: protocol.c,v 2.176 2005/10/02 15:03:11 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.176  2005/10/02 15:03:11  gul
+ * Fileboxes did not works for unlisted nodes
+ *
  * Revision 2.175  2005/09/28 19:02:25  gul
  * Fixed unsigned int arithmetics in rate-limits
  *
@@ -3641,7 +3644,7 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
 	  state.msgs_in_batch = 0;
 	  state.remote_EOB = state.local_EOB = 0;
 	  if (OK_SEND_FILES (&state, config))
-	    state.q = q_scan_boxes (state.q, state.fa, state.nfa, config);
+	    state.q = q_scan_boxes (state.q, state.fa, state.nfa, state.to ? 1 : 0, config);
 	  continue;
 	}
       }
