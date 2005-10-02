@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 
-/* $Id: ftnq.h,v 2.4.2.2 2005/05/13 10:03:59 stas Exp $
+/* $Id: ftnq.h,v 2.4.2.3 2005/10/02 15:23:35 gul Exp $
  *
  * $Log: ftnq.h,v $
+ * Revision 2.4.2.3  2005/10/02 15:23:35  gul
+ * Fileboxes was not scanned for unlisted links
+ *
  * Revision 2.4.2.2  2005/05/13 10:03:59  stas
  * update comment for the _FTNQ.type values
  *
@@ -116,7 +119,7 @@ FTNQ *q_scan_addrs (FTNQ *q, FTN_ADDR *fa, int n, int to);
 /*
  * Scans fileboxes for n akas stored in fa
  */
-FTNQ *q_scan_boxes (FTNQ *q, FTN_ADDR *fa, int n);
+FTNQ *q_scan_boxes (FTNQ *q, FTN_ADDR *fa, int n, int to);
 
 /*
  * 0 = the queue is empty.
