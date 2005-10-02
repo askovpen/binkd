@@ -14,9 +14,12 @@
  */
 
 /*
- * $Id: sys.h,v 2.26 2005/09/28 07:18:49 gul Exp $
+ * $Id: sys.h,v 2.27 2005/10/02 16:35:21 gul Exp $
  *
  * $Log: sys.h,v $
+ * Revision 2.27  2005/10/02 16:35:21  gul
+ * *** empty log message ***
+ *
  * Revision 2.26  2005/09/28 07:18:49  gul
  * gettvtime() (time of day with more then second exactitude) for win32.
  * Thanks to Alexander Reznikov.
@@ -228,10 +231,6 @@ int snprintf (va_alist) va_dcl;
 #endif
 #ifndef HAVE_VSNPRINTF
 int vsnprintf (char *str, size_t count, const char *fmt, va_list args);
-#endif
-
-#ifndef HAVE_GETTIMEOFDAY
-int gettimeofday(struct timeval *tv, struct timezone *tz);
 #endif
 
 #ifndef O_BINARY
