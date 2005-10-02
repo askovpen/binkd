@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: perlhooks.h,v 2.10 2005/09/23 12:24:33 gul Exp $
+ * $Id: perlhooks.h,v 2.11 2005/10/02 21:47:35 gul Exp $
  *
  * $Log: perlhooks.h,v $
+ * Revision 2.11  2005/10/02 21:47:35  gul
+ * set_rlimit() perl hook
+ *
  * Revision 2.10  2005/09/23 12:24:33  gul
  * define $hosts variable for on_call() perl hook (can be changed).
  * Changes for $proxy and $socks are now local for the single outgoing call.
@@ -98,5 +101,9 @@ int perl_on_log(char *, int, int *);   /* when writing string to log */
 
 int perl_on_send(STATE *, t_msg *, char **, char **); /* on msg_send2 */
 int perl_on_recv(STATE *, char *, int);               /* when recv a block */
+
+#ifdef BW_LIM
+int perl_setup_rlimit(STATE *, BW *, char *);
+#endif
 
 #endif
