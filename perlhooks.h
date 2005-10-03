@@ -11,11 +11,14 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: perlhooks.h,v 2.11 2005/10/02 21:47:35 gul Exp $
+ * $Id: perlhooks.h,v 2.12 2005/10/03 06:49:04 gul Exp $
  *
  * $Log: perlhooks.h,v $
+ * Revision 2.12  2005/10/03 06:49:04  gul
+ * Fixed typos in previous patch
+ *
  * Revision 2.11  2005/10/02 21:47:35  gul
- * set_rlimit() perl hook
+ * setup_rlimit() perl hook
  *
  * Revision 2.10  2005/09/23 12:24:33  gul
  * define $hosts variable for on_call() perl hook (can be changed).
