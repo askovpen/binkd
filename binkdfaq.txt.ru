@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2004/11/24 07:33:01 $
+        $Date: 2005/10/03 13:33:55 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -90,6 +90,10 @@
     Анонимный FTP:
     ftp://cvs.happy.kiev.ua/pub/fidosoft/mailer/binkd/snapshot (основной)
     ftp://ftp.grumbler.org/pub/binkd/current (зеркало, обновляется 23:50 UTC+5)
+
+    Binkd, портированный под Windows CE:
+    http://nicka-s.narod.ru/fido/index.html 
+      (Россия, Nickita Startcev)
 
     Документация (англ.), анализаторы логов и пр.:
     http://www.doe.carleton.ca/~nsoveiko/fido/binkd/
