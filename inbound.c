@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: inbound.c,v 2.38 2005/11/08 13:35:23 gul Exp $
+ * $Id: inbound.c,v 2.39 2005/11/08 13:58:26 gul Exp $
  *
  * $Log: inbound.c,v $
+ * Revision 2.39  2005/11/08 13:58:26  gul
+ * Fixed logic in condition in previous patch
+ *
  * Revision 2.38  2005/11/08 13:35:23  gul
  * Remove old .hr files without .dt from temp-inbound
  *
@@ -252,7 +255,7 @@ static int to_be_deleted (char *tmp_name, char *netname, off_t filesize, BINKD_C
   if (stat (tmp_name, &sd) != 0) return 0;
   strcpy (strrchr (tmp_name, '.'), ".dt");
   sp = &sb;
-  if (((stat (tmp_name, &sb) == 0 && sb.st_size != filesize) || (sp = &sd)) &&
+  if ((stat (tmp_name, &sb) == 0 ? sb.st_size != filesize : (sp = &sd, 1)) &&
       time (0) - sp->st_mtime > config->kill_old_partial_files)
   {
     Log (4, "found old .dt/.hr files for %s", netname);
