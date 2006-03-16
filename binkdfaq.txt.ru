@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2006/02/24 12:43:19 $
+        $Date: 2006/03/16 15:36:35 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -578,6 +578,9 @@ kill -HUP `cat /var/run/binkd.pid`
     BNDST101.ZIP   34812 14-Aug-01 (AREA:AFTNMISC)
     BndStat 1.01. With sources. BinkD statistics generator. Compiled for all
     platforms. Included win32 binaries. (C) Dmitry Rusov, 2:5090/94
+
+    Комплект генераторов статистики binkd и qico для *nix (c) Vasily Krysin,
+    2:5054/84: http://deep.perm.ru/files/fido/fustat-0.02.tar.gz
 
 ----------------------------------------------------------------------------
 
