@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2006/03/16 15:36:35 $
+        $Date: 2006/03/21 16:25:08 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -62,7 +62,7 @@
     Зеркала
     ftp://cheetah.itpark.com.ua/pub/fido/binkd/
       (Украина, Pavel Gulchouck 2:463/68)
-    ftp://fido.thunderdome.ws/pub/mirror/binkd/
+    ftp://fido.thunderdome.us/pub/mirror/binkd/
       (США, Matt Bedynek 1:106/1)
     ftp://ftp.alexblues.ru/pub/binkd/
       (Россия, Alexander Gladchenko 2:5080/111, обновляется в 23:00 UTC)
