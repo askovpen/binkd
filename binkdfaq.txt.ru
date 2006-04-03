@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2006/03/21 16:25:08 $
+        $Date: 2006/04/03 15:24:21 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -581,6 +581,9 @@ kill -HUP `cat /var/run/binkd.pid`
 
     Комплект генераторов статистики binkd и qico для *nix (c) Vasily Krysin,
     2:5054/84: http://deep.perm.ru/files/fido/fustat-0.02.tar.gz
+
+    binkdstat (С) val khokhlov, Dmitry Kolvakh
+    http://www.pstu.ru/~keu/binkdstat.zip
 
 ----------------------------------------------------------------------------
 
