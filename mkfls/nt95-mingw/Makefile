@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.42 2005/10/10 16:28:52 stas Exp $
+# $Id: Makefile,v 2.43 2006/07/17 17:05:54 gul Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -21,6 +21,7 @@ WINDRES=windres
 OUTDIR=bin/mingw32
 BINKDTYPE=mingw32
 
+CC?=gcc
 CFLAGS+= -mno-cygwin -mthreads -pipe -funsigned-char \
          -Wall -Wno-char-subscripts -Wno-comment
 CDEFS+=  -DHAVE_THREADS -DHAVE_UNISTD -DHAVE_INTMAX_T \
