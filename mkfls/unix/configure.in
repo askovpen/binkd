@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.13.2.2 2004/08/04 20:02:58 gul Exp $
+dnl $Id: configure.in,v 2.13.2.3 2006/07/24 20:47:48 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -112,6 +112,20 @@ AC_TRY_COMPILE([
 ], [
   return ioctl(0, TIOCNOTTY, (char*)0);
 ], AC_DEFINE(HAVE_TIOCNOTTY) AC_MSG_RESULT(yes),
+AC_MSG_RESULT(no),
+AC_MSG_RESULT(cross-compiling. No assumptions made)
+)
+
+dnl -------------------------------------------------------------------------
+dnl Check for MSG_NOSIGNAL
+
+AC_MSG_CHECKING(for MSG_NOSIGNAL)
+AC_TRY_COMPILE([
+#include <sys/types.h>
+#include <sys/socket.h>
+], [
+  return MSG_NOSIGNAL;
+], AC_DEFINE(HAVE_MSG_NOSIGNAL) AC_MSG_RESULT(yes),
 AC_MSG_RESULT(no),
 AC_MSG_RESULT(cross-compiling. No assumptions made)
 )

@@ -14,9 +14,12 @@
  */
 
 /*
- * $Id: sys.h,v 2.11.2.2 2004/08/24 11:32:44 gul Exp $
+ * $Id: sys.h,v 2.11.2.3 2006/07/24 20:47:48 gul Exp $
  *
  * $Log: sys.h,v $
+ * Revision 2.11.2.3  2006/07/24 20:47:48  gul
+ * Use MSG_NOSIGNAL flag for send()
+ *
  * Revision 2.11.2.2  2004/08/24 11:32:44  gul
  * Fix typo in prev patch
  *
@@ -138,6 +141,10 @@ void switchsignal(int how);
 
 #ifndef F_OK
   #define F_OK 0
+#endif
+
+#ifndef HAVE_MSG_NOSIGNAL
+  #define MSG_NOSIGNAL 0
 #endif
 
 #if defined(UNIX) || defined(AMIGA)

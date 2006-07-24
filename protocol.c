@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.67.2.22 2005/10/03 07:55:16 gul Exp $
+ * $Id: protocol.c,v 2.67.2.23 2006/07/24 20:47:47 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.67.2.23  2006/07/24 20:47:47  gul
+ * Use MSG_NOSIGNAL flag for send()
+ *
  * Revision 2.67.2.22  2005/10/03 07:55:16  gul
  * Fixed memory leak (thanks to Roman Trunov)
  *
@@ -594,7 +597,7 @@ static int send_block (STATE *state)
   if (state->optr && state->oleft)
   {
     Log (7, "sending %li byte(s)", (long) (state->oleft));
-    n = send (state->s, state->optr, state->oleft, 0);
+    n = send (state->s, state->optr, state->oleft, MSG_NOSIGNAL);
     save_errno = TCPERRNO;
     save_err = TCPERR ();
     Log (7, "send() done, rc=%i", n);
