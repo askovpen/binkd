@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.c,v 2.70 2005/11/09 14:15:57 stas Exp $
+ * $Id: tools.c,v 2.71 2006/08/09 07:09:11 gul Exp $
  *
  * $Log: tools.c,v $
+ * Revision 2.71  2006/08/09 07:09:11  gul
+ * cosmetic fix
+ *
  * Revision 2.70  2005/11/09 14:15:57  stas
  * Increase loglevel for low-level file operation 'remove file' to dont double log lines
  *
@@ -1106,7 +1109,7 @@ char **mkargv (int argc, char **argv)
   int i;
   char **p;
 
-  p = (char **) xalloc ((argc + 1) * sizeof (p));
+  p = (char **) xalloc ((argc + 1) * sizeof (*p));
 
   for (i = 0; i < argc; i++)
     p[i] = xstrdup (argv[i]);
