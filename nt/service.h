@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: service.h,v 2.14 2003/10/29 06:41:24 stas Exp $
+ * $Id: service.h,v 2.15 2006/12/19 14:11:02 stas Exp $
  *
  * $Log: service.h,v $
+ * Revision 2.15  2006/12/19 14:11:02  stas
+ * Minimize required access rights to operate with Windows NT/2000/XP/2003 services
+ *
  * Revision 2.14  2003/10/29 06:41:24  stas
  * Remove unused types; small optimizes code
  *
@@ -72,6 +75,7 @@ extern MUTEXSEM exitsem;
 
 /* checkservice() return values */
 #define CHKSRV_CANT_INSTALL  -1
+#define CHKSRV_ERROR          0
 #define CHKSRV_NOT_INSTALLED  1
 #define CHKSRV_INSTALLED      2
 
