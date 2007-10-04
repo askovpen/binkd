@@ -10,9 +10,12 @@
  */
 
 /*
- * $Id: common.h,v 2.13 2004/10/18 15:22:19 gul Exp $
+ * $Id: common.h,v 2.14 2007/10/04 17:30:28 gul Exp $
  *
  * $Log: common.h,v $
+ * Revision 2.14  2007/10/04 17:30:28  gul
+ * SIGHUP handler (thx to Sergey Babitch)
+ *
  * Revision 2.13  2004/10/18 15:22:19  gul
  * Change handle perl errors method
  *
@@ -140,6 +143,9 @@ extern int daemon_flag;
 #ifndef BINKD9X
 extern int tray_flag;
 #endif
+#endif
+#ifdef HAVE_FORK
+extern int got_sighup;
 #endif
 
 #endif

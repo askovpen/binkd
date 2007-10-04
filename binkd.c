@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: binkd.c,v 2.96 2006/07/24 21:00:32 gul Exp $
+ * $Id: binkd.c,v 2.97 2007/10/04 17:30:28 gul Exp $
  *
  * $Log: binkd.c,v $
+ * Revision 2.97  2007/10/04 17:30:28  gul
+ * SIGHUP handler (thx to Sergey Babitch)
+ *
  * Revision 2.96  2006/07/24 21:00:32  gul
  * use MSG_NOSIGNAL in send()
  *
@@ -436,7 +439,7 @@ char *configpath = NULL;               /* Config file name */
 
 #ifdef HAVE_FORK
 
-int mypid;
+int mypid, got_sighup;
 
 static void chld (int signo)
 {
@@ -446,7 +449,7 @@ static void chld (int signo)
 static void hup (int signo)
 {
   Log (2, "got SIGHUP");
-  /* !!! ToDo: safe reload of configurations (don't mess with regular checks!) */
+  got_sighup = 1;
 }
 #endif
 
