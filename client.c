@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: client.c,v 2.63 2007/10/04 17:30:28 gul Exp $
+ * $Id: client.c,v 2.64 2007/10/06 10:20:04 gul Exp $
  *
  * $Log: client.c,v $
+ * Revision 2.64  2007/10/06 10:20:04  gul
+ * more accurate checkcfg()
+ *
  * Revision 2.63  2007/10/04 17:30:28  gul
  * SIGHUP handler (thx to Sergey Babitch)
  *
@@ -447,16 +450,16 @@ void clientmgr (void *arg)
   {
     BINKD_CONFIG *config;
 
+    config = lock_current_config();
+    status = do_client(config);
+    unlock_config_structure(config);
+
     if (
 #ifdef HAVE_THREADS
         !server_flag && 
 #endif
         !poll_flag)
       checkcfg();
-
-    config = lock_current_config();
-    status = do_client(config);
-    unlock_config_structure(config);
 
   } while (status == 0 && !binkd_exit);
 
