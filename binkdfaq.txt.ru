@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2007/10/24 12:05:56 $
+        $Date: 2007/10/25 21:26:24 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -98,7 +98,7 @@
 
     Binkd для DOS с использованием стека (драйверов IP) Waterloo TCP/IP:
     http://mik.mkw.ru/dos-stuff/binkd.zip
-      (Россия, Michael Kostylev mailto:mik@niipt.ru)
+      (Россия, Michael Kostylev 2:5030/1530 mik@niipt.ru)
 
     Binkd/2 1.0a (current, EMX), скомпилированный еженощно:
     FREQ c узла 2:221/1, алиас файла: binkd2e. Можно скачать также с BBS узла
