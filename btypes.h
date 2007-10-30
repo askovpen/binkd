@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: btypes.h,v 2.7 2005/09/28 20:40:45 gul Exp $
+ * $Id: btypes.h,v 2.8 2007/10/30 07:33:25 gul Exp $
  *
  * $Log: btypes.h,v $
+ * Revision 2.8  2007/10/30 07:33:25  gul
+ * New config option dont-send-empty
+ *
  * Revision 2.7  2005/09/28 20:40:45  gul
  * Optional parameter root-domain for domain config option.
  *
@@ -180,5 +183,7 @@ struct _RCVDLIST
 };
 
 enum inbcasetype { INB_SAVE,INB_UPPER,INB_LOWER,INB_MIXED };
+
+enum dontsendemptytype { EMPTY_NO, EMPTY_ARCMAIL, EMPTY_ALL };
 
 #endif
