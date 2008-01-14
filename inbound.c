@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: inbound.c,v 2.41 2006/05/22 19:04:30 stas Exp $
+ * $Id: inbound.c,v 2.42 2008/01/14 20:45:43 gul Exp $
  *
  * $Log: inbound.c,v $
+ * Revision 2.42  2008/01/14 20:45:43  gul
+ * Workaroud bug of earlyer binkd versions with partial files and not NR-mode
+ *
  * Revision 2.41  2006/05/22 19:04:30  stas
  * Fix deletion fault .hr/.dt pair. Bugreport from Alexey Fayans 2:5030/1997
  *
@@ -478,7 +481,6 @@ int inb_reject (STATE *state, BINKD_CONFIG *config)
   }
   else
   {
-    Log (2, "rejecting %s", state->in.netname);
     /* Replacing .dt with .hr and removing temp. file */
     strcpy (strrchr (tmp_name, '.'), ".hr");
     remove_hr (tmp_name);
