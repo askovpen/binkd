@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: prothlp.c,v 2.2.2.2 2005/09/22 12:13:16 gul Exp $
+ * $Id: prothlp.c,v 2.2.2.3 2008/04/17 15:24:11 gul Exp $
  *
  * $Log: prothlp.c,v $
+ * Revision 2.2.2.3  2008/04/17 15:24:11  gul
+ * Fixed sending files with space or control chars in name
+ *
  * Revision 2.2.2.2  2005/09/22 12:13:16  gul
  * Dequote filenames for compare in M_GET processing
  *
@@ -62,7 +65,7 @@ int tfile_cmp (TFILE *a, char *netname, off_t size, time_t time)
  
   anetname = strdequote(a->netname);
   netname = strdequote(netname);
-  rc = strcmp (a->netname, netname);
+  rc = strcmp (anetname, netname);
   free(anetname);
   free(netname);
   if (rc) return rc;
