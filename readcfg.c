@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.c,v 2.89 2007/10/30 07:33:25 gul Exp $
+ * $Id: readcfg.c,v 2.90 2008/12/09 09:04:09 gul Exp $
  *
  * $Log: readcfg.c,v $
+ * Revision 2.90  2008/12/09 09:04:09  gul
+ * Use binkp from /etc/services if exists as iport/oport by default
+ *
  * Revision 2.89  2007/10/30 07:33:25  gul
  * New config option dont-send-empty
  *
@@ -531,8 +534,8 @@ void lock_config_structure(BINKD_CONFIG *c)
   {
     /* First-time call: init default values */
 
-    c->iport             = DEF_PORT;
-    c->oport             = DEF_PORT;
+    c->iport             = find_port("");
+    c->oport             = find_port("");
     c->call_delay        = 60;
     c->rescan_delay      = 60;
     c->nettimeout        = DEF_TIMEOUT;
