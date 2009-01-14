@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.36 2006/07/24 21:00:35 gul Exp $
+dnl $Id: configure.in,v 2.37 2009/01/14 12:44:53 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -219,15 +219,15 @@ esac
 
 AC_ARG_WITH(aso,
             [  --with-aso              Amiga Style Outbound (ASO) support (default no)],
-            AC_DEFINE(AMIGADOS_4D_OUTBOUND), )
+            [ test "x$withval" = "xyes" && AC_DEFINE(AMIGADOS_4D_OUTBOUND)])
 
 AC_ARG_WITH(bwlim,
             [  --with-bwlim            Bandwidth limiting support (default no)],
-            AC_DEFINE(BW_LIM), )
+            [ test "x$withval" = "xyes" && AC_DEFINE(BW_LIM)])
 
 AC_ARG_WITH(perl,
             [  --with-perl             Perl hooks (default no)],
-            do_perl=yes, do_perl=no)
+            [ do_perl=$withval])
 
 case x$do_perl in
   xyes)
