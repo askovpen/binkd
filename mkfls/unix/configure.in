@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.38 2009/01/14 12:56:51 gul Exp $
+dnl $Id: configure.in,v 2.39 2009/05/17 21:59:20 stas Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -405,7 +405,7 @@ if test ".$do_bzip2" != ".no" ; then
 	  AC_MSG_RESULT(no)
 	  LIBS="$save_LIBS"
 	  CFLAGS="$save_CFLAGS"
-	  if test ".$do_bzlib2" != ".auto"; then
+	  if test ".$do_bzip2" != ".auto"; then
 	    AC_ERROR(bz2 lib not found in $bzlib2_paths)
 	  fi
 	fi
