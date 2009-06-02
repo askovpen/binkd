@@ -1,7 +1,9 @@
-# $Id: Makefile,v 2.20 2005/09/27 20:38:12 gul Exp $
+# $Id: Makefile,v 2.21 2009/06/02 17:09:36 gul Exp $
 #
 # Usage: make [DEBUG=1] [NOFORK=1] [PERL=1] [PERLDL=1]
 #             [ZLIB=1] [BZLIB2=1] [ZLIBDL=1]
+#
+# Tested with perl 5.0053
 #
 
 CC=gcc
@@ -56,16 +58,28 @@ endif
 ifdef ZLIB
 COMPRESS=1
 CFLAGS+= -DWITH_ZLIB=1
+ifdef ZLIB_DIR
+CFLAGS+= -I$(ZLIB_DIR)/include
+endif
 ifndef ZLIBDL
-LIBS:=-lz $(LIBS)
+LIBS:=-lz_s $(LIBS)
+ifdef ZLIB_DIR
+LFLAGS+= -L$(ZLIB_DIR)/lib
+endif
 endif
 endif
 
 ifdef BZLIB2
 COMPRESS=1
 CFLAGS+= -DWITH_BZLIB2=1
+ifdef BZLIB2_DIR
+CFLAGS+= -I$(BZLIB2_DIR)/include
+endif
 ifndef ZLIBDL
-LIBS:=-lbz2 $(LIBS)
+LIBS:=-llibbz2_s $(LIBS)
+ifdef BZLIB2_DIR
+LFLAGS+= -L$(BZLIB2_DIR)/lib
+endif
 endif
 endif
 

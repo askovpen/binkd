@@ -10,9 +10,12 @@
  */
 
 /*
- * $Id: common.h,v 2.14 2007/10/04 17:30:28 gul Exp $
+ * $Id: common.h,v 2.15 2009/06/02 17:09:35 gul Exp $
  *
  * $Log: common.h,v $
+ * Revision 2.15  2009/06/02 17:09:35  gul
+ * Build binkd for OS/2 with perl support
+ *
  * Revision 2.14  2007/10/04 17:30:28  gul
  * SIGHUP handler (thx to Sergey Babitch)
  *
@@ -129,6 +132,7 @@ extern int checkcfg_flag;	/* exit(3) on config change */
 extern int pidcmgr;		/* pid for clientmgr */
 extern int pidCmgr;             /* real pid for clientmgr (not 0) */
 extern int pidsmgr;		/* pid for server */
+extern char **saved_envp;
 extern int no_MD5;
 extern int no_crypt;
 extern int server_flag, client_flag;

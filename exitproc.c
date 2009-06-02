@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: exitproc.c,v 2.41 2009/05/31 07:16:16 gul Exp $
+ * $Id: exitproc.c,v 2.42 2009/06/02 17:09:35 gul Exp $
  *
  * $Log: exitproc.c,v $
+ * Revision 2.42  2009/06/02 17:09:35  gul
+ * Build binkd for OS/2 with perl support
+ *
  * Revision 2.41  2009/05/31 07:16:16  gul
  * Warning: many changes, may be unstable.
  * Perl interpreter is now part of config and rerun on config reload.
@@ -307,6 +310,9 @@ void exitfunc (void)
   CleanEventSem (&exitcmgr);
 #ifdef OS2
   CleanSem (&fhsem);
+#endif
+#if defined(WITH_PERL) && defined(HAVE_THREADS) && defined(PERL_MULTITHREAD)
+  CleanSem (&perlsem);
 #endif
   ReleaseErrorList();
 }
