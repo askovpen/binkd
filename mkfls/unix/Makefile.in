@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 2.16 2009/07/08 20:21:47 stas Exp $
+# $Id: Makefile.in,v 2.17 2009/07/08 22:44:38 stas Exp $
 APPL=binkd
 
 CC=@CC@
@@ -55,7 +55,7 @@ install: compile .version
 	./mkinstalldirs $(MANDIR)/man8
 	$(INSTALL) -m 644 $(APPL).8 $(MANDIR)/man8/$(APPL).8
 	./mkinstalldirs $(CONFDIR)
-	$(INSTALL) -m 644 $(APPL).cfg $(CONFDIR)/$(APPL).conf-dist
+	$(INSTALL) -m 644 $(APPL).conf $(CONFDIR)/$(APPL).conf-dist
 
 clean:
 	rm -f *.[bo] unix/*.[bo] ntlm/*.[bo] *.BAK *.core *.obj *.err 
