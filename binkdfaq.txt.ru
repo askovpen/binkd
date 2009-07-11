@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2009/07/10 18:02:56 $
+        $Date: 2009/07/11 14:22:01 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -801,7 +801,7 @@ Novell TCP/IP Client for Win 3.11 (см. ответ на вопрос "Binkd под DOS."
 их в fidonet.00b, то писать надо вот так:
 
     domain fidonet c:\\ftn\\outbound\\fidonet 2
-    domain omeganet c:\\ftn\\outbound\\omeganet 2
+    domain omeganet c:\\ftn\\outbound\\fidonet 2
     address 2:5070/222@fidonet 11:58/6@omeganet
 
 Все свои адpеса обязательно пpописываешь с доменами.
