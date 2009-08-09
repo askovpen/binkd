@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.40 2009/08/08 18:37:53 gul Exp $
+dnl $Id: configure.in,v 2.41 2009/08/09 05:26:37 gul Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -162,7 +162,7 @@ AC_ARG_WITH(warn,
 
 
 AC_ARG_WITH(proxy,
-            [  --with-proxy            http, https, socks proxy support (default no)],
+            [  --with-proxy            https and socks proxy support (default no)],
             do_proxy=yes, do_proxy=no)
 
 AC_ARG_WITH(ntlm,
