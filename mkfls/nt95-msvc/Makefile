@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.45 2010/12/05 15:43:59 gul Exp $
+# $Id: Makefile,v 2.46 2010/12/09 13:21:06 stas Exp $
 #
 # Usage: nmake [DEBUG=1] [STATIC=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1] [BW_LIM=1]
@@ -8,8 +8,9 @@
 # Use MSVC_VER=10 to build with Visual Studio 2008 or 2010
 #
 
+#PERLV=510
 #PERL_BASE=c:\Perl
-#PERL_LIB=perl58.lib
+#PERL_LIB=$(PERL_BASE)/lib/core/perl$(PERLV).lib
 
 #ZLIB_BASE=..\zlib
 #ZLIB_LIB=zlib.lib
@@ -274,7 +275,8 @@ C_DIRS=$(C_DIRS) -I "$(PERL_INCL)"
 L_DIRS=$(L_DIRS) /LIBPATH:"$(PERL_INCL)"
 !endif
 !ifdef PERL_LIB
-LIBS=$(LIBS) $(PERL_LIB)
+LIBS=$(LIBS) delayimp.lib $(PERL_LIB)
+PERLDLL=/delayload:perl$(PERLV).dll
 !endif
 !endif
 
@@ -327,7 +329,7 @@ $(MAKEDIRS):
 "$(OUTDIR)\$(BINKDEXE)": $(OBJS) $(RESOBJS)
 	@echo Linking $(BINKDEXE)...
 	@$(LINK) $(LFLAGS) $(L_DIRS) @<<
-$(LIBS) $(OBJS) $(RESOBJS)
+$(LIBS) $(OBJS) $(RESOBJS) $(PERLDLL)
 <<
 
 !ifdef DEBUG
