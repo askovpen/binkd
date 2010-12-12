@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.46 2010/12/09 13:21:06 stas Exp $
+# $Id: Makefile,v 2.47 2010/12/12 19:43:14 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [STATIC=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1] [BW_LIM=1]
@@ -42,7 +42,7 @@ CFLAGS=  $(CFLAGS) -nologo -M$(RTLTYPE) -W3 -EHsc -c -J \
          -Fp"$(OBJDIR)\$(BINKDNAME).pch" -Fd"$(OBJDIR)\$(BINKDNAME)"
 CDEFS=   $(CDEFS) -DWIN32 -DHAVE_THREADS -DHAVE_IO_H -DHAVE_DOS_H \
          -DHAVE_STDARG_H -DVISUALCPP -DHTTPS -DAMIGADOS_4D_OUTBOUND -DNTLM \
-         -DHAVE_VSNPRINTF
+         -DHAVE_VSNPRINTF -D_CRT_SECURE_NO_WARNINGS
 !else
 CFLAGS=  $(CFLAGS) -nologo -M$(RTLTYPE) -W3 -GX -c -YX -J \
          -Fp"$(OBJDIR)\$(BINKDNAME).pch" -Fd"$(OBJDIR)\$(BINKDNAME)"
