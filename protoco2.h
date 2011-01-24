@@ -1,7 +1,10 @@
 /*
- * $Id: protoco2.h,v 2.26 2010/05/22 08:11:30 gul Exp $
+ * $Id: protoco2.h,v 2.27 2011/01/24 10:44:53 gul Exp $
  *
  * $Log: protoco2.h,v $
+ * Revision 2.27  2011/01/24 10:44:53  gul
+ * Possible segfault on session start
+ *
  * Revision 2.26  2010/05/22 08:11:30  gul
  * Call after_session() hook after removing bsy
  *
@@ -165,7 +168,7 @@ struct _STATE
   SOCKET s;
   struct _BINKD_CONFIG *config;
   FTN_NODE *to;			/* Dest. address (if an outbound connection) */
-  char expected_pwd[MAXPWDLEN + 1];
+  char *expected_pwd;
 
   /* binkp buffres */
   char *obuf;
