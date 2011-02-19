@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.202 2011/02/19 06:08:27 gul Exp $
+ * $Id: protocol.c,v 2.203 2011/02/19 06:23:05 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.203  2011/02/19 06:23:05  gul
+ * Cosmetics
+ *
  * Revision 2.202  2011/02/19 06:08:27  gul
  * Yet another possible segfault on session start
  *
@@ -1975,22 +1978,26 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
     if (state->expected_pwd[0] && pn)
     {
       char *pwd = state->to ? pn->out_pwd : pn->pwd;
-      if (!strcmp (state->expected_pwd, "-"))
+      if (pwd && strcmp(pwd, "-"))
       {
-        state->expected_pwd = pwd ? pwd : "-";
-        state->MD_flag=pn->MD_flag;
-      }
-      else if (pwd && strcmp(pwd, "-") &&
-               strcmp(state->expected_pwd, pwd))
-      {
-        if (state->to)
-          Log (2, "inconsistent pwd settings for this node, aka %s dropped", szFTNAddr);
-        else
-        { /* drop incoming session with M_ERR "Bad password" */
-          Log (1, "inconsistent pwd settings for this node");
-          state->expected_pwd = "";
+        if (!strcmp (state->expected_pwd, "-"))
+        {
+          state->expected_pwd = pwd;
+          state->MD_flag=pn->MD_flag;
         }
-        continue;
+        else if (strcmp(state->expected_pwd, pwd))
+        {
+          if (state->to)
+            Log (2, "inconsistent pwd settings for this node, aka %s dropped", szFTNAddr);
+          else
+          { /* drop incoming session with M_ERR "Bad password" */
+            Log (1, "inconsistent pwd settings for this node");
+            state->expected_pwd = "";
+          }
+          continue;
+        }
+        else
+          state->MD_flag |= pn->MD_flag;
       }
     }
 
