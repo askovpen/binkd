@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.586 2011/08/17 09:02:59 gul Exp $
+ * $Id: Config.h,v 2.587 2011/08/17 15:51:46 stas Exp $
  */
 
 #ifndef _Config_h
@@ -97,6 +97,7 @@
 #endif
 
 #define MAILBOX                             /* fileboxes suport */
+#define ROOT_DOMAIN     "binkp.net"         /* default root_domain */
 
 /* System... */
 #define STACKSIZE (256*1024)
