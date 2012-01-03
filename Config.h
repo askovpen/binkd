@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.591 2012/01/03 17:26:05 green Exp $
+ * $Id: Config.h,v 2.592 2012/01/03 17:52:31 green Exp $
  */
 
 #ifndef _Config_h
@@ -77,7 +77,7 @@
 #endif
 
 /* Protocol */
-#define DEF_PORT 24554
+#define DEF_PORT "24554"
 #define DEF_TIMEOUT (5*60)
 #define MIN_BLKSIZE 128
 #define MAX_BLKSIZE 0x7fffu                 /* Don't change! */

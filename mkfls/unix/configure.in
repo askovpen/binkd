@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.41 2009/08/09 05:26:37 gul Exp $
+dnl $Id: configure.in,v 2.42 2012/01/03 17:52:33 green Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -16,6 +16,7 @@ AC_CHECK_HEADERS(sys/mount.h,,,
 #endif
 ]])
 AC_CHECK_HEADERS(arpa/inet.h sys/ioctl.h sys/time.h stdarg.h io.h)
+AC_CHECK_HEADERS(resolv.h)
 
 dnl Checks for typedefs, structures, and compiler characteristics.
 
@@ -38,6 +39,10 @@ esac
 AC_CHECK_FUNCS(setproctitle)
 case $ac_cv_func_setproctitle in
  no) AC_CHECK_LIB(util, setproctitle, AC_DEFINE(HAVE_SETPROCTITLE) LIBS="$LIBS -lutil") ;;
+esac
+AC_CHECK_FUNC(res_search)
+case $ac_cv_func_res_search in
+ no) AC_CHECK_LIB(resolv, res_search, LIBS="$LIBS -lresolv") ;;
 esac
 AC_CHECK_SIZEOF(short, 0)
 AC_CHECK_SIZEOF(int, 0)
