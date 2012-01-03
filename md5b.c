@@ -24,9 +24,18 @@ documentation and/or software.
  */
 
 /*
- * $Id: md5b.c,v 2.9 2004/10/18 10:29:29 gul Exp $
+ * $Id: md5b.c,v 2.10 2012/01/03 17:25:32 green Exp $
  *
  * $Log: md5b.c,v $
+ * Revision 2.10  2012/01/03 17:25:32  green
+ * Implemented IPv6 support
+ * - replace (almost) all getXbyY function calls with getaddrinfo/getnameinfo (RFC2553) calls
+ * - Add compatibility layer for target systems not supporting RFC2553 calls in rfc2553.[ch]
+ * - Add support for multiple listen sockets -- one for IPv4 and one for IPv6 (use V6ONLY)
+ * - For WIN32 platform add configuration parameter IPV6 (mutually exclusive with BINKD9X)
+ * - On WIN32 platform use Winsock2 API if IPV6 support is requested
+ * - config: node IP address literal + port supported: [<ipv6 address>]:<port>
+ *
  * Revision 2.9  2004/10/18 10:29:29  gul
  * Bugfix in MD_getChallenge(), thanks to Victor Levenets <aq@takas.lt>
  *
@@ -53,6 +62,7 @@ documentation and/or software.
  *
  */
 
+#include "iphdr.h"
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
@@ -63,7 +73,6 @@ documentation and/or software.
 #include <time.h>
 #endif
 #include "sys.h"
-#include "iphdr.h"
 #include "protoco2.h"
 #include "md5b.h"
 #include "tools.h"

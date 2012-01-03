@@ -1,9 +1,9 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.47 2010/12/12 19:43:14 gul Exp $
+# $Id: Makefile,v 2.48 2012/01/03 17:25:34 green Exp $
 #
 # Usage: nmake [DEBUG=1] [STATIC=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1] [BW_LIM=1]
-#              [MSVC_VER=10]
+#              [MSVC_VER=10] [IPV6=1]
 #
 # Use MSVC_VER=10 to build with Visual Studio 2008 or 2010
 #
@@ -67,7 +67,7 @@ OBJS= \
  "$(OBJDIR)\run.obj"      "$(OBJDIR)\binlog.obj"   "$(OBJDIR)\exitproc.obj" \
  "$(OBJDIR)\getw.obj"     "$(OBJDIR)\xalloc.obj"   "$(OBJDIR)\setpttl.obj"  \
  "$(OBJDIR)\https.obj"    "$(OBJDIR)\md5b.obj"     "$(OBJDIR)\crypt.obj"    \
- "$(OBJDIR)\getopt.obj"   "$(OBJDIR)\snprintf.obj"                          \
+ "$(OBJDIR)\getopt.obj"   "$(OBJDIR)\snprintf.obj" "$(OBJDIR)\rfc2553.obj"  \
                                                                             \
  "$(OBJDIR)\ntlm\des_enc.obj" "$(OBJDIR)\ntlm\helpers.obj"                  \
  "$(OBJDIR)\ntlm\ecb_enc.obj" "$(OBJDIR)\ntlm\md4_dgst.obj"                 \
@@ -88,12 +88,23 @@ BINKDTYPE=$(BINKDTYPE), binkd9x
 CDEFS=$(CDEFS) -DBINKD9X -D_WINDOWS
 SUBSYSTEM=windows
 OBJS=$(OBJS) "$(OBJDIR)\nt\win9x.obj"
+LIBS=$(LIBS) wsock32.lib
+!else
+!ifdef IPV6
+BINKDNAME=binkd
+OUTDIR=$(OUTDIR)-binkd-ipv6
+CDEFS=$(CDEFS) -D_CONSOLE
+SUBSYSTEM=console
+OBJS=$(OBJS) "$(OBJDIR)\nt\service.obj"
+LIBS=$(LIBS) ws2_32.lib
 !else
 BINKDNAME=binkd
 OUTDIR=$(OUTDIR)-binkd
 CDEFS=$(CDEFS) -D_CONSOLE
 SUBSYSTEM=console
 OBJS=$(OBJS) "$(OBJDIR)\nt\service.obj"
+LIBS=$(LIBS) wsock32.lib
+!endif
 !endif
 # binkd9x ---------------------------------------------------------------------
 

@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.16 2003/10/20 19:13:37 gul Exp $
+# $Id: Makefile,v 2.17 2012/01/03 17:25:34 green Exp $
 #
 # Usage: wmake [DEBUG=1] [NOFORK=1] [ZLIB=1] [BZLIB2=1] [ZLIBDL=1]
 #
@@ -70,7 +70,8 @@ OBJS      = binkd.obj     readcfg.obj    tools.obj    ftnaddr.obj   &
             readflo.obj   prothlp.obj    iptools.obj  run.obj       &
             binlog.obj    exitproc.obj   getw.obj     xalloc.obj    &
             setpttl.obj   dirent.obj     md5b.obj     crypt.obj     &
-            getopt.obj    https.obj      $(NTLM_OBJS) $(ZOBJS)
+            getopt.obj    https.obj      rfc2553.obj                &
+            $(NTLM_OBJS) $(ZOBJS)
 
 .c.obj: .autodepend
 	-echo Compile  $<
