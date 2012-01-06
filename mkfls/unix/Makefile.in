@@ -1,4 +1,4 @@
-# $Id: Makefile.in,v 2.20 2012/01/03 17:52:33 green Exp $
+# $Id: Makefile.in,v 2.21 2012/01/06 07:22:43 gul Exp $
 APPL=binkd
 
 CC=@CC@
@@ -9,6 +9,7 @@ INSTALL=@INSTALL@
 prefix=@prefix@
 CONFDIR=@sysconfdir@
 MANDIR=@mandir@
+DATADIR=@datarootdir@
 
 SRCS=md5b.c binkd.c readcfg.c tools.c ftnaddr.c ftnq.c client.c server.c protocol.c bsy.c inbound.c breaksig.c branch.c unix/rename.c unix/getfree.c ftndom.c ftnnode.c srif.c pmatch.c readflo.c prothlp.c iptools.c rfc2553.c run.c binlog.c exitproc.c getw.c xalloc.c crypt.c srv_gai.c unix/setpttl.c unix/daemonize.c @OPT_SRC@
 OBJS=${SRCS:.c=.o}
