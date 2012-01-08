@@ -12,9 +12,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: https.c,v 2.25 2012/01/07 16:34:00 green Exp $
+ * $Id: https.c,v 2.26 2012/01/08 14:09:04 green Exp $
  *
  * $Log: https.c,v $
+ * Revision 2.26  2012/01/08 14:09:04  green
+ * Corrected initialization of getaddrinfo hints
+ *
  * Revision 2.25  2012/01/07 16:34:00  green
  * Add error id where gai_strerror() is used
  *
@@ -183,6 +186,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 	char *port;
 
 	/* setup hints for getaddrinfo */
+	memset((void *)&hints, 0, sizeof(hints));
 	hints.ai_flags = AI_PASSIVE;
 	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;

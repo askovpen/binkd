@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: iptools.c,v 2.17 2012/01/07 11:54:04 green Exp $
+ * $Id: iptools.c,v 2.18 2012/01/08 14:09:04 green Exp $
  *
  * $Log: iptools.c,v $
+ * Revision 2.18  2012/01/08 14:09:04  green
+ * Corrected initialization of getaddrinfo hints
+ *
  * Revision 2.17  2012/01/07 11:54:04  green
  * Fix MSVC6 compilation errors
  *
@@ -152,6 +155,7 @@ char * find_port (char *s)
   int aiErr;
 
   /* setup hints for getaddrinfo */
+  memset((void *)&hints, 0, sizeof(hints));
   hints.ai_family = PF_UNSPEC;
   hints.ai_socktype = SOCK_STREAM;
   hints.ai_protocol = IPPROTO_TCP;
