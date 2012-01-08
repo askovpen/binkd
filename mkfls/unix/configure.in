@@ -1,4 +1,4 @@
-dnl $Id: configure.in,v 2.46 2012/01/06 13:40:13 gul Exp $
+dnl $Id: configure.in,v 2.47 2012/01/08 02:03:47 green Exp $
 dnl Process this file with autoconf to produce a configure script.
 AC_INIT(binkd.c)
 
@@ -67,6 +67,16 @@ case x$ac_cv_func_res_search in
 ], [res_search(0,0,0,0,0);], AC_MSG_RESULT(yes), AC_MSG_RESULT(no); AC_ERROR(no resolv library found))
      ;;
 esac
+
+AC_MSG_CHECKING(for ns_initparse)
+AC_TRY_LINK([
+#include <sys/types.h>
+#ifdef HAVE_NETINET_IN_H
+#  include <netinet/in.h>
+#endif
+#include <resolv.h>
+], [ns_initparse(0,0,0);], AC_DEFINE(HAVE_NS_INITPARSE) AC_MSG_RESULT(yes), AC_MSG_RESULT(no))
+
 AC_CHECK_SIZEOF(short, 0)
 AC_CHECK_SIZEOF(int, 0)
 AC_CHECK_SIZEOF(long, 0)
@@ -240,7 +250,7 @@ case x$do_warn in
    CFLAGS="-Wall -Wno-char-subscripts -W -Wconversion -Wstrict-prototypes -Wmissing-prototypes -Wmissing-declarations -Wmissing-noreturn -Wmissing-format-attribute -Wredundant-decls -Wnested-externs -Wunreachable-code -Waggregate-return -Wpointer-arith -Wshadow -Wundef -Wfloat-equal $CFLAGS"
    ;;
   xpedantic)
-   CFLAGS="-pedantic $CFLAGS"
+   CFLAGS="-pedantic -W $CFLAGS"
    ;;
   *)
    CFLAGS="-Wall -Wno-char-subscripts $CFLAGS"
