@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: server.c,v 2.51 2012/01/08 14:09:04 green Exp $
+ * $Id: server.c,v 2.52 2012/01/08 17:34:58 green Exp $
  *
  * $Log: server.c,v $
+ * Revision 2.52  2012/01/08 17:34:58  green
+ * Avoid using MAXHOSTNAMELEN
+ *
  * Revision 2.51  2012/01/08 14:09:04  green
  * Corrected initialization of getaddrinfo hints
  *
@@ -450,7 +453,7 @@ static int do_server(BINKD_CONFIG *config)
       }
       else
       {
-        char host[MAXHOSTNAMELEN + 1];
+        char host[BINKD_FQDNLEN + 1];
         char service[MAXSERVNAME + 1];
 	int aiErr;
   

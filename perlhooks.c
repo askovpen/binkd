@@ -11,9 +11,12 @@
  *  (at your option) any later version. See COPYING.
  */
 /*
- * $Id: perlhooks.c,v 2.75 2012/01/06 09:08:50 gul Exp $
+ * $Id: perlhooks.c,v 2.76 2012/01/08 17:34:57 green Exp $
  *
  * $Log: perlhooks.c,v $
+ * Revision 2.76  2012/01/08 17:34:57  green
+ * Avoid using MAXHOSTNAMELEN
+ *
  * Revision 2.75  2012/01/06 09:08:50  gul
  * Fix warnings on 64-bit systems
  *
@@ -1728,7 +1731,7 @@ static void setup_addrs(char *name, int n, FTN_ADDR *p) {
 static void setup_session(STATE *state, int lvl) {
   SV 	*sv;
   HV 	*hv;
-  char  host[MAXHOSTNAMELEN + 1];
+  char  host[BINKD_FQDNLEN + 1];
   struct sockaddr_storage sin;
   socklen_t sin_len = sizeof(sin);
   BINKD_CONFIG *cfg = state->config;
