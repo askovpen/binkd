@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.17 2012/01/03 17:25:34 green Exp $
+# $Id: Makefile,v 2.18 2012/01/16 19:52:26 green Exp $
 #
 # Usage: wmake [DEBUG=1] [NOFORK=1] [ZLIB=1] [BZLIB2=1] [ZLIBDL=1]
 #
@@ -20,7 +20,8 @@ CFLAGS    = -DOS2 -DHAVE_THREADS -DHAVE_IO_H -DHAVE_SYS_TIME_H      &
             -DHAVE_SYS_IOCTL_H -DHAVE_SNPRINTF -Dsnprintf=_bprintf  &
             -DHAVE_VSNPRINTF -Dvsnprintf=_vbprintf -DHAVE_DOS_H     &
             -DHAVE_STDARG_H -DIBMTCPIP -DVOID_SLEEP                 &
-            -DHTTPS -DNTLM -DAMIGADOS_4D_OUTBOUND /w4 /bm /zq 
+            -DHTTPS -DNTLM -DAMIGADOS_4D_OUTBOUND                   &
+	    -DHAVE_NETINET_IN_H -DHAVE_NETDB_H /w4 /bm /zq
 
 !ifeq DEBUG 1
 CFLAGS    += -d3 -hw
