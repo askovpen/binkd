@@ -22,9 +22,12 @@
  */
 
 /*
- * $Id: srv_gai.c,v 2.4 2012/01/22 12:27:07 green Exp $
+ * $Id: srv_gai.c,v 2.5 2012/01/22 20:40:56 green Exp $
  *
  * $Log: srv_gai.c,v $
+ * Revision 2.5  2012/01/22 20:40:56  green
+ * Replaces index (deprecated) with strchr
+ *
  * Revision 2.4  2012/01/22 12:27:07  green
  * No SRV lookup for IP addresses
  *
@@ -97,7 +100,7 @@ int srv_getaddrinfo(const char *node, const char *service,
 	return getaddrinfo(node, service, hints, res);
 #ifdef AF_INET6
     if ((hints->ai_family == AF_INET6 || hints->ai_family == AF_UNSPEC) && 
-	    index(node, ':'))
+	    strchr(node, ':'))
 	return getaddrinfo(node, service, hints, res);
 #endif
 
