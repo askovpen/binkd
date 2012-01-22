@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: btypes.h,v 2.8 2007/10/30 07:33:25 gul Exp $
+ * $Id: btypes.h,v 2.9 2012/01/22 13:54:12 green Exp $
  *
  * $Log: btypes.h,v $
+ * Revision 2.9  2012/01/22 13:54:12  green
+ * Allow limiting IPv4/6 usage per node using new flags -4/-6
+ *
  * Revision 2.8  2007/10/30 07:33:25  gul
  * New config option dont-send-empty
  *
@@ -110,6 +113,7 @@ struct _FTN_NODE
 #ifdef BW_LIM
   long bw_send, bw_recv;               /* send and receive bw limits */
 #endif
+  int IP_afamily;
 };
 
 typedef struct _FTNQ FTNQ;
