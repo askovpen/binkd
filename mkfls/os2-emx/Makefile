@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.24 2012/01/23 21:01:58 green Exp $
+# $Id: Makefile,v 2.25 2012/01/23 21:09:42 green Exp $
 #
 # Usage: make [DEBUG=1] [NOFORK=1] [PERL=1] [PERLDL=1]
 #             [ZLIB=1] [BZLIB2=1] [ZLIBDL=1]
@@ -113,7 +113,7 @@ $(TARGET): $(OBJS) os2/resolv.a
 install: all clean
 
 clean:
-	-del /n *.RES *.obj *.o os2\*.o ntlm\*.o *.map *~ *.bak *.b *.ini *.err core >nul 2> nul
+	-del /n *.RES *.obj *.o os2\*.o ntlm\*.o os2\*.a *.map *~ *.bak *.b *.ini *.err core >nul 2> nul
 
 depend	Makefile.dep:
 	@echo Build Makefile.dep...
