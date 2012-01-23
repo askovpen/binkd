@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.25 2012/01/23 21:09:42 green Exp $
+# $Id: Makefile,v 2.26 2012/01/23 21:12:09 green Exp $
 #
 # Usage: make [DEBUG=1] [NOFORK=1] [PERL=1] [PERLDL=1]
 #             [ZLIB=1] [BZLIB2=1] [ZLIBDL=1]
@@ -102,7 +102,7 @@ all: $(TARGET)
 	@echo Compiling $*.c...
 	@$(CC) -c $(CFLAGS) -o $*.o $*.c
 
-.imp.a.:
+.imp.a:
 	@echo Creating import library from $*.imp
 	@$(IMPLIB) -o $*.a $*.imp
 
