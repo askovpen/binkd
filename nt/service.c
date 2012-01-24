@@ -15,9 +15,12 @@
     "Manipulate Windows NT Services by Writing a Service Control Program"
  */
 /*
- * $Id: service.c,v 2.56 2012/01/03 17:25:35 green Exp $
+ * $Id: service.c,v 2.57 2012/01/24 17:06:05 gul Exp $
  *
  * $Log: service.c,v $
+ * Revision 2.57  2012/01/24 17:06:05  gul
+ * Remove third arg in binkd_main() call
+ *
  * Revision 2.56  2012/01/03 17:25:35  green
  * Implemented IPv6 support
  * - replace (almost) all getXbyY function calls with getaddrinfo/getnameinfo (RFC2553) calls
@@ -483,7 +486,7 @@ static void ServiceStart()
 
     service_name = NTServiceDisplayName(srvname);
 
-    binkd_main(argc, serv_argv, NULL);
+    binkd_main(argc, serv_argv);
   }
   else
   {
