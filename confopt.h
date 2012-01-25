@@ -12,10 +12,13 @@
  */
 
 /*
- * $Id: confopt.h,v 2.9 2012/01/08 16:23:52 green Exp $
+ * $Id: confopt.h,v 2.10 2012/01/25 21:02:43 green Exp $
  *
  * Revision history:
  * $Log: confopt.h,v $
+ * Revision 2.10  2012/01/25 21:02:43  green
+ * Some changes to enable compilation on OS/2 with GCC/kLIBC
+ *
  * Revision 2.9  2012/01/08 16:23:52  green
  * Fixed compilation in Cygwin/MinGW
  *
@@ -56,7 +59,11 @@
 #elif defined(IBMC)
 #  define _DBNKD_COMPILER "ibmc"
 #elif defined(__EMX__)
-#  define _DBNKD_COMPILER "gcc (emx)"
+#  if __GNUC__ > 2
+#    define _DBNKD_COMPILER "gcc (klibc)"
+#  else
+#    define _DBNKD_COMPILER "gcc (emx)"
+#  endif
 #elif defined(__MSC__)
 #  define _DBNKD_COMPILER "msc"
 #elif defined(__PCC__)
