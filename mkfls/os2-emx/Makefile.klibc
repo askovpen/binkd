@@ -1,4 +1,4 @@
-# $Id: Makefile.klibc,v 1.1 2012/01/25 21:02:43 green Exp $
+# $Id: Makefile.klibc,v 1.2 2012/01/25 21:06:40 green Exp $
 #
 # Makefile for OS/2 GCC using kLIBC (GCC > 3.x)
 #
