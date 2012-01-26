@@ -1,9 +1,9 @@
-# $Id: Makefile,v 2.47 2012/01/03 17:52:33 green Exp $
+# $Id: Makefile,v 2.48 2012/01/26 09:57:29 gul Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #             [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1]
-#	      [IPV6=1] [FSP1035=1]
+#             [IPV6=1] [FSP1035=1] [BW_LIM=1]
 #
 #
 
@@ -96,6 +96,12 @@ OUTDIR:=$(OUTDIR)-debugchild
 BINKDTYPE:=$(BINKDTYPE), debugchild
 endif
 # debugchild, nofork ----------------------------------------------------------
+
+# bandwidth limiting ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ifdef BW_LIM
+CDEFS+= -DBW_LIM=1
+endif
+# bandwidth limiting ----------------------------------------------------------
 
 # perl support ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 # PERLDL implies PERL
