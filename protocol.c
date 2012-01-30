@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.216 2012/01/27 18:25:45 green Exp $
+ * $Id: protocol.c,v 2.217 2012/01/30 23:02:14 green Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.217  2012/01/30 23:02:14  green
+ * Corrected FTS-1027 support, allow list of hash algos
+ *
  * Revision 2.216  2012/01/27 18:25:45  green
  * Improved getpeername() error handling
  *
@@ -1571,7 +1574,7 @@ static int NUL (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
         state->crypt_flag |= THEY_CRYPT;  /* They want crypt mode */
         Log(2, "Remote requests CRYPT mode");
       }
-      if (!strncmp(w, "CRAM-MD5-", 9) && !no_MD5 &&
+      if (!strncmp(w, "CRAM-", 5) && !no_MD5 &&
           state->to && (state->to->MD_flag>=0))
       {
         Log(2, "Remote requests MD mode");
