@@ -1,7 +1,10 @@
 /*
- * $Id: protoco2.h,v 2.28 2012/01/03 17:25:32 green Exp $
+ * $Id: protoco2.h,v 2.29 2012/05/13 17:26:40 gul Exp $
  *
  * $Log: protoco2.h,v $
+ * Revision 2.29  2012/05/13 17:26:40  gul
+ * Possibility to specify $passwd for session in on_handshake() perl hook
+ *
  * Revision 2.28  2012/01/03 17:25:32  green
  * Implemented IPv6 support
  * - replace (almost) all getXbyY function calls with getaddrinfo/getnameinfo (RFC2553) calls
@@ -177,7 +180,7 @@ struct _STATE
   SOCKET s;
   struct _BINKD_CONFIG *config;
   FTN_NODE *to;			/* Dest. address (if an outbound connection) */
-  char *expected_pwd;
+  char expected_pwd[MAXPWDLEN + 1];
 
   /* binkp buffres */
   char *obuf;
