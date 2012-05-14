@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: readcfg.c,v 2.102 2012/01/22 13:54:12 green Exp $
+ * $Id: readcfg.c,v 2.103 2012/05/14 06:14:58 gul Exp $
  *
  * $Log: readcfg.c,v $
+ * Revision 2.103  2012/05/14 06:14:58  gul
+ * More safe signal handling
+ *
  * Revision 2.102  2012/01/22 13:54:12  green
  * Allow limiting IPv4/6 usage per node using new flags -4/-6
  *
@@ -1217,6 +1220,8 @@ int checkcfg(void)
   BINKD_CONFIG *new_config, *old_config;
 
 #ifdef HAVE_FORK
+  if (got_sighup)
+    Log (2, "got SIGHUP");
   need_reload = got_sighup;
   got_sighup = 0;
 #else
