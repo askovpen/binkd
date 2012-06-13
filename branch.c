@@ -98,7 +98,7 @@ int branch (register void (*F) (void *), register void *arg, register size_t siz
   {
     if ((tmp = malloc (size)) == NULL)
     {
-      Log (1, "malloc failed");
+      Log (LL_ERR, "malloc failed");
       return -1;
     }
     else
@@ -123,7 +123,7 @@ again:
   {
     if (errno == EINTR) goto again;
     /* parent, error */
-    Log (1, "fork: %s", strerror (errno));
+    Log (LL_ERR, "fork: %s", strerror (errno));
   }
   else
   {
@@ -135,7 +135,7 @@ again:
 #if defined(HAVE_THREADS) && !defined(DEBUGCHILD)
   if ((rc = BEGINTHREAD (F, STACKSIZE, arg)) < 0)
   {
-    Log (1, "_beginthread: %s", strerror (errno));
+    Log (LL_ERR, "_beginthread: %s", strerror (errno));
   }
 #endif
 
@@ -152,7 +152,7 @@ again:
   }
   else if (rc < 0)
   {
-    Log (1, "ix_vfork: %s", strerror (errno));
+    Log (LL_ERR, "ix_vfork: %s", strerror (errno));
   }
 #endif
 

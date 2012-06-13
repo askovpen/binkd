@@ -154,6 +154,7 @@
 #define LL_ERR   1
 #define LL_WARN  2
 #define LL_INFO  3
+#define LL_MINOR 4
 #define LL_DBG   7
 #define LL_DBG2  9
 

@@ -16,8 +16,6 @@
 #include <unistd.h>
 #endif
 
-extern void Log (int lev, char *s,...);
-
 int o_rename (const char *from, const char *to)
 {
   int h, saved_errno;

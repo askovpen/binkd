@@ -63,7 +63,7 @@ if (already_daemonized)
 
 #ifdef HAVE_DAEMON
 if (daemon(nochdir, 0) == -1)
-	{ Log(2, "Daemon() failed, %s", strerror(errno)); return -1; }
+	{ Log(LL_WARN, "Daemon() failed, %s", strerror(errno)); return -1; }
 
 #elif defined(HAVE_SETSID)
 if (fork() != 0) exit(0);
@@ -72,7 +72,7 @@ if (setsid() == -1)
 	/* Sendmail wisdom has been used */
 	if ((setpgrp() < 0) || (setsid() < 0))
 #endif
-	{ Log(2, "Setsid() failed, %s", strerror(errno)); }
+	{ Log(LL_WARN, "Setsid() failed, %s", strerror(errno)); }
 
 freopen("/dev/null","r",stdin);
 freopen("/dev/null","w",stdout);
@@ -85,7 +85,7 @@ if (!nochdir)
 
 if (fork() != 0) exit(0);
 if (setpgrp() < 0)
-	{ Log(2, "Setpgrp failed, %s", strerror(errno)); }
+	{ Log(LL_WARN, "Setpgrp failed, %s", strerror(errno)); }
 
 { int fd;
   if ((fd = open("/dev/tty", O_RDWR)) >= 0)
@@ -93,7 +93,7 @@ if (setpgrp() < 0)
 	  close(fd);
 	}
   else
-	{ Log(2, "Cannot open /dev/tty, %s", strerror(errno)); }
+	{ Log(LL_WARN, "Cannot open /dev/tty, %s", strerror(errno)); }
 }
 
 if (!nochdir)

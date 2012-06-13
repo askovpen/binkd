@@ -71,7 +71,7 @@ int _InitSem(void *vpSem) {
   ULONG rc;
 
   if ((rc = DosCreateMutexSem (0, &hmtx, 0, FALSE)) != 0) {
-     Log (0, "DosCreateMutexSem: error 0x%lx", rc);
+     Log (LL_FATAL, "DosCreateMutexSem: error 0x%lx", rc);
      return(-1);
    }
    return(0);
@@ -87,7 +87,7 @@ int _InitEventSem(void *vpSem) {
   ULONG rc;
 
   if ((rc = DosCreateEventSem (NULL, &hevt, 0, FALSE)) != 0) {
-     Log (0, "DosCreateEventSem: error 0x%lx", rc);
+     Log (LL_FATAL, "DosCreateEventSem: error 0x%lx", rc);
      return(-1);
    }
    return(0);
@@ -119,7 +119,7 @@ int _LockSem(void *vpSem) {
   if (hmtx == 0) return (-1);
   if ((rc = DosRequestMutexSem (hmtx, SEM_INDEFINITE_WAIT)) != 0) {
     _CleanSem (vpSem);
-    Log (0, "DosRequestMutexSem retcode 0x%lx", rc);
+    Log (LL_FATAL, "DosRequestMutexSem retcode 0x%lx", rc);
   }
   return (0);
 }

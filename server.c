@@ -319,7 +319,7 @@ static int do_server(BINKD_CONFIG *config)
   if ((aiErr = getaddrinfo(config->bindaddr[0] ? config->bindaddr : NULL, 
 		config->iport, &hints, &aiHead)) != 0)
   {
-    Log(0, "servmgr getaddrinfo: %s (%d)", gai_strerror(aiErr), aiErr);
+    Log(LL_FATAL, "servmgr getaddrinfo: %s (%d)", gai_strerror(aiErr), aiErr);
     return -1;
   }
 
@@ -329,7 +329,7 @@ static int do_server(BINKD_CONFIG *config)
 	    ai->ai_protocol);
     if (sockfd[sockfd_used] < 0)
     {
-      Log (0, "servmgr socket(): %s", TCPERR ());
+      Log (LL_FATAL, "servmgr socket(): %s", TCPERR ());
       continue;
     }
 #ifdef IPV6_V6ONLY
@@ -338,22 +338,22 @@ static int do_server(BINKD_CONFIG *config)
       int v6only = 1;
       if (setsockopt(sockfd[sockfd_used], IPPROTO_IPV6, IPV6_V6ONLY, 
 		  (char *) &v6only, sizeof(v6only)) == SOCKET_ERROR)
-        Log(1, "servmgr setsockopt (IPV6_V6ONLY): %s", TCPERR());
+        Log(LL_ERR, "servmgr setsockopt (IPV6_V6ONLY): %s", TCPERR());
     }
 #endif
     if (setsockopt (sockfd[sockfd_used], SOL_SOCKET, SO_REUSEADDR,
                   (char *) &opt, sizeof opt) == SOCKET_ERROR)
-      Log (1, "servmgr setsockopt (SO_REUSEADDR): %s", TCPERR ());
+      Log (LL_ERR, "servmgr setsockopt (SO_REUSEADDR): %s", TCPERR ());
     
     if (bind (sockfd[sockfd_used], ai->ai_addr, ai->ai_addrlen) != 0)
     {
-      Log (0, "servmgr bind(): %s", TCPERR ());
+      Log (LL_FATAL, "servmgr bind(): %s", TCPERR ());
       soclose(sockfd[sockfd_used]);
       continue;
     }
     if (listen (sockfd[sockfd_used], 5) != 0)
     {
-      Log(0, "servmgr listen(): %s", TCPERR ());
+      Log(LL_FATAL, "servmgr listen(): %s", TCPERR ());
       soclose(sockfd[sockfd_used]);
       continue;
     }
@@ -364,7 +364,7 @@ static int do_server(BINKD_CONFIG *config)
   freeaddrinfo(aiHead);
 
   if (sockfd_used == 0) {
-    Log(0, "servmgr: No listen socket open");
+    Log(LL_FATAL, "servmgr: No listen socket open");
     return -1;
   }
 
@@ -418,7 +418,7 @@ static int do_server(BINKD_CONFIG *config)
         }
         save_errno = TCPERRNO;
         if (!binkd_exit) /* Suppress servmgr socket error at binkd exit */
-          Log (1, "servmgr select(): %s", TCPERR ());
+          Log (LL_ERR, "servmgr select(): %s", TCPERR ());
         goto accepterr;
     }
  
@@ -435,7 +435,7 @@ static int do_server(BINKD_CONFIG *config)
         if (save_errno != EINVAL && save_errno != EINTR)
         {
           if (!binkd_exit)
-            Log (1, "servmgr accept(): %s", TCPERR ());
+            Log (LL_ERR, "servmgr accept(): %s", TCPERR ());
 #ifdef UNIX
           if (save_errno == ECONNRESET ||
               save_errno == ETIMEDOUT ||
@@ -473,11 +473,11 @@ static int do_server(BINKD_CONFIG *config)
 	    host, sizeof(host), service, sizeof(service),
 	    NI_NUMERICHOST | NI_NUMERICSERV);
 	if (aiErr == 0) 
-          Log (3, "incoming from %s (%s)", host, service);
+          Log (LL_INFO, "incoming from %s (%s)", host, service);
         else
         {
-          Log(2, "Error in getnameinfo(): %s (%d)", gai_strerror(aiErr), aiErr);
-	  Log(3, "incoming from unknown");
+          Log(LL_WARN, "Error in getnameinfo(): %s (%d)", gai_strerror(aiErr), aiErr);
+	  Log(LL_INFO, "incoming from unknown");
 	}
   
         /* Creating a new process for the incoming connection */
@@ -489,7 +489,7 @@ static int do_server(BINKD_CONFIG *config)
           rel_grow_handles (-6);
           threadsafe(--n_servers);
           PostSem(&eothread);
-          Log (1, "servmgr branch(): cannot branch out");
+          Log (LL_ERR, "servmgr branch(): cannot branch out");
           sleep(1);
         }
         else
@@ -511,7 +511,7 @@ void servmgr (void)
 
   srand(time(0));
   setproctitle ("server manager");
-  Log (4, "servmgr started");
+  Log (LL_MINOR, "servmgr started");
 
 #ifdef HAVE_FORK
   blocksig();
@@ -527,7 +527,7 @@ void servmgr (void)
     status = do_server(config);
     unlock_config_structure(config, 0);
   } while (status == 0 && !binkd_exit);
-  Log(4, "downing servmgr...");
+  Log(LL_MINOR, "downing servmgr...");
   pidsmgr = 0;
   PostSem(&eothread);
 }

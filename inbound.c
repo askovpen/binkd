@@ -233,7 +233,7 @@ static int creat_tmp_name (char *s, TFILE *file, FTN_ADDR *from, char *inbound)
     {
       if ((f = fopen (s, "w")) == 0)
       {
-        Log (1, "%s: %s", s, strerror (errno));
+        Log (LL_ERR, "%s: %s", s, strerror (errno));
         delete (s);
         return 0;
       }
@@ -242,14 +242,14 @@ static int creat_tmp_name (char *s, TFILE *file, FTN_ADDR *from, char *inbound)
                    (uintmax_t) file->size,
                    (uintmax_t) file->time, node) <= 0)
       {
-        Log (1, "%s: %s", s, strerror (errno));
+        Log (LL_ERR, "%s: %s", s, strerror (errno));
         fclose (f);
         delete (s);
         return 0;
       }
       if (fclose (f))
       {
-        Log (1, "%s: %s", s, strerror (errno));
+        Log (LL_ERR, "%s: %s", s, strerror (errno));
         delete (s);
         return 0;
       }
@@ -271,7 +271,7 @@ static int to_be_deleted (char *tmp_name, char *netname, off_t filesize, BINKD_C
   if ((stat (tmp_name, &sb) == 0 ? sb.st_size != filesize : (sp = &sd, 1)) &&
       time (0) - sp->st_mtime > config->kill_old_partial_files)
   {
-    Log (4, "found old .dt/.hr files for %s", netname);
+    Log (LL_MINOR, "found old .dt/.hr files for %s", netname);
     return 1;
   }
   strcpy (strrchr (tmp_name, '.'), ".hr");
@@ -297,7 +297,7 @@ static int find_tmp_name (char *s, TFILE *file, STATE *state, BINKD_CONFIG *conf
 
   if ((dp = opendir (inbound)) == 0)
   {
-    Log (1, "cannot opendir %s: %s", inbound, strerror (errno));
+    Log (LL_ERR, "cannot opendir %s: %s", inbound, strerror (errno));
     return 0;
   }
 
@@ -315,7 +315,7 @@ static int find_tmp_name (char *s, TFILE *file, STATE *state, BINKD_CONFIG *conf
 
     if ((f = fopen (s, "r")) == NULL)
     {
-      Log (1, "find_tmp_name: %s: %s", de->d_name, strerror (errno));
+      Log (LL_ERR, "find_tmp_name: %s: %s", de->d_name, strerror (errno));
     }
     else if (fgets (buf, sizeof (buf), f)==NULL)
     {  /* This .hr is empty, now checks to old */
@@ -367,7 +367,7 @@ static int find_tmp_name (char *s, TFILE *file, STATE *state, BINKD_CONFIG *conf
           { /* non-destructive skip file from busy aka */
             if (i >= state->nfa)
             {
-              Log (2, "Skip partial file %s: aka %s busy", w[0], w[3]);
+              Log (LL_WARN, "Skip partial file %s: aka %s busy", w[0], w[3]);
               for (i = 0; i < 4; ++i)
                 xfree (w[i]);
               return 0;
@@ -435,7 +435,7 @@ FILE *inb_fopen (STATE *state, BINKD_CONFIG *config)
 fopen_again:
   if ((f = fopen (buf, "ab")) == 0)
   {
-    Log (1, "%s: %s", buf, strerror (errno));
+    Log (LL_ERR, "%s: %s", buf, strerror (errno));
     return 0;
   }
   fseek (f, 0, SEEK_END);               /* Work-around MSVC bug */
@@ -464,7 +464,7 @@ fopen_again:
       freespace = freespace2;
     if (sb.st_size > state->in.size)
     {
-      Log (1, "Partial size %" PRIuMAX " > %" PRIuMAX " (file size), delete partial",
+      Log (LL_ERR, "Partial size %" PRIuMAX " > %" PRIuMAX " (file size), delete partial",
            (uintmax_t) sb.st_size, (uintmax_t) state->in.size);
       fclose (f);
       if (trunc_file (buf) && sdelete (buf)) return 0;
@@ -473,7 +473,7 @@ fopen_again:
     if (req_free >= 0 &&
         freespace < (state->in.size - sb.st_size + 1023) / 1024 + (unsigned long)req_free)
     {
-      Log (1, "no enough free space in %s (%luK, req-d %" PRIuMAX "K)",
+      Log (LL_ERR, "no enough free space in %s (%luK, req-d %" PRIuMAX "K)",
            (freespace == freespace2) ? state->inbound : config->temp_inbound,
            freespace,
            (uintmax_t) (state->in.size - sb.st_size + 1023) / 1024 + req_free);
@@ -482,7 +482,7 @@ fopen_again:
     }
   }
   else
-    Log (1, "%s: fstat: %s", state->in.netname, strerror (errno));
+    Log (LL_ERR, "%s: fstat: %s", state->in.netname, strerror (errno));
 
   return f;
 }
@@ -493,7 +493,7 @@ int inb_reject (STATE *state, BINKD_CONFIG *config)
 
   if (find_tmp_name (tmp_name, &state->in, state, config) != 1)
   {
-    Log (1, "missing tmp file for %s!", state->in.netname);
+    Log (LL_ERR, "missing tmp file for %s!", state->in.netname);
     return 0;
   }
   else
@@ -535,11 +535,11 @@ int check_pkthdr(STATE *state, char *netname, char *tmp_name,
   /* parse pkt header */
   check = 0;
   if ( (PKT = fopen(tmp_name, "rb")) == NULL )
-      Log (1, "can't open file %s: %s, header check failed for %s", tmp_name, strerror (errno), netname);
+      Log (LL_ERR, "can't open file %s: %s, header check failed for %s", tmp_name, strerror (errno), netname);
   else if ( !fread(buf, sizeof(buf), 1, PKT) )
-      Log (1, "file %s read error: %s, header check failed for %s", tmp_name, strerror (errno), netname);
+      Log (LL_ERR, "file %s read error: %s, header check failed for %s", tmp_name, strerror (errno), netname);
   else if ( !pkt_getaddr(buf, &cz, &cn, &cf, &cp, NULL, NULL, NULL, NULL) )
-      Log (1, "pkt %s version is %d, expected 2; header check failed", netname, buf[18]+buf[19]*0x100);
+      Log (LL_ERR, "pkt %s version is %d, expected 2; header check failed", netname, buf[18]+buf[19]*0x100);
   else {
     check = 1;
     Log (5, "pkt addr is %d:%d/%d.%d for %s", cz, cn, cf, cp, netname);
@@ -555,7 +555,7 @@ int check_pkthdr(STATE *state, char *netname, char *tmp_name,
   }
   if (PKT != NULL) fclose(PKT);
   /* change pkt ext to bad */
-  if (check) Log (1, "bad pkt addr: %d:%d/%d.%d (file %s)", cz, cn, cf, cp, netname);
+  if (check) Log (LL_ERR, "bad pkt addr: %d:%d/%d.%d (file %s)", cz, cn, cf, cp, netname);
   i = strlen(real_name); check = 0;
   while (i > 0 && real_name[--i] != '.') check++;
   if (i > 0) {
@@ -582,7 +582,7 @@ int inb_done (TFILE *file, STATE *state, BINKD_CONFIG *config)
 
   if (find_tmp_name (tmp_name, file, state, config) != 1)
   {
-    Log (1, "missing tmp file for %s!", netname);
+    Log (LL_ERR, "missing tmp file for %s!", netname);
     return 0;
   }
 
@@ -610,12 +610,12 @@ int inb_done (TFILE *file, STATE *state, BINKD_CONFIG *config)
       unlinked |= (unlink(real_name) == 0);
       if (!RENAME (tmp_name, real_name))
       {
-        Log (1, "%s -> %s%s", netname, real_name, unlinked?" (overwrited)":"");
+        Log (LL_ERR, "%s -> %s%s", netname, real_name, unlinked?" (overwrited)":"");
         break;
       }
       if ((errno != EEXIST && errno != EACCES && errno != EAGAIN) || i==10)
       {
-        Log (1, "cannot rename %s to it's realname: %s! (data stored in %s)",
+        Log (LL_ERR, "cannot rename %s to it's realname: %s! (data stored in %s)",
              netname, strerror (errno), tmp_name);
         *real_name = 0;
         return 0;
@@ -634,25 +634,25 @@ int inb_done (TFILE *file, STATE *state, BINKD_CONFIG *config)
     if (ispkt (netname)) check_pkthdr(state, netname, tmp_name, real_name, config);
 
     if (touch (tmp_name, file->time) != 0)
-      Log (1, "touch %s: %s", tmp_name, strerror (errno));
+      Log (LL_ERR, "touch %s: %s", tmp_name, strerror (errno));
 
     while (1)
     {
       if (!RENAME (tmp_name, real_name))
       {
-        Log (2, "%s -> %s", netname, real_name);
+        Log (LL_WARN, "%s -> %s", netname, real_name);
         break;
       }
       else
       {
         if (errno != EEXIST && errno != EACCES && errno != EAGAIN)
         {
-          Log (1, "cannot rename %s to it's realname: %s! (data stored in %s)",
+          Log (LL_ERR, "cannot rename %s to it's realname: %s! (data stored in %s)",
                netname, strerror (errno), tmp_name);
           *real_name = 0;
           return 0;
         }
-        Log (2, "error renaming `%s' to `%s': %s",
+        Log (LL_WARN, "error renaming `%s' to `%s': %s",
              netname, real_name, strerror (errno));
       }
 
@@ -664,7 +664,7 @@ int inb_done (TFILE *file, STATE *state, BINKD_CONFIG *config)
         *s = 'a';
       else if (*--s == '.' || *s == '\\' || *s == '/')
       {
-        Log (1, "cannot rename %s to it's realname! (data stored in %s)",
+        Log (LL_ERR, "cannot rename %s to it's realname! (data stored in %s)",
              netname, tmp_name);
         *real_name = 0;
         return 0;
@@ -688,7 +688,7 @@ int inb_done (TFILE *file, STATE *state, BINKD_CONFIG *config)
   ftnaddress_to_str (szAddr, state->fa);
   state->bytes_rcvd += file->size;
   state->files_rcvd++;
-  Log (2, "rcvd: %s (%" PRIuMAX ", %.2f CPS, %s)", file->netname,
+  Log (LL_WARN, "rcvd: %s (%" PRIuMAX ", %.2f CPS, %s)", file->netname,
        (uintmax_t) file->size,
        (double) (file->size) /
        (safe_time() == file->start ? 1 : (safe_time() - file->start)), szAddr);

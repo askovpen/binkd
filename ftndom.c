@@ -93,6 +93,6 @@ char *get_matched_domain (int zone, FTN_ADDR *pAddr, int nAddr, FTN_DOMAIN *pDom
     p = pAddr[0].domain;   /* If we have nodes defined, use main AKA */
   else
     p = pDomains->name;    /* Use first domain (at least one always defined at this point) */
-  Log(1, "Cannot find domain for zone %d, assuming '%s'", zone, p);
+  Log(LL_ERR, "Cannot find domain for zone %d, assuming '%s'", zone, p);
   return p;
 }

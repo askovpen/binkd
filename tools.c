@@ -472,9 +472,9 @@ int create_sem_file (char *name, int errloglevel)
   snprintf (buf, sizeof (buf), "%u\n", (int) getpid ());
   if ((i = write(h, buf, strlen(buf))) != (int)strlen(buf))
   { if (i == -1)
-      Log (2, "Can't write to %s (handle %d): %s", name, h, strerror(errno));
+      Log (LL_WARN, "Can't write to %s (handle %d): %s", name, h, strerror(errno));
     else
-      Log (2, "Can't write %d bytes to %s, wrote only %d", strlen(buf), name, i);
+      Log (LL_WARN, "Can't write %d bytes to %s, wrote only %d", strlen(buf), name, i);
   }
   close (h);
   Log (5, "created %s", name);
@@ -871,7 +871,7 @@ char *parse_args (int argc, char *argv[], char *src, char *ID)
   }
   if (i < argc)
   {
-    Log (1, "%s: cannot parse args", ID, src);
+    Log (LL_ERR, "%s: cannot parse args", ID, src);
     return NULL;
   }
   else
@@ -915,7 +915,7 @@ int touch (char *file, time_t t)
     if (r == 32)
       r = 0; /* Can't touch opened *.bsy */
     if (r)
-      Log (1, "touch: DosSetPathInfo(%s) retcode %d", file, r);
+      Log (LL_ERR, "touch: DosSetPathInfo(%s) retcode %d", file, r);
   }
   return (r!=0);
 #endif
@@ -978,7 +978,7 @@ int delete (char *path)
   int rc;
 
   if ((rc = unlink (path)) != 0)
-    Log (1, "error unlinking `%s': %s", path, strerror (errno));
+    Log (LL_ERR, "error unlinking `%s': %s", path, strerror (errno));
   else
     Log (5, "unlinked `%s'", path);
 
@@ -991,12 +991,12 @@ int trunc_file (char *path)
 
   if ((h = open (path, O_WRONLY | O_TRUNC)) == -1)
   {
-    Log (1, "cannot truncate `%s': %s", path, strerror (errno));
+    Log (LL_ERR, "cannot truncate `%s': %s", path, strerror (errno));
     return -1;
   }
   else
   {
-    Log (4, "truncated %s", path);
+    Log (LL_MINOR, "truncated %s", path);
     close (h);
     return 0;
   }
@@ -1020,7 +1020,7 @@ int sdelete (char *path)
     else
       break;
   }
-  Log (1, "error unlinking `%s': %s", path, strerror (errno));
+  Log (LL_ERR, "error unlinking `%s': %s", path, strerror (errno));
 
   return rc;
 }
@@ -1156,20 +1156,20 @@ char *makeinboundcase (char *s, enum inbcasetype inbcase)
   {
       case INB_UPPER:
 	s = strupper(s);
-	Log (8, "uppercase filename");
+	Log (LL_DBG2, "uppercase filename");
         break;
       case INB_LOWER:
 	s = strlower(s);
-	Log (8, "lowercase filename");
+	Log (LL_DBG2, "lowercase filename");
         break;
       case INB_MIXED:
         s[0] = toupper (s[0]);
         for (i = 1; s[i]; ++i)
           s[i] = isalnum(s[i-1]) ? tolower(s[i]) : toupper(s[i]);
-        Log (8, "mixing filename case");
+        Log (LL_DBG2, "mixing filename case");
         break;
       default:
-	Log (8, "nothing to do with filename case");
+	Log (LL_DBG2, "nothing to do with filename case");
         break;
   }
 

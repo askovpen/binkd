@@ -152,7 +152,7 @@ int evt_test (EVTQ **eq, char *filename, EVT_FLAG *evt_flags)
     {
       if (curr->path)
       {
-	Log (4, "got %s, %screating %s", curr->pattern, curr->imm ? "" : "delayed ", curr->path);
+	Log (LL_MINOR, "got %s, %screating %s", curr->pattern, curr->imm ? "" : "delayed ", curr->path);
 	if (curr->imm)
 	{
 	  if (create_empty_sem_file (curr->path) == 0)
@@ -163,7 +163,7 @@ int evt_test (EVTQ **eq, char *filename, EVT_FLAG *evt_flags)
       }
       else if (curr->command)
       {
-	Log (4, "got %s, %sstarting %s", curr->pattern, curr->imm ? "" : "delayed ", curr->command);
+	Log (LL_MINOR, "got %s, %sstarting %s", curr->pattern, curr->imm ? "" : "delayed ", curr->command);
 	rc=1;
       }
     }
@@ -182,12 +182,12 @@ void evt_set (EVTQ *eq)
   {
     if (eq->evt_type == 'e')
     {
-      Log (4, "Running %s", eq->path);
+      Log (LL_MINOR, "Running %s", eq->path);
       run(eq->path);
     }
     else
     {
-      Log (4, "Creating %s", eq->path);
+      Log (LL_MINOR, "Creating %s", eq->path);
       if (create_empty_sem_file(eq->path) == 0)
 	touch(eq->path, time(NULL));
     }
@@ -259,7 +259,7 @@ static FTNQ *parse_response (FTNQ *q, char *rsp, FTN_ADDR *fa, BINKD_CONFIG *con
 	break;
       for (i = 0; i < sizeof (buf) - 1 && !isspace (buf[i]); ++i);
       buf[i] = 0;
-      Log (4, "parse_response: add file `%s' to queue", buf + 1);
+      Log (LL_MINOR, "parse_response: add file `%s' to queue", buf + 1);
       switch (*buf)
 	{
 	  case '=':
@@ -272,16 +272,16 @@ static FTNQ *parse_response (FTNQ *q, char *rsp, FTN_ADDR *fa, BINKD_CONFIG *con
 	    q = q_add_last_file (q, buf + 1, fa, 'h', 'a', 0, config);
 	    break;
 	  default:
-	    Log (2, "parse_response: unknown predictor `%c', ignored response file `%s'", *buf, buf + 1);
+	    Log (LL_WARN, "parse_response: unknown predictor `%c', ignored response file `%s'", *buf, buf + 1);
 	    break;
 	}
     }
     if (ftell (in) == 0)
-	Log (3, "SRIF response file is empty");
+	Log (LL_INFO, "SRIF response file is empty");
     fclose (in);
   }
   else
-    Log (1, "parse_response: %s: %s", rsp, strerror (errno));
+    Log (LL_ERR, "parse_response: %s: %s", rsp, strerror (errno));
   return q;
 }
 
@@ -303,7 +303,7 @@ static EVTQ *run_args(EVTQ *eq, char *cmd, char *filename0, STATE *st, int imm)
   if ((!isalnum(fn[i])) && (!strchr(valid_filename_chars, fn[i])))
   {
     fn="-";
-    Log(4, "Invalid filename (%s) received!", filename0);
+    Log(LL_MINOR, "Invalid filename (%s) received!", filename0);
     break;
   }
   for (i=0; pn[i]; i++)
@@ -345,7 +345,7 @@ static EVTQ *run_args(EVTQ *eq, char *cmd, char *filename0, STATE *st, int imm)
           i=GetShortPathName(filename0, ts, sizeof(ts));
           if ((i<1) || (i>MAXPATHLEN))
           {
-            Log(2, "GetShortPathName() fails %d", GetLastError());
+            Log(LL_WARN, "GetShortPathName() fails %d", GetLastError());
             use_fn=1;
             strcpy(ts, fn);
           }
@@ -366,7 +366,7 @@ static EVTQ *run_args(EVTQ *eq, char *cmd, char *filename0, STATE *st, int imm)
 	  char *pa, *addrlist;
 	  pa = addrlist = malloc(st->nfa*(FTN_ADDR_SZ+1l));
 	  if (addrlist == NULL)
-	  { Log(1, "Not enough memory, %ld bytes needed", st->nfa*(FTN_ADDR_SZ+1l));
+	  { Log(LL_ERR, "Not enough memory, %ld bytes needed", st->nfa*(FTN_ADDR_SZ+1l));
 	    break;
 	  }
 	  for (i=0; i<st->nfa; i++)
@@ -406,7 +406,7 @@ static EVTQ *run_args(EVTQ *eq, char *cmd, char *filename0, STATE *st, int imm)
   }
 
   if ((fn!=filename0) && (use_fn))
-    Log (1, "Security problem. Execution aborted...");
+    Log (LL_ERR, "Security problem. Execution aborted...");
   else if (imm) /* immediate event */
     run(w);
   else
@@ -445,14 +445,14 @@ FTNQ *evt_run (FTNQ *q, char *filename, int imm_freq,
 	        delete(filename);
 	    }
 	    else
-	      Log (1, "srif_fill: error");
+	      Log (LL_ERR, "srif_fill: error");
 	    free (w);
 	    q = parse_response (q, rsp, st->fa, config);
 	    delete (srf);
 	    delete (rsp);
 	  }
 	  else
-	    Log (1, "mksrifpaths: error");
+	    Log (LL_ERR, "mksrifpaths: error");
 	} else
 	  add_to_rcvdlist (&st->rcvdlist, &st->n_rcvdlist, filename);
       }

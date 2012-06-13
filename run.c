@@ -55,16 +55,16 @@ int run (char *cmd)
 {
   int rc=-1;
 #if !defined(WIN32) && !defined(EMX)
-  Log (3, "executing `%s'", cmd);
-  Log (3, "rc=%i", (rc=system (cmd)));
+  Log (LL_INFO, "executing `%s'", cmd);
+  Log (LL_INFO, "rc=%i", (rc=system (cmd)));
 #elif defined(EMX)
   sigset_t s;
     
   sigemptyset(&s);
   sigaddset(&s, SIGCHLD);
   sigprocmask(SIG_BLOCK, &s, NULL);
-  Log (3, "executing `%s'", cmd);
-  Log (3, "rc=%i", (rc=system (cmd)));
+  Log (LL_INFO, "executing `%s'", cmd);
+  Log (LL_INFO, "rc=%i", (rc=system (cmd)));
   sigprocmask(SIG_UNBLOCK, &s, NULL);
 #else /* WIN32 */
   STARTUPINFO si;
@@ -72,7 +72,7 @@ int run (char *cmd)
   DWORD dw;
   char *cs, *sp=getenv("COMSPEC");
 
-  Log (3, "executing `%s'", cmd);
+  Log (LL_INFO, "executing `%s'", cmd);
   memset(&si, 0, sizeof(si));
   si.cb=sizeof(si);
   if(!sp) sp="command";
@@ -96,15 +96,15 @@ int run (char *cmd)
   }
   strcat(cs, sp);
   if (!CreateProcess(NULL, cs, NULL, NULL, 0, dw, NULL, NULL, &si, &pi))
-    Log (1, "Error in CreateProcess()=%ld", (long)GetLastError());
+    Log (LL_ERR, "Error in CreateProcess()=%ld", (long)GetLastError());
   else if (sp==cmd)
   {
     if (WaitForSingleObject(pi.hProcess, INFINITE) != WAIT_OBJECT_0)
-      Log (1, "Error in WaitForSingleObject()=%ld", (long)GetLastError());
+      Log (LL_ERR, "Error in WaitForSingleObject()=%ld", (long)GetLastError());
     else if (!GetExitCodeProcess(pi.hProcess, &dw))
-      Log (1, "Error in GetExitCodeProcess()=%ld", (long)GetLastError());
+      Log (LL_ERR, "Error in GetExitCodeProcess()=%ld", (long)GetLastError());
     else
-      Log (3, "rc=%i", rc = (int)dw);
+      Log (LL_INFO, "rc=%i", rc = (int)dw);
   }
   free(cs);
   CloseHandle(pi.hProcess);

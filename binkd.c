@@ -509,17 +509,17 @@ void chld (int *childcount)
   {
     if (pidcmgr && pid == pidcmgr) {
       if (WIFSIGNALED(status))
-        Log (0, "client manager (pid=%u) exited by signal %u", pid, WTERMSIG(status));
+        Log (LL_FATAL, "client manager (pid=%u) exited by signal %u", pid, WTERMSIG(status));
       else
-        Log (0, "client manager (pid=%u) exited, retcode %u", pid, WEXITSTATUS(status));
+        Log (LL_FATAL, "client manager (pid=%u) exited, retcode %u", pid, WEXITSTATUS(status));
       exit(4);
     }
     if (childcount)
       childcount[0]--;
     if (WIFSIGNALED(status))
-      Log (2, "process %u exited by signal %u", pid, WTERMSIG(status));
+      Log (LL_WARN, "process %u exited by signal %u", pid, WTERMSIG(status));
     else
-      Log (4, "rc(%u)=%u", pid, WEXITSTATUS(status));
+      Log (LL_MINOR, "rc(%u)=%u", pid, WEXITSTATUS(status));
   }
 }
 
@@ -699,7 +699,7 @@ char *parseargs (int argc, char *argv[])
 	        service_flag = w32_run_as_service;
 	      else
 #endif
-		Log (0, "%s: %s: unknown command line switch", extract_filename(argv[0]), argv[curind]);
+		Log (LL_FATAL, "%s: %s: unknown command line switch", extract_filename(argv[0]), argv[curind]);
 	      break;
 	    case 'C':
 	      checkcfg_flag = 1;
@@ -722,7 +722,7 @@ char *parseargs (int argc, char *argv[])
 	    case 't': /* service control/query */
 	      if (isService()) break;
 	      if ((service_flag != w32_noservice)) {
-	        Log (0, "%s: '-t' command line switch can't mixed with '-i', '-u' and other '-t'", extract_filename(argv[0]));
+	        Log (LL_FATAL, "%s: '-t' command line switch can't mixed with '-i', '-u' and other '-t'", extract_filename(argv[0]));
 	      }
 	      if (!strcmp (optarg, "status"))
 	        service_flag = w32_queryservice;
@@ -737,15 +737,15 @@ char *parseargs (int argc, char *argv[])
 	      else if (!strcmp (optarg, "uninstall"))
 	        service_flag = w32_uninstallservice;
 	      else
-	        Log (0, "%s: '-t': invalid argument '%s'", extract_filename(argv[0]), optarg);
+	        Log (LL_FATAL, "%s: '-t': invalid argument '%s'", extract_filename(argv[0]), optarg);
 	      break;
 	    case 'S':
 	      if (service_name)
-	        Log(0, "%s: '-S %s': service name specified before, can't overwrite!", extract_filename(argv[0]), optarg);
+	        Log(LL_FATAL, "%s: '-S %s': service name specified before, can't overwrite!", extract_filename(argv[0]), optarg);
 	      service_name = strdup (optarg);
 	      break;
 	    case 'i': /* install service */
-	      Log(1,"Warning: switch \"-i\" is deprecated, use \"-t install\" instead");
+	      Log(LL_ERR, "Warning: switch \"-i\" is deprecated, use \"-t install\" instead");
 	      if (isService()) break;
 	      if ( service_flag==w32_installservice
 	        || service_flag==w32_uninstallservice
@@ -754,13 +754,13 @@ char *parseargs (int argc, char *argv[])
 	        || service_flag==w32_restartservice
 	        || service_flag==w32_stopservice
 	         )
-	        Log (0, "%s: '-i' command line switch can't mixed with '-u', '-t' and other '-i'", extract_filename(argv[0]));
+	        Log (LL_FATAL, "%s: '-i' command line switch can't mixed with '-u', '-t' and other '-i'", extract_filename(argv[0]));
 	      if (!service_flag)
 	        service_flag = w32_installservice;
 	      break;
 
 	    case 'u': /* uninstall service */
-	      Log(1,"Warning: switch \"-u\" is deprecated, use \"-t uninstall\" instead");
+	      Log(LL_ERR, "Warning: switch \"-u\" is deprecated, use \"-t uninstall\" instead");
 	      if (isService()) break;
 	      if ( service_flag==w32_installservice
 	        || service_flag==w32_uninstallservice
@@ -769,7 +769,7 @@ char *parseargs (int argc, char *argv[])
 	        || service_flag==w32_restartservice
 	        || service_flag==w32_stopservice
 	         )
-	        Log (0, "%s: '-u' command line switch can't mixed with '-i', '-t' and other '-u'", extract_filename(argv[0]));
+	        Log (LL_FATAL, "%s: '-u' command line switch can't mixed with '-i', '-t' and other '-u'", extract_filename(argv[0]));
 	      if (!service_flag)
 	        service_flag = w32_uninstallservice;
 	      break;
@@ -821,7 +821,7 @@ char *parseargs (int argc, char *argv[])
 	    default:  /* unknown parameter/option */
 	      if (optopt != '?')
 	      /* getopt() already print error message
-	      Log (0, "%s: %s: unknown command line switch", extract_filename(argv[0]), argv[curind]);
+	      Log (LL_FATAL, "%s: %s: unknown command line switch", extract_filename(argv[0]), argv[curind]);
 	      */ exit(1);
 
 	    case 'n':
@@ -839,15 +839,15 @@ char *parseargs (int argc, char *argv[])
 #ifdef OS2
   if (optind<argc)
   { if ((inetd_socket = atoi(argv[argc-1])) == 0 && !isdigit(argv[argc-1][0]))
-      Log (0, "%s: bad socket number", argv[optind]);
+      Log (LL_FATAL, "%s: bad socket number", argv[optind]);
 #ifdef EMX
     if ((inetd_socket = _impsockhandle (inetd_socket, 0)) == -1)
-      Log (0, "_impsockhandle: %s", strerror (errno));
+      Log (LL_FATAL, "_impsockhandle: %s", strerror (errno));
 #endif
   }
 #endif
   if (optind<argc)
-    Log (1, "Extra parameters ignored");
+    Log (LL_ERR, "Extra parameters ignored");
 
   return cfgfile;
 }
@@ -887,7 +887,7 @@ int main (int argc, char *argv[])
 
 #ifdef WIN32
   if (service_flag==w32_installservice && !configpath)
-    Log (0, "%s: invalid command line: config name must be specified", extract_filename(argv[0]));
+    Log (LL_FATAL, "%s: invalid command line: config name must be specified", extract_filename(argv[0]));
   w32Init();
 #ifdef BINKD9X
   {
@@ -903,12 +903,12 @@ int main (int argc, char *argv[])
   tzset();
 
   if (poll_flag && server_flag)
-    Log (0, "-p and -s cannot be used together");
+    Log (LL_FATAL, "-p and -s cannot be used together");
 
 #if defined(WIN32) && !defined(BINKD9X)
   if (service_flag!=w32_noservice)
     if (service(argc, argv, environ) && service_flag!=w32_run_as_service) {
-      Log(0, "Windows NT service error");
+      Log(LL_FATAL, "Windows NT service error");
     }
   if (tray_flag)
      do_tray_flag();
@@ -942,7 +942,7 @@ int main (int argc, char *argv[])
   {
     current_config = readcfg (configpath);
     if (!current_config)
-      Log (0, "error in configuration, aborting");
+      Log (LL_FATAL, "error in configuration, aborting");
     if (dumpcfg_flag)
     {
       debug_readcfg ();
@@ -975,21 +975,21 @@ int main (int argc, char *argv[])
     exit (0);
   }
   else if (argc > 1)
-    Log (0, "%s: invalid command line: config name must be specified", extract_filename(argv[0]));
+    Log (LL_FATAL, "%s: invalid command line: config name must be specified", extract_filename(argv[0]));
   else
     usage ();
 
   print_args (tmp, sizeof (tmp), argv + 1);
 #ifdef WIN32
   if (service_flag==w32_run_as_service)
-    Log (4, "BEGIN service '%s', " MYNAME "/" MYVER "%s%s", service_name, get_os_string(), tmp);
+    Log (LL_MINOR, "BEGIN service '%s', " MYNAME "/" MYVER "%s%s", service_name, get_os_string(), tmp);
   else
-    Log (4, "BEGIN standalone, " MYNAME "/" MYVER "%s%s", get_os_string(), tmp);
+    Log (LL_MINOR, "BEGIN standalone, " MYNAME "/" MYVER "%s%s", get_os_string(), tmp);
 #else
-  Log (4, "BEGIN, " MYNAME "/" MYVER "%s%s", get_os_string(), tmp);
+  Log (LL_MINOR, "BEGIN, " MYNAME "/" MYVER "%s%s", get_os_string(), tmp);
 #endif
   if (sock_init ())
-    Log (0, "sock_init: %s", TCPERR ());
+    Log (LL_FATAL, "sock_init: %s", TCPERR ());
 
   bsy_init ();
   rnd ();
@@ -1000,7 +1000,7 @@ int main (int argc, char *argv[])
 
   /* Set up break handler, set up exit list if needed */
   if (!set_break_handlers ())
-    Log (0, "cannot install break handlers");
+    Log (LL_FATAL, "cannot install break handlers");
 
 #if defined(SIGPIPE) && !defined(HAVE_MSG_NOSIGNAL)
   signal(SIGPIPE, SIG_IGN);
@@ -1009,16 +1009,16 @@ int main (int argc, char *argv[])
 #if defined(WITH_ZLIB) && defined(ZLIBDL)
   if (current_config->zlib_dll[0]) {
     if (!zlib_init(current_config->zlib_dll))
-      Log (2, "cannot load %s, GZ compression disabled", current_config->zlib_dll);
+      Log (LL_WARN, "cannot load %s, GZ compression disabled", current_config->zlib_dll);
     else
-      Log (6, "%s loaded successfully", current_config->zlib_dll);
+      Log (LL_DBG, "%s loaded successfully", current_config->zlib_dll);
   } else
-    Log (current_config->zrules.first ? 3 : 5, "zlib-dll not defined, GZ compression disabled");
+    Log (current_config->zrules.first ? LL_INFO : 5, "zlib-dll not defined, GZ compression disabled");
 #endif
 #if defined(WITH_BZLIB2) && defined(ZLIBDL)
   if (current_config->bzlib2_dll[0]) {
     if (!bzlib2_init(current_config->bzlib2_dll))
-      Log (2, "cannot load %s, BZ2 compression disabled", current_config->bzlib2_dll);
+      Log (LL_WARN, "cannot load %s, BZ2 compression disabled", current_config->bzlib2_dll);
     else
       Log (6, "%s loaded successfully", current_config->bzlib2_dll);
   } else
@@ -1026,14 +1026,14 @@ int main (int argc, char *argv[])
 #ifdef WITH_ZLIB
          && !zlib_loaded
 #endif
-         ? 3 : 5, "bzlib2-dll not defined, BZ2 compression disabled");
+         ? LL_INFO : 5, "bzlib2-dll not defined, BZ2 compression disabled");
 #endif
 
 #ifdef WITH_PERL
   if (current_config->perl_script[0]) {
     if (!perl_init(current_config->perl_script, current_config)) {
       if (current_config->perl_strict)
-        Log (0, "error parsing Perl script %s", current_config->perl_script);
+        Log (LL_FATAL, "error parsing Perl script %s", current_config->perl_script);
     } else {
       perl_on_start(current_config);
       perl_config_loaded(current_config);
@@ -1053,7 +1053,7 @@ int main (int argc, char *argv[])
   }
 
   if (no_flag)
-    Log (0, "Exit on option '-n'");
+    Log (LL_FATAL, "Exit on option '-n'");
 
 #if defined(UNIX) || defined(OS2) || defined(AMIGA)
   if (inetd_flag)
@@ -1068,7 +1068,7 @@ int main (int argc, char *argv[])
   if (daemon_flag)
   {
     if (binkd_daemonize(1) < 0)
-      Log (0, "Cannot daemonize");
+      Log (LL_FATAL, "Cannot daemonize");
     else
       mypid = getpid();
   }
@@ -1087,17 +1087,17 @@ int main (int argc, char *argv[])
   pidsmgr = (int) getpid ();
   if (client_flag && (pidcmgr = branch (clientmgr, 0, 0)) < 0)
   {
-    Log (0, "cannot branch out");
+    Log (LL_FATAL, "cannot branch out");
   }
 
   if (*current_config->pid_file)
   {
     if ( unlink (current_config->pid_file) == 0 ) /* successfully unlinked, i.e.
 	                                            an old pid_file was found */
-	Log (1, "unexpected pid_file: %s: unlinked", current_config->pid_file);
+	Log (LL_ERR, "unexpected pid_file: %s: unlinked", current_config->pid_file);
     else
     {
-	int current_log_level = 1;
+	int current_log_level = LL_ERR;
 	switch ( errno )
 	{
 	   case ENOENT :	/* file not found or null pathname */

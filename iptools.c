@@ -127,7 +127,7 @@ void setsockopts (SOCKET s)
 
   arg = 1;
   if (ioctl (s, FIONBIO, (char *) &arg, sizeof arg) < 0)
-    Log (1, "ioctl (FIONBIO): %s", TCPERR ());
+    Log (LL_ERR, "ioctl (FIONBIO): %s", TCPERR ());
 
 #elif defined(WIN32)
   u_long arg;
@@ -135,13 +135,13 @@ void setsockopts (SOCKET s)
   arg = 1;
   if (ioctlsocket (s, FIONBIO, &arg) < 0)
     if (!binkd_exit)
-      Log (1, "ioctlsocket (FIONBIO): %s", TCPERR ());
+      Log (LL_ERR, "ioctlsocket (FIONBIO): %s", TCPERR ());
 #endif
 #endif
 
 #if defined(UNIX) || defined(EMX) || defined(AMIGA)
   if (fcntl (s, F_SETFL, O_NONBLOCK) == -1)
-    Log (1, "fcntl: %s", strerror (errno));
+    Log (LL_ERR, "fcntl: %s", strerror (errno));
 #endif
 }
 
@@ -175,7 +175,7 @@ char * find_port (char *s)
     ps = DEF_PORT;
 
   if (ps == NULL)
-    Log (1, "%s: incorrect port (getaddrinfo: %s)", s, gai_strerror(aiErr));
+    Log (LL_ERR, "%s: incorrect port (getaddrinfo: %s)", s, gai_strerror(aiErr));
 
   return ps;
 }
@@ -195,7 +195,7 @@ int sockaddr_cmp_addr(const struct sockaddr *a, const struct sockaddr *b)
 #endif
   else
   {
-    Log(2, "Unsupported address family: %d", a->sa_family);
+    Log(LL_WARN, "Unsupported address family: %d", a->sa_family);
     return -1;
   }
 }
@@ -213,7 +213,7 @@ int sockaddr_cmp_port(const struct sockaddr *a, const struct sockaddr *b)
 #endif
   else
   {
-    Log(2, "Unsupported address family: %d", a->sa_family);
+    Log(LL_WARN, "Unsupported address family: %d", a->sa_family);
     return -1;
   }
 }

@@ -58,13 +58,13 @@
 
 static void exitsig (int arg)
 {
-  /* Log (0, ...) will call exit(), exit() will call exitlist */
+  /* Log (LL_FATAL, ...) will call exit(), exit() will call exitlist */
 #ifdef HAVE_FORK
   if (pidcmgr)
-    Log (0, "got signal #%i. Killing %i and quitting...", arg, (int) pidcmgr);
+    Log (LL_FATAL, "got signal #%i. Killing %i and quitting...", arg, (int) pidcmgr);
   else
 #endif
-    Log (0, "got signal #%i.", arg);
+    Log (LL_FATAL, "got signal #%i.", arg);
 }
 
 /* Set up break handler, set up exit list if needed */

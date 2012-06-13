@@ -198,7 +198,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 		buf[sizeof(buf)-1] = '\0';
 		if ((sp=strchr(buf, '/')) != NULL)
 			*sp++ = '\0';
-		Log(4, "connected to proxy %s", buf);
+		Log(LL_MINOR, "connected to proxy %s", buf);
 		if(sp) 
 		{
 			char *sp1;
@@ -254,11 +254,11 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 		}
 		if (send(so, buf, i, 0) < 0)
 		{
-			Log(4, "Send to proxy error: %s", TCPERR());
+			Log(LL_MINOR, "Send to proxy error: %s", TCPERR());
 			SetTCPError(PR_ERROR);
 			return 1;
 		}
-		Log(10, "sent proxy sockfd %d request: %s", so, buf);
+		Log(LL_DBG2, "sent proxy sockfd %d request: %s", so, buf);
 		for(i=0; i<sizeof(buf)-1; i++)
 		{
 			struct timeval tv;
@@ -270,18 +270,18 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 			if ((n=select(so+1, &fds, NULL, NULL, config->nettimeout > 0 ? &tv : NULL)) < 1)
 			{
 				if (n<0)
-					Log(4, "proxy error: %s", TCPERR());
+					Log(LL_MINOR, "proxy error: %s", TCPERR());
 				else
-					Log(4, "proxy timeout...");
+					Log(LL_MINOR, "proxy timeout...");
 				SetTCPError(PR_ERROR);
 				return 1;
 			}
 			if ((n=recv(so, buf+i, 1, 0)) < 1)
 			{
 				if (n<0)
-					Log(2, "Proxy error: %s", TCPERR());
+					Log(LL_WARN, "Proxy error: %s", TCPERR());
 				else
-					Log(2, "Connection closed by proxy...");
+					Log(LL_WARN, "Connection closed by proxy...");
 				SetTCPError(PR_ERROR);
 				return 1;
 			}
@@ -306,7 +306,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 						 host, ntlm);
 					i = getNTLM2(ntlmsp, sp, buf + i, sizeof(buf) - i);
 					free(sp);
-					if (i) Log(2, "Invalid username/password/host/domain string (%s) %d", ntlmsp, i);
+					if (i) Log(LL_WARN, "Invalid username/password/host/domain string (%s) %d", ntlmsp, i);
 					free(ntlmsp);
 
 					if(!i)
@@ -327,7 +327,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 					if(sp[0]=='\r') sp[0]=0;
 				}
 				if(strstr(buf, " 200 ")) break;
-				Log(2, "Connection rejected by proxy (%s)", buf);
+				Log(LL_WARN, "Connection rejected by proxy (%s)", buf);
 				SetTCPError(PR_ERROR);
 				return 1;
 			}
@@ -339,7 +339,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 		buf[sizeof(buf)-1] = '\0';
 		if ((sauth=strchr(buf, '/')) != NULL)
 			*sauth++ = '\0';
-		Log(4, "connected to socks%c %s", sauth ? '5' : '4', buf);
+		Log(LL_MINOR, "connected to socks%c %s", sauth ? '5' : '4', buf);
 		if ((sp = strchr(host, ':')) != NULL)
 		{
 			*sp++ = '\0';
@@ -352,7 +352,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 			/* SOCKS4 only support IPv4 and we need the IP address */
 			if ((aiErr=srv_getaddrinfo(host, port, &hints, &aiHead)) != 0)
 			{
-				Log(2, "getaddrinfo failed: %s (%d)", gai_strerror(aiErr), aiErr);
+				Log(LL_WARN, "getaddrinfo failed: %s (%d)", gai_strerror(aiErr), aiErr);
 				SetTCPError(PR_ERROR);
 				return 1;
 			}
@@ -361,7 +361,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 		{
 			if ((aiErr=getaddrinfo(NULL, port, &hints, &aiHead)) != 0)
 			{
-				Log(2, "getaddrinfo failed: %s (%d)", gai_strerror(aiErr), aiErr);
+				Log(LL_WARN, "getaddrinfo failed: %s (%d)", gai_strerror(aiErr), aiErr);
 				return 1;
 			}
 			sauth=strdup(sauth);
@@ -380,13 +380,13 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 			}
 			if ((recv(so, buf, 2, 0)!=2)||((buf[1])&&(buf[1]!=1)&&(buf[1]!=2)))
 			{
-				Log(1, "Auth. method not supported by socks5 server");
+				Log(LL_ERR, "Auth. method not supported by socks5 server");
 				free(sauth);
 				freeaddrinfo(aiHead);
 				SetTCPError(PR_ERROR);
 				return 1;
 			}
-			Log(6, "Socks5, Auth=%d", buf[1]);
+			Log(LL_DBG, "Socks5, Auth=%d", buf[1]);
 			if (buf[1]==2) /* username/password method */
 			{
 				buf[0]=1;
@@ -406,7 +406,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 				buf[0]=buf[1]=0;
 				if ((recv(so, buf, 2, 0)<2)||(buf[1]))
 				{
-					Log(1, "Authentication failed (socks5 returns %02X%02X)", (unsigned char)buf[0], (unsigned char)buf[1]);
+					Log(LL_ERR, "Authentication failed (socks5 returns %02X%02X)", (unsigned char)buf[0], (unsigned char)buf[1]);
 					free(sauth);
 					freeaddrinfo(aiHead);
 					SetTCPError(PR_ERROR);
@@ -423,7 +423,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 				buf[0]=4;
 				buf[1]=1;
 				lockhostsem();
-				Log (4, strcmp(port, config->oport) == 0 ? "trying %s..." : "trying %s:%u...",
+				Log (LL_MINOR, strcmp(port, config->oport) == 0 ? "trying %s..." : "trying %s:%u...",
 				     inet_ntoa(((struct sockaddr_in*)(ai->ai_addr))->sin_addr), portnum);
 				releasehostsem();
 				buf[2]=(unsigned char)((portnum>>8)&0xFF);
@@ -466,9 +466,9 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 				if ((n=select(so+1, &fds, NULL, NULL, config->nettimeout > 0 ? &tv : NULL)) < 1)
 				{
 					if (n<0)
-						Log(4, "socks error: %s", TCPERR());
+						Log(LL_MINOR, "socks error: %s", TCPERR());
 					else
-						Log(4, "socks timeout...");
+						Log(LL_MINOR, "socks timeout...");
 					if (sauth) free(sauth);
 					freeaddrinfo(aiHead);
 					SetTCPError(PR_ERROR);
@@ -476,8 +476,8 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 				}
 				if ((n=recv(so, buf+i, 1, 0))<1) {
 					if (n<0)
-						Log(2, "socks error: %s", TCPERR());
-						Log(2, "connection closed by socks server...");
+						Log(LL_WARN, "socks error: %s", TCPERR());
+						Log(LL_WARN, "connection closed by socks server...");
 					if (sauth) free(sauth);
 					freeaddrinfo(aiHead);
 					SetTCPError(PR_ERROR);
@@ -486,13 +486,13 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 				if (!sauth && i>6) /* 8th byte received */
 				{
 					if (buf[0]!=0) {
-						Log(2, "Bad reply from socks server");
+						Log(LL_WARN, "Bad reply from socks server");
 						freeaddrinfo(aiHead);
 						SetTCPError(PR_ERROR);
 						return 1;
 					}
 					if (buf[1]!=90) {
-						Log(2, "connection rejected by socks4 server (%d)", (unsigned char)buf[1]);
+						Log(LL_WARN, "connection rejected by socks4 server (%d)", (unsigned char)buf[1]);
 						SetTCPError(PR_ERROR);
 						break; /* try next IP */
 					}
@@ -504,7 +504,7 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 				else if (sauth && i>5)
 				{
 					if (buf[0]!=5) {
-						Log(2, "Bad reply from socks server");
+						Log(LL_WARN, "Bad reply from socks server");
 						free(sauth);
 						freeaddrinfo(aiHead);
 						SetTCPError(PR_ERROR);
@@ -518,15 +518,15 @@ int h_connect(int so, char *host, BINKD_CONFIG *config, char *proxy, char *socks
 					if (!buf[1])	return 0;
 					switch (buf[1])
 					{
-						case 1: Log (2, "general SOCKS5 server failure"); break;
-						case 2: Log (2, "connection not allowed by ruleset (socks5)"); break;
-						case 3: Log (2, "Network unreachable (socks5)"); break;
-						case 4: Log (2, "Host unreachable (socks5)"); break;
-						case 5: Log (2, "Connection refused (socks5)"); break;
-						case 6: Log (2, "TTL expired (socks5)"); break;
-						case 7: Log (2, "Command not supported by socks5"); break;
-						case 8: Log (2, "Address type not supported"); break;
-						default: Log (2, "Unknown reply (0x%02X) from socks5 server", (unsigned char)buf[1]);
+						case 1: Log (LL_WARN, "general SOCKS5 server failure"); break;
+						case 2: Log (LL_WARN, "connection not allowed by ruleset (socks5)"); break;
+						case 3: Log (LL_WARN, "Network unreachable (socks5)"); break;
+						case 4: Log (LL_WARN, "Host unreachable (socks5)"); break;
+						case 5: Log (LL_WARN, "Connection refused (socks5)"); break;
+						case 6: Log (LL_WARN, "TTL expired (socks5)"); break;
+						case 7: Log (LL_WARN, "Command not supported by socks5"); break;
+						case 8: Log (LL_WARN, "Address type not supported"); break;
+						default: Log (LL_WARN, "Unknown reply (0x%02X) from socks5 server", (unsigned char)buf[1]);
 					}
 					SetTCPError(PR_ERROR);
 					return 1;

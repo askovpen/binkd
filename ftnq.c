@@ -289,7 +289,7 @@ FTNQ *q_scan (FTNQ *q, BINKD_CONFIG *config)
 
       if ((dp = opendir (outb_path)) == 0)
       {
-	Log (1, "cannot opendir %s: %s", outb_path, strerror (errno));
+	Log (LL_ERR, "cannot opendir %s: %s", outb_path, strerror (errno));
 	continue;
       }
 
@@ -427,7 +427,7 @@ static FTNQ *q_scan_box (FTNQ *q, FTN_ADDR *fa, char *boxpath, char flvr, int de
 #ifdef UNIX
   if (access(boxpath, R_OK | W_OK) != 0) {
     if (access(boxpath, F_OK) == 0)
-      Log (1, "No access to filebox `%s'", boxpath);
+      Log (LL_ERR, "No access to filebox `%s'", boxpath);
     return q;
   }
 #endif
@@ -458,9 +458,9 @@ static FTNQ *q_scan_box (FTNQ *q, FTN_ADDR *fa, char *boxpath, char flvr, int de
     closedir (dp);
     if (n_files == 0 && deleteempty) {
       if (rmdir (boxpath) == 0)
-        Log (3, "Empty filebox %s deleted", boxpath);
+        Log (LL_INFO, "Empty filebox %s deleted", boxpath);
       else
-        Log (1, "Cannot delete empty filebox %s: %s", boxpath, strerror (errno));
+        Log (LL_ERR, "Cannot delete empty filebox %s: %s", boxpath, strerror (errno));
     }
   }
   return q;
@@ -599,7 +599,7 @@ static void process_bsy (FTN_ADDR *fa, char *path, BINKD_CONFIG *config)
     char buf[FTN_ADDR_SZ + 1];
 
     ftnaddress_to_str (buf, fa);
-    Log (2, "found old %s file for %s", s, buf);
+    Log (LL_WARN, "found old %s file for %s", s, buf);
     delete (path);
   }
   else
@@ -763,7 +763,7 @@ static FTNQ *q_add_dir (FTNQ *q, char *dir, FTN_ADDR *fa1, BINKD_CONFIG *config)
     closedir (dp);
   }
   else
-    Log (1, "cannot opendir %s: %s", dir, strerror (errno));
+    Log (LL_ERR, "cannot opendir %s: %s", dir, strerror (errno));
   return q;
 }
 
@@ -807,23 +807,23 @@ FTNQ *q_add_file (FTNQ *q, char *filename, FTN_ADDR *fa1, char flvr, char action
 
       f = fopen(filename, "r");
       if (f == NULL)
-      { Log(1, "Can't open %s: %s", filename, strerror(errno));
+      { Log(LL_ERR, "Can't open %s: %s", filename, strerror(errno));
         return q;
       }
       if (!fgets(str, sizeof(str), f))
-      { Log(1, "Incorrect status (can't fgets), ignored");
+      { Log(LL_ERR, "Incorrect status (can't fgets), ignored");
         fclose(f);
         return q;
       }
       fclose(f);
       if (*str && isspace(*str))
-      { Log(1, "Incorrect status (space first), ignored");
+      { Log(LL_ERR, "Incorrect status (space first), ignored");
         return q;
       }
       for (p=str+strlen(str)-1; isspace(*p); *p--='\0');
-      Log(2, "Status is '%s'", str);
+      Log(LL_WARN, "Status is '%s'", str);
       if (!parse_args (argc, argv, str, "Status"))
-      { Log(1, "Incorrect status, ignored");
+      { Log(LL_ERR, "Incorrect status, ignored");
         return q;
       }
     }
@@ -1174,10 +1174,10 @@ int create_poll (FTN_ADDR *fa, int flvr, BINKD_CONFIG *config)
     if (stat (buf, &st) == 0) return 1; /* already exists */
     if ((rc = create_empty_sem_file (buf)) == 0)
       if (errno != EEXIST)
-        Log (1, "cannot create %s: %s", buf, strerror (errno));
+        Log (LL_ERR, "cannot create %s: %s", buf, strerror (errno));
   }
   else
-    Log (1, "%s: unknown domain", fa->domain);
+    Log (LL_ERR, "%s: unknown domain", fa->domain);
   return rc;
 }
 
@@ -1195,7 +1195,7 @@ void hold_node (FTN_ADDR *fa, time_t hold_until, BINKD_CONFIG *config)
   strftime (time, sizeof (time), "%Y/%m/%d %H:%M:%S", &tm);
   ftnaddress_to_str (addr, fa);
   ftnaddress_to_filename (buf, fa, config);
-  Log (2, "holding %s (%s)", addr, time);
+  Log (LL_WARN, "holding %s (%s)", addr, time);
   if (*buf)
   {
     FILE *f;
@@ -1211,7 +1211,7 @@ void hold_node (FTN_ADDR *fa, time_t hold_until, BINKD_CONFIG *config)
     }
     else
     {
-      Log (1, "%s: %s", buf, strerror (errno));
+      Log (LL_ERR, "%s: %s", buf, strerror (errno));
     }
   }
 }
