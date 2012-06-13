@@ -149,6 +149,14 @@
 #define max(x,y) ((x) > (y) ? (x) : (y))
 #endif
 
+/* log levels */
+#define LL_FATAL 0
+#define LL_ERR   1
+#define LL_WARN  2
+#define LL_INFO  3
+#define LL_DBG   7
+#define LL_DBG2  9
+
 void Log (int lev, char *s,...);
 void InitLog(int loglevel, int conlog, char *logpath, void *first);
 

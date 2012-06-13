@@ -599,6 +599,10 @@ void Log (int lev, char *s,...)
   int ok = 1;
   va_list ap;
 
+  /* fast exit for irrelevant messages */
+  if (lev > 0 && lev > current_conlog && lev > current_loglevel)
+    return;
+
   /* make string in buffer */
   va_start(ap, s);
   vsnprintf(buf, sizeof(buf), s, ap);

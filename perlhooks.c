@@ -931,13 +931,6 @@ struct perl_const { char *name; int value; } perl_consts[] = {
   { "BAD_AUTH", BAD_AUTH }
 };
 
-/* log levels */
-#define LL_ERR  1
-#define LL_WARN 2
-#define LL_INFO 3
-#define LL_LOG  3
-#define LL_DBG  7
-#define LL_DBG2 9
 
 /* ---------------------------- defines ------------------------------- */
 
@@ -1084,7 +1077,7 @@ static void sub_err(int sub) {
     lvl = SvUV(ST(0));
     str = (char *)SvPV(ST(1), n_a); if (n_a == 0) str = "";
   } else {
-    lvl = LL_LOG;
+    lvl = LL_INFO;
     str = (char *)SvPV(ST(0), n_a); if (n_a == 0) str = "";
   }
   Log(lvl, "%s", str);
