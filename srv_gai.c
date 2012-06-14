@@ -65,6 +65,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "iphdr.h"
+#include "tools.h"
 
 int srv_getaddrinfo(const char *node, const char *service,
 		    const struct addrinfo *hints,
@@ -88,6 +89,9 @@ int srv_getaddrinfo(const char *node, const char *service,
     int rc;
     struct addrinfo *ai, **ai_last = res;
 
+    DTRACE("start");
+    DTRACE_STRING(node);
+    DTRACE_STRING(service);
     /* we need sensible information for all parameters */
     if (!node || (node && !*node) || !service || (service && !*service) ||
 	    !hints || !res)

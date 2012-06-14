@@ -340,6 +340,7 @@ FTNQ *q_scan_addrs (FTNQ *q, FTN_ADDR *fa, int n, int to, BINKD_CONFIG *config)
   int  i;
   char *s;
 
+  DTRACE("start");
   for (i = 0; i < n; ++i)
   {
     if (!to && config->send_if_pwd)
@@ -351,6 +352,7 @@ FTNQ *q_scan_addrs (FTNQ *q, FTN_ADDR *fa, int n, int to, BINKD_CONFIG *config)
 	continue;
     }
     ftnaddress_to_filename (buf, fa + i, config);
+    DTRACE_STRING(buf);
     if (*buf)
     {
       if ((s = last_slash(buf)) != 0)
@@ -479,6 +481,7 @@ FTNQ *q_scan_boxes (FTNQ *q, FTN_ADDR *fa, int n, int to, BINKD_CONFIG *config)
   int j;
 #endif
 
+  DTRACE("start");
   for (i = 0; i < n; ++i)
   {
     node = get_node_info (fa + i, config);
@@ -514,6 +517,7 @@ FTNQ *q_scan_boxes (FTNQ *q, FTN_ADDR *fa, int n, int to, BINKD_CONFIG *config)
           q = q_scan_box (q, fa+i, buf, brakeExt[j].flv, config->deleteablebox, config);
           *s = '\0';
         }
+        DTRACE_STRING(buf);
       }
         
       if (config->tfilebox[0]) {
@@ -533,6 +537,7 @@ FTNQ *q_scan_boxes (FTNQ *q, FTN_ADDR *fa, int n, int to, BINKD_CONFIG *config)
 	    buf[strlen(buf) - 1] = 'h';
 	}
 #endif
+	DTRACE_STRING(buf);
         q = q_scan_box (q, fa+i, buf, 'h', config->deleteablebox, config);
 
         strnzcpy ( buf, config->tfilebox, sizeof (buf));
@@ -551,6 +556,7 @@ FTNQ *q_scan_boxes (FTNQ *q, FTN_ADDR *fa, int n, int to, BINKD_CONFIG *config)
 	    buf[strlen(buf) - 1] = 'h';
 	}
 #endif
+	DTRACE_STRING(buf);
         q = q_scan_box (q, fa+i, buf, 'h', config->deleteablebox, config);
       }
     }
@@ -566,6 +572,8 @@ void process_hld (FTN_ADDR *fa, char *path, BINKD_CONFIG *config)
   FTN_NODE *node;
   long hold_until_tmp;
 
+  DTRACE("start");
+  DTRACE_STRING(path);
   if ((node = get_node_info(fa, config)) != NULL)
   {
     FILE *f;
@@ -593,6 +601,8 @@ static void process_bsy (FTN_ADDR *fa, char *path, BINKD_CONFIG *config)
   FTN_NODE *node;
   struct stat sb;
 
+  DTRACE("start");
+  DTRACE_STRING(path);
   if (stat (path, &sb) == 0 && config->kill_old_bsy != 0
       && time (0) - sb.st_mtime > config->kill_old_bsy)
   {
@@ -629,6 +639,8 @@ static FTNQ *q_add_dir (FTNQ *q, char *dir, FTN_ADDR *fa1, BINKD_CONFIG *config)
   int j;
   char *s;
 
+  DTRACE("start");
+  DTRACE_STRING(dir);
   if ((dp = opendir (dir)) != 0)
   {
     struct dirent *de;
@@ -663,6 +675,7 @@ static FTNQ *q_add_dir (FTNQ *q, char *dir, FTN_ADDR *fa1, BINKD_CONFIG *config)
         strnzcpy(buf, dir, sizeof(buf));
         strnzcpy(buf + strlen(buf), PATH_SEPARATOR, sizeof(buf) - strlen(buf));
         strnzcpy(buf + strlen(buf), s, sizeof(buf) - strlen(buf));
+        DTRACE_STRING(buf);
 
         if (!STRICMP(ext, "bsy") || !STRICMP(ext, "csy"))
 	  process_bsy(&fa2, buf, config);
@@ -718,6 +731,7 @@ static FTNQ *q_add_dir (FTNQ *q, char *dir, FTN_ADDR *fa1, BINKD_CONFIG *config)
 		  sizeof (buf) - strlen (buf));
 	strnzcpy (buf + strlen (buf), s, sizeof (buf) - strlen (buf));
 
+        DTRACE_STRING(buf);
 	if (!STRICMP (s + 9, "pnt") && fa2.p == -1)
 	{
 	  struct stat sb;
@@ -732,6 +746,7 @@ static FTNQ *q_add_dir (FTNQ *q, char *dir, FTN_ADDR *fa1, BINKD_CONFIG *config)
 	if (!STRICMP (s + 9, "bsy") || !STRICMP (s + 9, "csy"))
 	  process_bsy (&fa2, buf, config);
 
+	DTRACE("checking ...");
 	if (!config->havedefnode && !get_node_info (&fa2, config) && !is5D (fa1))
 	  continue;
 	if (strchr (out_flvrs, s[9]) &&
@@ -778,6 +793,9 @@ FTNQ *q_add_file (FTNQ *q, char *filename, FTN_ADDR *fa1, char flvr, char action
 
   SHARED_CHAIN   * chn;
   FTN_ADDR_CHAIN * fcn;
+
+  DTRACE("start");
+  DTRACE_STRING(filename);
   /* If filename for shared address was scanned,
    * call this functions for all nodes for this
    * sharea address (assumed, that recursively
@@ -1191,6 +1209,7 @@ void hold_node (FTN_ADDR *fa, time_t hold_until, BINKD_CONFIG *config)
   char time[80];
   struct tm tm;
 
+  DTRACE("start");
   safe_localtime (&hold_until, &tm);
   strftime (time, sizeof (time), "%Y/%m/%d %H:%M:%S", &tm);
   ftnaddress_to_str (addr, fa);

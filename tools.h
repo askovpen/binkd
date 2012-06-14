@@ -157,11 +157,18 @@
 #define LL_MINOR 4
 #define LL_DBG   7
 #define LL_DBG2  9
+#define LL_TRACE 99
 
 void Log (int lev, char *s,...);
 void InitLog(int loglevel, int conlog, char *logpath, void *first);
 
 #define LOGINT(v) Log(6, "%s=%i\n", #v, (int)(v))
+
+/* Trace functions */
+
+#define DTRACE(a) Log(LL_TRACE, "%s#%d %s: %s", __FILE__, __LINE__, __FUNCTION__, a)
+#define DTRACE_STRING(s) Log(LL_TRACE, "%s#%d %s: %s=%s", __FILE__, __LINE__, __FUNCTION__, #s, (char *)(s))
+#define DTRACE_INT(s) Log(LL_TRACE, "%s#%d %s: %s=%d (%x)", __FILE__, __LINE__, __FUNCTION__, #s, (int)(s), (int)(s))
 
 /*
  * (xalloc.c) [Re]allocate memory or log error

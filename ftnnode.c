@@ -381,6 +381,8 @@ static FTN_NODE *get_defnode_info(FTN_ADDR *fa, FTN_NODE *on, BINKD_CONFIG *conf
   char *port;
   int i;
 
+  DTRACE("start");
+
   /* setup hints for getaddrinfo */
   memset((void *)&hints, 0, sizeof(hints));
   hints.ai_family = PF_UNSPEC;
@@ -399,6 +401,7 @@ static FTN_NODE *get_defnode_info(FTN_ADDR *fa, FTN_NODE *on, BINKD_CONFIG *conf
     if (!strcmp(host, "-"))
       continue;
 
+    DTRACE_STRING(host);
     aiErr = srv_getaddrinfo(host, port ? port : "0", &hints, &ai);
     if (aiErr != 0) continue;
     freeaddrinfo(ai);
@@ -443,6 +446,8 @@ static FTN_NODE *get_node_info_nolock (FTN_ADDR *fa, BINKD_CONFIG *config)
 {
   FTN_NODE n, *np;
 
+  DTRACE("start");
+
   if (!config->nNodSorted)
     sort_nodes (config);
   memcpy (&n.fa, fa, sizeof (FTN_ADDR));
@@ -461,6 +466,8 @@ static FTN_NODE *get_node_info_nolock (FTN_ADDR *fa, BINKD_CONFIG *config)
 FTN_NODE *get_node_info (FTN_ADDR *fa, BINKD_CONFIG *config)
 {
   FTN_NODE *n;
+
+  DTRACE("start");
 
   locknodesem();
   n = get_node_info_nolock(fa, config);

@@ -267,6 +267,8 @@ int ftnamask_cmpm (char *mask, int cnt, FTN_ADDR *fa) {
  */
 void ftnaddress_to_domain (char *s, FTN_ADDR *fa, FTN_DOMAIN *d, char *domain)
 {
+  DTRACE("start");
+
   if (fa->p == 0)
     sprintf (s, "f%i.n%i.z%i.", fa->node, fa->net, fa->z);
   else
@@ -276,6 +278,8 @@ void ftnaddress_to_domain (char *s, FTN_ADDR *fa, FTN_DOMAIN *d, char *domain)
     strnzcat (s, d->idomain, BINKD_FQDNLEN);
   else
     strnzcat (s, domain, BINKD_FQDNLEN);
+
+  DTRACE_STRING(s);
 }
 
 
