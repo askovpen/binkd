@@ -245,6 +245,7 @@ static FTN_NODE *add_node_nolock (FTN_ADDR *fa, char *hosts, char *pwd, char *pk
   int cn;
   FTN_NODE *pn = NULL; /* avoid compiler warning */
 
+  DTRACE("start");
   for (cn = 0; cn < config->nNod; ++cn)
   {
     pn = config->pNodArray[cn];
@@ -254,6 +255,7 @@ static FTN_NODE *add_node_nolock (FTN_ADDR *fa, char *hosts, char *pwd, char *pk
   /* Node not found, create new entry */
   if (cn >= config->nNod)
   {
+    DTRACE("not found, adding node");
     cn = config->nNod;
     config->pNodArray = xrealloc (config->pNodArray, sizeof (FTN_NODE *) * ++(config->nNod));
     config->pNodArray[cn] = pn = xalloc(sizeof(FTN_NODE));
@@ -351,6 +353,7 @@ FTN_NODE *add_node (FTN_ADDR *fa, char *hosts, char *pwd, char *pkt_pwd, char *o
 {
   FTN_NODE *pn;
 
+  DTRACE("start");
   locknodesem();
   pn = add_node_nolock(fa, hosts, pwd, pkt_pwd, out_pwd, obox_flvr, obox, ibox, 
                   NR_flag, ND_flag, MD_flag, restrictIP, HC_flag, NP_flag, 

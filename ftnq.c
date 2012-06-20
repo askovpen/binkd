@@ -212,6 +212,7 @@ static int qn_free (FTN_NODE *fn, void *arg)
 {
   UNUSED_ARG(arg);
 
+  DTRACE("start");
   fn->hold_until = 0;
   fn->mail_flvr = fn->files_flvr = 0;
   fn->busy = 0;
@@ -220,6 +221,7 @@ static int qn_free (FTN_NODE *fn, void *arg)
 
 void q_free (FTNQ *q, BINKD_CONFIG *config)
 {
+  DTRACE("start");
   if (q != SCAN_LISTED)
   {
     FTNQ *last = 0;
@@ -261,6 +263,7 @@ static int qn_scan (FTN_NODE *fn, void *arg)
 {
   struct qn_scan_params *params = arg;
 
+  DTRACE("start");
   *(params->pq) = q_scan_boxes (*(params->pq), &fn->fa, 1, 1, params->config);
   return 0;
 }
@@ -272,6 +275,7 @@ FTNQ *q_scan (FTNQ *q, BINKD_CONFIG *config)
   FTN_DOMAIN *curr_domain;
   struct qn_scan_params qn_params;
 
+  DTRACE("start");
   for (curr_domain = config->pDomains.first; curr_domain; curr_domain = curr_domain->next)
   {
     DIR *dp;
@@ -287,6 +291,7 @@ FTNQ *q_scan (FTNQ *q, BINKD_CONFIG *config)
 	strcat (outb_path, PATH_SEPARATOR);
 #endif
 
+      DTRACE_STRING(outb_path);
       if ((dp = opendir (outb_path)) == 0)
       {
 	Log (LL_ERR, "cannot opendir %s: %s", outb_path, strerror (errno));
@@ -424,6 +429,10 @@ static FTNQ *q_scan_box (FTNQ *q, FTN_ADDR *fa, char *boxpath, char flvr, int de
   struct dirent *de;
   struct stat sb;
 
+  DTRACE("start");
+  DTRACE_STRING(boxpath);
+  DTRACE_CHAR(flvr);
+  DTRACE_INT(deleteempty);
   strnzcpy (buf, boxpath, sizeof (buf));
   strnzcat (buf, PATH_SEPARATOR, sizeof (buf));
 #ifdef UNIX
@@ -707,6 +716,7 @@ static FTNQ *q_add_dir (FTNQ *q, char *dir, FTN_ADDR *fa1, BINKD_CONFIG *config)
       {
         s = de->d_name;
 
+        DTRACE_STRING(s);
         for (j = 0; j < 8; ++j)
 	  if (!isxdigit (s[j]))
 	    break;
@@ -819,6 +829,7 @@ FTNQ *q_add_file (FTNQ *q, char *filename, FTN_ADDR *fa1, char flvr, char action
   {
     FTNQ *new_file;
 
+    DTRACE("q != SCAN_LISTED");
     if (type == 's')
     { char *p;
       FILE *f;
@@ -874,6 +885,7 @@ FTNQ *q_add_file (FTNQ *q, char *filename, FTN_ADDR *fa1, char flvr, char action
   {
     FTN_NODE *node;
 
+    DTRACE("q == SCAN_LISTED");
     if ((node = get_node_info (fa1, config)) != NULL)
     {
       if (type == 'm')
@@ -892,6 +904,10 @@ FTNQ *q_add_last_file (FTNQ *q, char *filename, FTN_ADDR *fa1, char flvr, char a
 {
   FTNQ *new_file, *pq;
 
+  DTRACE("start");
+  DTRACE_STRING(filename);
+  DTRACE_CHAR(flvr);
+  DTRACE_CHAR(type);
   new_file = q_add_file (NULL, filename, fa1, flvr, action, type, config);
   if (new_file == NULL) return q;
   if (q == NULL) return new_file;
@@ -916,6 +932,7 @@ static int qn_list (FTN_NODE *fn, void *arg)
   char tmp[60], buf[FTN_ADDR_SZ + 1];
   qn_list_arg *a = (qn_list_arg *) arg;
 
+  DTRACE("start");
   if (fn->mail_flvr || fn->files_flvr || fn->busy)
   {
     if (fn->hold_until > 0)
@@ -928,6 +945,7 @@ static int qn_list (FTN_NODE *fn, void *arg)
       *tmp = 0;
 
     ftnaddress_to_str (buf, &fn->fa);
+    DTRACE_STRING(buf);
     fprintf (a->out, "%c %c%c %s%s%s\n",
 	     a->first_pass ? '$' : ' ', fn->mail_flvr ? fn->mail_flvr : '-',
 	     fn->files_flvr ? fn->files_flvr : '-', buf, tmp,
@@ -942,6 +960,7 @@ void q_list (FILE *out, FTNQ *q, BINKD_CONFIG *config)
 {
   char buf[FTN_ADDR_SZ + 1];
 
+  DTRACE("start");
   if (q == SCAN_LISTED)
   {
     qn_list_arg qnla;
@@ -958,6 +977,7 @@ void q_list (FILE *out, FTNQ *q, BINKD_CONFIG *config)
       if (!q->sent)
       {
 	ftnaddress_to_str (buf, &q->fa);
+	DTRACE_STRING(buf);
 	fprintf (out, "%-20s %c%c%c %8" PRIuMAX " %s\n",
 		 buf, q->flvr, q->action ? q->action : '-',
 		 q->type ? q->type : '-',
@@ -971,6 +991,7 @@ static int q_cmp(FTNQ *a, FTNQ *b, FTN_ADDR *fa, int nAka)
 {
   int i;
 
+  DTRACE("start");
   /* 1. Do not sort sent files, move its to the end of queue */
   if (a->sent || b->sent)
     return b->sent - a->sent;
@@ -1010,6 +1031,7 @@ FTNQ *q_sort (FTNQ *q, FTN_ADDR *fa, int nAka, BINKD_CONFIG *cfg)
    */
   FTNQ *head, *tail, *qnext, *cur;
 
+  DTRACE("start");
   if (q == NULL) return q;
   qnext = q->next;
   head = tail = q;

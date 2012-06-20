@@ -168,7 +168,8 @@ void InitLog(int loglevel, int conlog, char *logpath, void *first);
 
 #define DTRACE(a) Log(LL_TRACE, "%s#%d %s: %s", __FILE__, __LINE__, __FUNCTION__, a)
 #define DTRACE_STRING(s) Log(LL_TRACE, "%s#%d %s: %s=%s", __FILE__, __LINE__, __FUNCTION__, #s, (char *)(s))
-#define DTRACE_INT(s) Log(LL_TRACE, "%s#%d %s: %s=%d (%x)", __FILE__, __LINE__, __FUNCTION__, #s, (int)(s), (int)(s))
+#define DTRACE_INT(s) Log(LL_TRACE, "%s#%d %s: %s=%d (0x%x)", __FILE__, __LINE__, __FUNCTION__, #s, (int)(s), (int)(s))
+#define DTRACE_CHAR(s) Log(LL_TRACE, "%s#%d %s: %s=%c (0x%x)", __FILE__, __LINE__, __FUNCTION__, #s, (char)(s), (char)(s))
 
 /*
  * (xalloc.c) [Re]allocate memory or log error
