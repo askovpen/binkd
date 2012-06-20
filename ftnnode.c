@@ -226,6 +226,7 @@ static int node_cmp (FTN_NODE **pa, FTN_NODE **pb)
  */
 static void sort_nodes (BINKD_CONFIG *config)
 {
+  DTRACE("start");
   qsort (config->pNodArray, config->nNod, sizeof (FTN_NODE *), (int (*) (const void *, const void *)) node_cmp);
   config->nNodSorted = 1;
 }
@@ -370,8 +371,12 @@ static FTN_NODE *search_for_node(FTN_NODE *np, BINKD_CONFIG *config)
 {
   FTN_NODE **npp;
 
+  DTRACE("start");
+  DTRACE_FA(np->fa);
   npp = (FTN_NODE **) bsearch (&np, config->pNodArray, config->nNod, sizeof (FTN_NODE *),
                                (int (*) (const void *, const void *)) node_cmp);
+  DTRACE_INT(npp);
+  if (npp) DTRACE_FA((*npp)->fa);
   return npp ? *npp : NULL;
 }
 
@@ -455,6 +460,9 @@ static FTN_NODE *get_node_info_nolock (FTN_ADDR *fa, BINKD_CONFIG *config)
     sort_nodes (config);
   memcpy (&n.fa, fa, sizeof (FTN_ADDR));
   np = search_for_node(&n, config);
+  if (np) DTRACE_FA(np->fa);
+  if (np) DTRACE_INT(np->listed);
+  if (np) DTRACE_STRING(np->hosts);
   if ((!np || np->listed != NL_NODE) && config->havedefnode)
     np=get_defnode_info(fa, np, config);
   if (np && !np->hosts) /* still no hosts? */
