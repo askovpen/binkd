@@ -178,6 +178,8 @@ FTN_NODE *add_node (FTN_ADDR *fa, char *hosts, char *pwd, char *pkt_pwd, char *o
 #define BW_DEF     -100                /* default value: 100% */
 #endif
 
+#define RESOLVE_TTL 3600               /* DNS resolution again after 1 hour */
+
 /*
  * Iterates through nodes while func() == 0.
  */

@@ -114,6 +114,7 @@ struct _FTN_NODE
   long bw_send, bw_recv;               /* send and receive bw limits */
 #endif
   int IP_afamily;
+  time_t recheck;
 };
 
 typedef struct _FTNQ FTNQ;
