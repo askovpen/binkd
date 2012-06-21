@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.644 2012/06/21 06:56:55 gul Exp $
+ * $Id: Config.h,v 2.642.2.2 2012/06/21 06:41:26 gul Exp $
  */
 
 #ifndef _Config_h
@@ -59,12 +59,12 @@
 #define PRTCLVER "1.1"
 #define MYNAME "binkd"
 #define MAJOR 1
-#define MINOR 1
-#define SUFFIX "a"
-#define PATCHLEVEL 1
+#define MINOR 0
+#define BUILD 1
+#define SUFFIX "-pre"
 #define MYVER_S(s) _MYVER_S(s)
 #define _MYVER_S(s) #s
-#define MYVER MYVER_S(MAJOR) "." MYVER_S(MINOR) SUFFIX "-" MYVER_S(PATCHLEVEL)
+#define MYVER MYVER_S(MAJOR) "." MYVER_S(MINOR) "." MYVER_S(BUILD) MYVER_S(SUFFIX)
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
