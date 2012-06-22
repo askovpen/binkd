@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.642.2.2 2012/06/21 06:41:26 gul Exp $
+ * $Id: Config.h,v 2.642.2.3 2012/06/22 10:56:31 gul Exp $
  */
 
 #ifndef _Config_h
@@ -64,7 +64,7 @@
 #define SUFFIX "-pre"
 #define MYVER_S(s) _MYVER_S(s)
 #define _MYVER_S(s) #s
-#define MYVER MYVER_S(MAJOR) "." MYVER_S(MINOR) "." MYVER_S(BUILD) MYVER_S(SUFFIX)
+#define MYVER MYVER_S(MAJOR) "." MYVER_S(MINOR) "." MYVER_S(BUILD) SUFFIX
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
