@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.642.2.3 2012/06/22 10:56:31 gul Exp $
+ * $Id: Config.h,v 2.642.2.4 2012/06/25 14:21:39 gul Exp $
  */
 
 #ifndef _Config_h
@@ -62,9 +62,16 @@
 #define MINOR 0
 #define BUILD 1
 #define SUFFIX "-pre"
+#define PATCHLEVEL 1
 #define MYVER_S(s) _MYVER_S(s)
 #define _MYVER_S(s) #s
-#define MYVER MYVER_S(MAJOR) "." MYVER_S(MINOR) "." MYVER_S(BUILD) SUFFIX
+#ifdef PATCHLEVEL
+  /* it's prerelease, version format "1.0.1-pre5" */
+  #define MYVER MYVER_S(MAJOR) "." MYVER_S(MINOR) "." MYVER_S(BUILD) SUFFIX MYVER_S(PATCHLEVEL)
+#else
+  /* it's release, version format "1.0.1" */
+  #define MYVER MYVER_S(MAJOR) "." MYVER_S(MINOR) "." MYVER_S(BUILD)
+#endif
 
 #define PRODCODE 0x13FF  /* by FTSCPROD */
 
