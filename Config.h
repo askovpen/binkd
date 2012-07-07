@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.650 2012/07/06 21:42:20 green Exp $
+ * $Id: Config.h,v 2.651 2012/07/07 07:18:53 gul Exp $
  */
 
 #ifndef _Config_h
@@ -106,6 +106,8 @@
 #ifndef OS
   #if defined(BINKD9X)
     #define OS "Win9x"
+  #elif defined(WIN64)
+    #define OS "Win64"
   #elif defined(WIN32)
     #define OS "Win32"
   #elif defined(OS2)
