@@ -271,7 +271,7 @@ BOOL ReportStatusToSCMgr(DWORD dwCurrentState,
   static DWORD dwCheckPoint = 1;
   BOOL fResult = TRUE;
 
-  Log(12,"ReportStatusToSCMgr(%lu, %lu, %lu)",dwCurrentState,dwWin32ExitCode,dwWaitHint);
+  Log (LL_DBG5,"ReportStatusToSCMgr(%lu, %lu, %lu)",dwCurrentState,dwWin32ExitCode,dwWaitHint);
 
   if (dwCurrentState == SERVICE_START_PENDING)
     sstat.dwControlsAccepted = 0;
@@ -296,7 +296,7 @@ BOOL ReportStatusToSCMgr(DWORD dwCurrentState,
  */
 void __cdecl serviceexitproc(void *arg)
 {
-  Log(10,"serviceexitproc()");
+  Log (LL_DBG5,"serviceexitproc()");
   exitfunc();
 /*  ReportStatusToSCMgr(SERVICE_STOPPED, NO_ERROR, 0); *//* exitfunc() kill thread and this line don't executed */
 }
@@ -309,7 +309,7 @@ static void WINAPI ServiceCtrl(DWORD dwCtrlCode)
   {
   case SERVICE_CONTROL_STOP:
     ReportStatusToSCMgr(SERVICE_STOP_PENDING, NO_ERROR, 0);
-    Log(1, "Interrupted by service stop");
+    Log (LL_CRIT, "Interrupted by service stop");
 /*    SigHandler(CTRL_SERVICESTOP_EVENT); */ /* Only report to log "Interrupted by service stop" */
 /*    exit(0); */ /* Produce SCM error "109" */
     if( BEGINTHREAD(&serviceexitproc,0,NULL) != -1 )
@@ -329,7 +329,7 @@ static void WINAPI ServiceCtrl(DWORD dwCtrlCode)
  */
 void atServiceExitBegins(void)
 {
-  Log(10,"atServiceExitBegins()");
+  Log (LL_DBG5,"atServiceExitBegins()");
   if(IsNT() && isService())
     ReportStatusToSCMgr(SERVICE_STOP_PENDING, NO_ERROR, 0);
 }
@@ -340,7 +340,7 @@ void atServiceExitBegins(void)
 void atServiceExitEnds(void)
 {
   char *sp;
-  Log(10,"atServiceExitEnds()");
+  Log (LL_DBG5,"atServiceExitEnds()");
 
   if(!IsNT() || !isService())
     return;
@@ -557,10 +557,10 @@ static void try_open_SCM(void)
     if(!sman)
     { int err = GetLastError();
       if(res_checkservice)
-        Log(isService()?1:-1, "OpenSCManager failed: %s",w32err(err));
+        Log (isService()?LL_CRIT:LL_CONONLY, "OpenSCManager failed: %s",w32err(err));
       else if(err==ERROR_ACCESS_DENIED)
       {
-        Log(isService()?1:-1, "%s access to NT service controls is denied.", isService()? "Any" : "R/W");
+        Log (isService()?LL_CRIT:LL_CONONLY, "%s access to NT service controls is denied.", isService()? "Any" : "R/W");
       }
     }
   }
@@ -645,7 +645,7 @@ static int store_data_into_registry(char **argv,char **envp)
   }
   else
   {
-    Log(1, "Unable to open registry key %s!", sp);
+    Log (LL_CRIT, "Unable to open registry key %s!", sp);
     return -1;
   }
   strnzcat(sp, reg_path_suffix,sizeof(sp));
@@ -666,7 +666,7 @@ static int store_data_into_registry(char **argv,char **envp)
   else
   {
     rc = -1;
-    Log(1, "Unable to store data in registry for service '%s'", service_name);
+    Log (LL_CRIT, "Unable to store data in registry for service '%s'", service_name);
     res_checkservice=(CHKSRV_CANT_INSTALL);
   }
   if(hk) RegCloseKey(hk);
@@ -686,7 +686,7 @@ static int install_service(char **argv,char **envp)
     char path[MAXPATHLEN+1];
     if(GetModuleFileName(NULL, path, MAXPATHLEN)<1)
     {
-      Log(1, "Error in GetModuleFileName()=%s", w32err(GetLastError()) );
+      Log (LL_CRIT, "Error in GetModuleFileName()=%s", w32err(GetLastError()) );
       CloseServiceHandle(sman);
       return -1;
     }
@@ -706,7 +706,7 @@ static int install_service(char **argv,char **envp)
 
     if(!shan)
     {
-      Log(1, "Error in CreateService()=%s", w32err(GetLastError()) );
+      Log (LL_CRIT, "Error in CreateService()=%s", w32err(GetLastError()) );
       return -1;
     }
     else
@@ -728,7 +728,7 @@ static int install_service(char **argv,char **envp)
     }
     return store_data_into_registry(argv,envp);
   }
-  Log(-1, "Service \"%s\" installed successfully.", service_name);
+  Log (LL_CONONLY, "Service \"%s\" installed successfully.", service_name);
   return 0;
 }
 
@@ -760,35 +760,35 @@ static int start_service(void)
   { DWORD err=GetLastError();
     switch( err ){
     case ERROR_SERVICE_DOES_NOT_EXIST:
-      Log(-1, "Service \"%s\" is not installed, can't start service.", service_name);
+      Log (LL_CONONLY, "Service \"%s\" is not installed, can't start service.", service_name);
       break;
     case ERROR_ACCESS_DENIED:
-      Log(1, "Access to starting service \"%s\" is denied...", service_name);
+      Log (LL_CRIT, "Access to starting service \"%s\" is denied...", service_name);
       break;
     default:
-      Log(1, "Error at starting service \"%s\": %s", err, service_name, w32err(err) );
+      Log (LL_CRIT, "Error at starting service \"%s\": %s", err, service_name, w32err(err) );
     }
     return -1;
   }
   if( query_service(SERVICE_RUNNING)==0 )
   {
-    Log(-1, "Service \"%s\" already started.", service_name);
+    Log (LL_CONONLY, "Service \"%s\" already started.", service_name);
     return 0;
   }
 
   if( /*query_service(SERVICE_START_PENDING) &&*/ !StartService(shan, 0, NULL) )
   {
-    Log(1, "Error in StartService()=%s", w32err(GetLastError()) );
+    Log (LL_CRIT, "Error in StartService()=%s", w32err(GetLastError()) );
     return -1;
   }
 
   if( wait_service_operation(SERVICE_START_PENDING,SERVICE_RUNNING) )
   {
-    Log(-1, "Unable to start service '%s'.", service_name);
+    Log (LL_CONONLY, "Unable to start service '%s'.", service_name);
     return -1;
   }
 
-  Log(-1, "Service '%s' started successfully.", service_name);
+  Log (LL_CONONLY, "Service '%s' started successfully.", service_name);
   return 0;
 }
 
@@ -801,31 +801,31 @@ static int stop_service(void)
   { DWORD err=GetLastError();
     switch( err ){
     case ERROR_SERVICE_DOES_NOT_EXIST:
-      Log(-1, "Service \"%s\" is not installed...", service_name);
+      Log (LL_CONONLY, "Service \"%s\" is not installed...", service_name);
       break;
     case ERROR_ACCESS_DENIED:
-      Log(1, "Access to control service \"%s\" is denied!", service_name);
+      Log (LL_CRIT, "Access to control service \"%s\" is denied!", service_name);
       break;
     default:
-      Log(1, "Error at stopping service \"%s\": %s", err, service_name, w32err(err) );
+      Log (LL_CRIT, "Error at stopping service \"%s\": %s", err, service_name, w32err(err) );
     }
     return -1;
   }
 
   if( query_service(SERVICE_STOPPED)==0 )
   {
-    Log(-1, "Service \"%s\" is not running...", service_name);
+    Log (LL_CONONLY, "Service \"%s\" is not running...", service_name);
     return 0;
   }
 
   if( ControlService(shan, SERVICE_CONTROL_STOP, &sstat) &&
       wait_service_operation(SERVICE_STOP_PENDING,SERVICE_STOPPED) )
   {
-    Log(1, "Unable to service '%s'!", service_name);
+    Log (LL_CRIT, "Unable to service '%s'!", service_name);
     return -1;
   }
 
-  Log(-1, "Service '%s' stopped successfully.", service_name);
+  Log (LL_CONONLY, "Service '%s' stopped successfully.", service_name);
   return 0;
 }
 
@@ -838,24 +838,24 @@ static int uninstall_service(void)
   { DWORD err=GetLastError();
     switch( err ){
     case ERROR_SERVICE_DOES_NOT_EXIST:
-      Log(-1, "Service \"%s\" is not installed...", service_name);
+      Log (LL_CONONLY, "Service \"%s\" is not installed...", service_name);
       break;
     case ERROR_ACCESS_DENIED:
-      Log(1, "Access to uninstalling service \"%s\" is denied!", service_name);
+      Log (LL_CRIT, "Access to uninstalling service \"%s\" is denied!", service_name);
       break;
     default:
-      Log(1, "Error at uninstalling service \"%s\": %s", err, service_name, w32err(err) );
+      Log (LL_CRIT, "Error at uninstalling service \"%s\": %s", err, service_name, w32err(err) );
     }
     return -1;
   }
 
   if( !DeleteService(shan) )
   {
-    Log(1, "Error in DeleteService()=%s", w32err(GetLastError()) );
+    Log (LL_CRIT, "Error in DeleteService()=%s", w32err(GetLastError()) );
     return -1;
   }
 
-  Log(-1, "Service '%s' uninstalled successfully.", service_name);
+  Log (LL_CONONLY, "Service '%s' uninstalled successfully.", service_name);
   return 0;
 }
 
@@ -869,7 +869,7 @@ int service(int argc, char **argv, char **envp)
   else{
     if( !IsNT() )
     {
-      Log(0,"Can't operate witn Windows NT services: incompatible OS type");
+      Log (LL_FATAL,"Can't operate witn Windows NT services: incompatible OS type");
       return 1;
     }
   }
@@ -885,17 +885,17 @@ int service(int argc, char **argv, char **envp)
   j=checkservice();
 
   if(j==CHKSRV_ERROR){
-      Log(0, "Can't operate witn Windows NT services: %s", w32err(GetLastError()));
+      Log (LL_FATAL, "Can't operate witn Windows NT services: %s", w32err(GetLastError()));
   }
   if(j==CHKSRV_CANT_INSTALL && !isService()){
-      Log(0, "Can't operate witn Windows NT services...");
+      Log (LL_FATAL, "Can't operate witn Windows NT services...");
   }
 
   switch(service_flag){
 
   case w32_installservice:
     if (j==CHKSRV_INSTALLED){
-      Log(-1, "Service '%s' already installed...", service_name);
+      Log (LL_CONONLY, "Service '%s' already installed...", service_name);
       exit(0);
     }else{
 
@@ -909,7 +909,7 @@ int service(int argc, char **argv, char **envp)
 
   case w32_uninstallservice:
     if (j==CHKSRV_NOT_INSTALLED)
-      Log(-1, "Service '%s' already uninstalled...", service_name);
+      Log (LL_CONONLY, "Service '%s' already uninstalled...", service_name);
     else{
       rc = stop_service() + uninstall_service();
     }
@@ -937,7 +937,7 @@ int service(int argc, char **argv, char **envp)
 
   case w32_queryservice:
     if( j==CHKSRV_NOT_INSTALLED )
-      Log(-1, "Service '%s' is not installed.", service_name);
+      Log (LL_CONONLY, "Service '%s' is not installed.", service_name);
     else if( j==CHKSRV_INSTALLED )
     { char *statustext="";
       switch (service_status())
@@ -953,7 +953,7 @@ int service(int argc, char **argv, char **envp)
         case SERVICE_PAUSED: statustext="and is paused"; break;
         default: statustext="but status is unknown"; break;
       }
-      Log(-1, "Service '%s' is installed %s.", service_name, statustext);
+      Log (LL_CONONLY, "Service '%s' is installed %s.", service_name, statustext);
     }
 
     cleanup_service();
@@ -1012,13 +1012,13 @@ int tell_start_ntservice(void)
        res=1;   /* Program running not an as service */
        break;
     case ERROR_SERVICE_ALREADY_RUNNING:
-       Log(-1,"Error %u: Double call of StartServiceCtrlDispatcher()",ERROR_SERVICE_ALREADY_RUNNING);
+       Log (LL_CONONLY,"Error %u: Double call of StartServiceCtrlDispatcher()",ERROR_SERVICE_ALREADY_RUNNING);
        break;
     case ERROR_INVALID_DATA:
-       Log(-1,"Error %u: The specified dispatch table contains entries that are not in the proper format.", ERROR_INVALID_DATA);
+       Log (LL_CONONLY,"Error %u: The specified dispatch table contains entries that are not in the proper format.", ERROR_INVALID_DATA);
        break;
     default:
-       Log(-1, "tell_start_ntservice(): %s", w32err(GetLastError()) );
+       Log (LL_CONONLY, "tell_start_ntservice(): %s", w32err(GetLastError()) );
     }
   }
   return res;

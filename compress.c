@@ -61,7 +61,7 @@ int compress_init(int type, int lvl, void **data)
     case 2: {
       *data = calloc(1, sizeof(bz_stream));
       if (*data == NULL) {
-        Log (1, "compress_init: not enough memory (%lu needed)", sizeof(bz_stream));
+        Log (LL_CRIT, "compress_init: not enough memory (%lu needed)", sizeof(bz_stream));
         return BZ_MEM_ERROR;
       }
       /* if (lvl <= 0) */ lvl = 1; /* default is small (100K) buffer */
@@ -72,7 +72,7 @@ int compress_init(int type, int lvl, void **data)
     case 1: {
       *data = calloc(1, sizeof(z_stream));
       if (*data == NULL) {
-        Log (1, "compress_init: not enough memory (%lu needed)", sizeof(z_stream));
+        Log (LL_CRIT, "compress_init: not enough memory (%lu needed)", sizeof(z_stream));
         return Z_MEM_ERROR;
       }
       /* 0 is default compression level */
@@ -82,7 +82,7 @@ int compress_init(int type, int lvl, void **data)
     }
 #endif
     default:
-      Log (1, "Unknown compression method: %d; data lost", type);
+      Log (LL_CRIT, "Unknown compression method: %d; data lost", type);
   }
   return -1;
 }
@@ -121,7 +121,7 @@ int do_compress(int type, char *dst, int *dst_len, char *src, int *src_len,
     }
 #endif
     default:
-      Log (1, "Unknown compression method: %d; data lost", type);
+      Log (LL_CRIT, "Unknown compression method: %d; data lost", type);
   }
   return -1;
 }
@@ -132,19 +132,19 @@ void compress_deinit(int type, void *data)
 #ifdef WITH_BZLIB2
     case 2: {
       int rc = BZ2_bzCompressEnd((bz_stream *)data);
-      if (rc < 0) Log (1, "BZ2_bzCompressEnd error: %d", rc);
+      if (rc < 0) Log (LL_CRIT, "BZ2_bzCompressEnd error: %d", rc);
       break;
     }
 #endif
 #ifdef WITH_ZLIB
     case 1: {
       int rc = deflateEnd((z_stream *)data);
-      if (rc < 0) Log (1, "deflateEnd error: %d", rc);
+      if (rc < 0) Log (LL_CRIT, "deflateEnd error: %d", rc);
       break;
     }
 #endif
     default:
-      Log (1, "Unknown compression method: %d", type);
+      Log (LL_CRIT, "Unknown compression method: %d", type);
   }
   free(data);
   return;
@@ -155,7 +155,7 @@ void compress_abort(int type, void *data)
   int i, j;
 
   if (data) { 
-    Log (4, "Purge compress buffers");
+    Log (LL_NOTICE, "Purge compress buffers");
     do {
       i=sizeof(buf);
       j=0;
@@ -171,7 +171,7 @@ int decompress_init(int type, void **data)
     case 2: {
       *data = calloc(1, sizeof(bz_stream));
       if (*data == NULL) {
-        Log (1, "decompress_init: not enough memory (%lu needed)", sizeof(bz_stream));
+        Log (LL_CRIT, "decompress_init: not enough memory (%lu needed)", sizeof(bz_stream));
         return BZ_MEM_ERROR;
       }
       return BZ2_bzDecompressInit((bz_stream *)*data, 0, 0);
@@ -181,14 +181,14 @@ int decompress_init(int type, void **data)
     case 1: {
       *data = calloc(1, sizeof(z_stream));
       if (*data == NULL) {
-        Log (1, "decompress_init: not enough memory (%lu needed)", sizeof(z_stream));
+        Log (LL_CRIT, "decompress_init: not enough memory (%lu needed)", sizeof(z_stream));
         return Z_MEM_ERROR;
       }
       return inflateInit((z_stream *)*data);
     }
 #endif
     default:
-      Log (1, "Unknown compression method: %d; data lost", type);
+      Log (LL_CRIT, "Unknown compression method: %d; data lost", type);
   }
   return -1;
 }
@@ -226,7 +226,7 @@ int do_decompress(int type, char *dst, int *dst_len, char *src, int *src_len, vo
     }
 #endif
     default:
-      Log (1, "Unknown compression method: %d; data lost", type);
+      Log (LL_CRIT, "Unknown compression method: %d; data lost", type);
   }
   return 0;
 }
@@ -248,7 +248,7 @@ int decompress_deinit(int type, void *data)
     }
 #endif
     default:
-      Log (1, "Unknown compression method: %d", type);
+      Log (LL_CRIT, "Unknown compression method: %d", type);
       break;
   }
   free(data);
@@ -260,7 +260,7 @@ int decompress_abort(int type, void *data) {
   int i, j;
 
   if (data) {
-    Log (4, "Purge decompress buffers");
+    Log (LL_NOTICE, "Purge decompress buffers");
     do {
       i=sizeof(buf);
       j=0;

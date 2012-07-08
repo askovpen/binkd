@@ -86,7 +86,7 @@ void wndthread(void *par)
     {
         if (!AllocConsole())
         {
-            Log(-1, "unable to allocate console");
+            Log (LL_CONONLY, "unable to allocate console");
             return;
         }
         else
@@ -116,13 +116,13 @@ void wndthread(void *par)
     wa = RegisterClass(&rc);
     if (!wa)
     {
-        Log(-1, "unable to register class...");
+        Log (LL_CONONLY, "unable to register class...");
         return;
     }
     wnd = CreateWindow(cn, "", 0, 0, 0, 0, 0, NULL, NULL, NULL, NULL);
     if (!wnd)
     {
-        Log(-1, "Unable to create message window...");
+        Log (LL_CONONLY, "Unable to create message window...");
         return;
     }
     memset(&nd, 0, sizeof(nd));

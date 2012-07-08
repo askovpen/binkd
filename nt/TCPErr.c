@@ -184,7 +184,7 @@ const char *newerrortolist(int err){
   pStrErrList newe;
 
   if( !(newe = malloc(sizeof(*newe))) ){
-/*    Log( 0, "Out of memory (malloc())" );*/
+/*    Log (LL_FATAL, "Out of memory (malloc())" );*/
     return NULL;
   }
   newe->code = err;

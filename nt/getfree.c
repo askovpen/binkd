@@ -126,7 +126,7 @@ unsigned long getfree (char *path) {
       ) {
 
       if( i64FreeBytesToCaller.u.HighPart > 1023 ) {
-        Log( 6, "GetDiskFreeSpaceEx() returns too big value (%lu*2^32) and getfree() is return ULONG_MAX (%lu)",i64FreeBytesToCaller.u.HighPart,ULONG_MAX);
+        Log (6, "GetDiskFreeSpaceEx() returns too big value (%lu*2^32) and getfree() is return ULONG_MAX (%lu)",i64FreeBytesToCaller.u.HighPart,ULONG_MAX);
         return ULONG_MAX;
       }
       return (unsigned long)(i64FreeBytesToCaller.QuadPart>>10 & ULONG_MAX);

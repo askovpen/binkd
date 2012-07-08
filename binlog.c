@@ -185,7 +185,7 @@ static void TLogStat (int status, STATE *state, char *binlogpath, int tzoff)
 			ReleaseSem(&blsem);
 		} else {
 			ReleaseSem(&blsem);
-			Log(1,"unable to open binary log file `%s'",binlogpath);
+			Log (LL_CRIT,"unable to open binary log file `%s'",binlogpath);
 		}
 	}
 
@@ -259,7 +259,7 @@ static void FDLogStat (STATE *state, char *fdinhist, char *fdouthist, int tzoff)
 	else
 	{
 		ReleaseSem(&blsem);
-		Log (1, "failed to write to %s", (state->to ? fdouthist : fdinhist));
+		Log (LL_CRIT, "failed to write to %s", (state->to ? fdouthist : fdinhist));
 	}
 }
 

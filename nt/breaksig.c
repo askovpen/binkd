@@ -161,34 +161,34 @@ extern int pid_file_created;	/* we've created the pid_file */
 static BOOL CALLBACK
 SigHandler (DWORD SigType)
 {
-  Log (10, "SigHandler(%lu)", SigType);
+  Log (LL_DBG5, "SigHandler(%lu)", SigType);
   switch (SigType)
     {
     case CTRL_C_EVENT:
     case CTRL_BREAK_EVENT:
-      Log (1, "Interrupted by keyboard");
+      Log (LL_CRIT, "Interrupted by keyboard");
       break;
     case CTRL_CLOSE_EVENT:
-      Log (1, "Interrupted by Close");
+      Log (LL_CRIT, "Interrupted by Close");
       break;
     case CTRL_LOGOFF_EVENT:
 #ifndef BINKD9X
       if (isService ())
 	return (TRUE);
 #endif
-      Log (1, "Interrupted by LogOff");
+      Log (LL_CRIT, "Interrupted by LogOff");
       break;
     case CTRL_SHUTDOWN_EVENT:
-      Log (1, "Interrupted by Shutdown");
+      Log (LL_CRIT, "Interrupted by Shutdown");
       break;
     case CTRL_SERVICESTOP_EVENT:
-      Log (1, "Interrupted by service stop");
+      Log (LL_CRIT, "Interrupted by service stop");
       break;
     case CTRL_SERVICERESTART_EVENT:
-      Log (1, "Interrupted by service restart");
+      Log (LL_CRIT, "Interrupted by service restart");
       break;
     default:
-      Log (1, "Interrupted by unknown signal %lu", SigType);
+      Log (LL_CRIT, "Interrupted by unknown signal %lu", SigType);
       break;
     }
   return (FALSE);
@@ -203,7 +203,7 @@ static BOOL CALLBACK
 SigHandlerNT (DWORD SigType)
 {
 
-  Log (10, "SigHandlerNT(%lu)", SigType);
+  Log (LL_DBG5, "SigHandlerNT(%lu)", SigType);
   if (SigHandler (SigType) == FALSE)
     {
       exit (0);

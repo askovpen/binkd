@@ -518,7 +518,7 @@ int poll_node (char *s, BINKD_CONFIG *config)
 
   if (!parse_ftnaddress (s, &target, config->pDomains.first))
   {
-    Log (1, "`%s' cannot be parsed as a Fido-style address\n", s);
+    Log (LL_CRIT, "`%s' cannot be parsed as a Fido-style address\n", s);
     return 0;
   }
   else
@@ -527,7 +527,7 @@ int poll_node (char *s, BINKD_CONFIG *config)
 
     exp_ftnaddress (&target, config->pAddr, config->nAddr, config->pDomains.first);
     ftnaddress_to_str (buf, &target);
-    Log (4, "creating a poll for %s (`%c' flavour)", buf, POLL_NODE_FLAVOUR);
+    Log (LL_NOTICE, "creating a poll for %s (`%c' flavour)", buf, POLL_NODE_FLAVOUR);
     locknodesem();
     if (!get_node_info_nolock (&target, config))
       add_node_nolock (&target, "*", NULL, NULL, NULL, '-', NULL, NULL, 

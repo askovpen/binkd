@@ -897,7 +897,7 @@ static int init_protocol (STATE *state, SOCKET socket, FTN_NODE *to, BINKD_CONFI
   state->start_time = safe_time();
   state->evt_queue = NULL;
   state->config = config;
-  Log (6, "binkp init done, socket # is %i", state->s);
+  Log (LL_DBG, "binkp init done, socket # is %i", state->s);
   return 1;
 }
 
@@ -912,16 +912,16 @@ static int close_partial (STATE *state, BINKD_CONFIG *config)
   if (state->in.f)
   {
     s = ftello (state->in.f);
-    Log (1, "receiving of %s interrupted at %" PRIuMAX, state->in.netname,
+    Log (LL_CRIT, "receiving of %s interrupted at %" PRIuMAX, state->in.netname,
          (uintmax_t) s);
     if (ispkt (state->in.netname))
     {
-      Log (2, "%s: partial .pkt", state->in.netname);
+      Log (LL_ERR, "%s: partial .pkt", state->in.netname);
       s = 0;
     }
     else if (s == 0)
     {
-      Log (4, "%s: empty partial", state->in.netname);
+      Log (LL_NOTICE, "%s: empty partial", state->in.netname);
     }
     fclose (state->in.f);
     state->in.f = NULL;
@@ -974,7 +974,7 @@ static int deinit_protocol (STATE *state, BINKD_CONFIG *config, int status)
   xfree (state->pAddr);
   xfree (state->MD_challenge);
   rel_grow_handles(-state->nfa);
-  Log (6, "binkp deinit done...");
+  Log (LL_DBG, "binkp deinit done...");
   return 0;
 }
 
@@ -983,7 +983,7 @@ static FTNQ *process_rcvdlist (STATE *state, FTNQ *q, BINKD_CONFIG *config)
 {
   int i;
 
-  Log (6, "processing rcvd list");
+  Log (LL_DBG, "processing rcvd list");
   for (i = 0; i < state->n_rcvdlist; ++i)
   {
     q = evt_run(q, state->rcvdlist[i].name, 1, state, config);
@@ -1033,7 +1033,7 @@ void msg_send2 (STATE *state, t_msg m, char *s1, char *s2)
   ++state->n_msgs;
   ++state->msgs_in_batch;
 
-  Log (5, "send message %s %s%s", scommand[m], s1, s2);
+  Log (LL_INFO, "send message %s %s%s", scommand[m], s1, s2);
 }
 
 /*
@@ -1062,7 +1062,7 @@ static void current_file_was_sent (STATE *state)
   if (state->ND_flag & WE_ND)
   {
     state->waiting_for_GOT = 1;
-    Log(5, "Waiting for M_GOT");
+    Log (LL_INFO, "Waiting for M_GOT");
   }
 }
 
@@ -1077,19 +1077,19 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
   /* Have something to send in buffers */
   if (state->optr && state->oleft)
   {
-    Log (7, "sending %i byte(s)", state->oleft);
+    Log (LL_DBG2, "sending %i byte(s)", state->oleft);
     n = send (state->s, state->optr, state->oleft, MSG_NOSIGNAL);
 #ifdef BW_LIM
     state->bw_send.bytes += n;
 #endif
     save_errno = TCPERRNO;
     save_err = TCPERR ();
-    Log (7, "send() done, rc=%i", n);
+    Log (LL_DBG2, "send() done, rc=%i", n);
     if (n == state->oleft)
     {
       state->optr = 0;
       state->oleft = 0;
-      Log (7, "data sent");
+      Log (LL_DBG2, "data sent");
     }
     else if (n == SOCKET_ERROR)
     {
@@ -1098,20 +1098,20 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
         state->io_error = 1;
         if (!binkd_exit)
         {
-          Log (1, "send: %s", save_err);
+          Log (LL_CRIT, "send: %s", save_err);
           if (state->to)
             bad_try (&state->to->fa, save_err, BAD_IO, config);
         }
         return 0;
       }
-      Log (7, "data transfer would block");
+      Log (LL_DBG2, "data transfer would block");
       return 2;
     }
     else
     {
       state->optr += n;
       state->oleft -= n;
-      Log (7, "partially sent, %i byte(s) left", state->oleft);
+      Log (LL_DBG2, "partially sent, %i byte(s) left", state->oleft);
     }
   }
   else
@@ -1130,7 +1130,7 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
           /* Check for possible internal error */
           if (state->msgs[i].sz - 2 > MAX_BLKSIZE)
           {
-            Log (1, "size of msg we want to send is too big (%i)",
+            Log (LL_CRIT, "size of msg we want to send is too big (%i)",
                  state->msgs[i].sz - 2);
             return 0;
           }
@@ -1139,7 +1139,7 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
           if (state->oleft + state->msgs[i].sz > MAX_BLKSIZE)
             break;
 
-          Log (7, "put next msg to obuf, %i", state->msgs[i].sz);
+          Log (LL_DBG2, "put next msg to obuf, %i", state->msgs[i].sz);
           memcpy (state->optr, state->msgs[i].s, state->msgs[i].sz);
           state->oleft += state->msgs[i].sz;
           state->optr += state->msgs[i].sz;
@@ -1189,14 +1189,14 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
         state->send_eof = 0;
         sz = 0;
       }
-      Log (10, "next block to send: %u byte(s)", sz);
+      Log (LL_DBG5, "next block to send: %u byte(s)", sz);
       mkhdr (state->obuf, sz);
       if (sz != 0)
       {
-        Log (10, "freading %u byte(s)", sz);
+        Log (LL_DBG5, "freading %u byte(s)", sz);
         if ((n = fread (buf, 1, sz, state->out.f)) < (int) sz)
         {
-          Log (1, "error reading %s: expected %u, read %i",
+          Log (LL_CRIT, "error reading %s: expected %u, read %i",
                state->out.path, sz, n);
           return 0;
         }
@@ -1213,8 +1213,8 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
           short cz, cnet, cnode, cp;
           SHARED_CHAIN *chn;
           if (pkt_getaddr(buf, NULL, NULL, NULL, NULL, &cz, &cnet, &cnode, &cp)) {
-            Log(9, "First block of %s", state->out.path);
-            Log(7, "PKT dest: %d:%d/%d.%d", cz, cnet, cnode, cp);
+            Log (LL_DBG4, "First block of %s", state->out.path);
+            Log (LL_DBG2, "PKT dest: %d:%d/%d.%d", cz, cnet, cnode, cp);
             /* Scan all shared addresses */
             for (chn = config->shares.first; chn; chn = chn->next)
             {
@@ -1230,7 +1230,7 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
                 { /* Change to main address and check */
                   pkt_setaddr(buf, -1, -1, -1, -1, (short)fa->z, (short)fa->net, (short)fa->node, (short)fa->p);
                   pkt_getaddr(buf, NULL, NULL, NULL, NULL, &cz, &cnet, &cnode, &cp);
-                  Log(7, "Change dest to: %d:%d/%d.%d", cz, cnet, cnode, cp);
+                  Log (LL_DBG2, "Change dest to: %d:%d/%d.%d", cz, cnet, cnode, cp);
                   /* Set corresponding pkt password */
                   {
                     FTN_NODE *fn = state->to ? state->to : get_node_info(fa, config);
@@ -1265,7 +1265,7 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
                            fleft ? 0 : 1,
                            state->z_odata);
           if (rc == -1) {
-            Log (1, "error compression %s, rc=%d", state->out.path, rc);
+            Log (LL_CRIT, "error compression %s, rc=%d", state->out.path, rc);
             return 0;
           }
           state->z_osize += nget;
@@ -1275,10 +1275,10 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
           if (nput == config->oblksize) break;
           sz = min(fleft, ZBLKSIZE);
           if (sz == 0) continue;
-          Log (10, "freading %u byte(s)", sz);
+          Log (LL_DBG5, "freading %u byte(s)", sz);
           if ((n = fread (state->z_obuf, 1, sz, state->out.f)) < (int) sz)
           {
-            Log (1, "error reading %s: expected %u, read %i",
+            Log (LL_CRIT, "error reading %s: expected %u, read %i",
                  state->out.path, sz, n);
             return 0;
           }
@@ -1293,7 +1293,7 @@ static int send_block (STATE *state, BINKD_CONFIG *config)
         mkhdr(state->obuf, sz);
         if (!fleft && rc == 1)
         {
-          Log(4, "Compressed %" PRIuMAX " bytes to %" PRIuMAX " for %s, ratio %.1f%%",
+          Log (LL_NOTICE, "Compressed %" PRIuMAX " bytes to %" PRIuMAX " for %s, ratio %.1f%%",
               (uintmax_t)state->z_osize, (uintmax_t)state->z_cosize,
               state->out.netname, 100.0 * state->z_cosize / (state->z_osize ? state->z_osize : 1));
           compress_deinit(state->z_send, state->z_odata);
@@ -1356,7 +1356,7 @@ static int perform_action (STATE *state, char *path, char action)
       if (chmod(path, S_IREAD | S_IWRITE) == 0 && delete(path) != 0) {
 #endif
       /* add to list not to send it again */
-      Log (5, "adding file `%s' to not-to-send list", path);
+      Log (LL_INFO, "adding file `%s' to not-to-send list", path);
       state->nosendlist = xrealloc(state->nosendlist, (state->n_nosendlist+1)*sizeof(state->nosendlist[0]));
       state->nosendlist[state->n_nosendlist++] = xstrdup(path);
 #if defined(WIN32) || defined(OS2) || defined(DOS)
@@ -1393,11 +1393,11 @@ static int remove_from_spool (STATE *state, char *flopath,
   int empty_flo_flag = 1;
 
   if (file)
-    Log (5, "removing from spool: %s", file);
+    Log (LL_INFO, "removing from spool: %s", file);
   else if (flopath)
-    Log (5, "removing flo: %s", flopath);
+    Log (LL_INFO, "removing flo: %s", flopath);
   else
-    Log (1, "internal error in remove_from_spool!");
+    Log (LL_CRIT, "internal error in remove_from_spool!");
 
   if (flopath && *flopath)               /* A file attached via .?lo */
   {
@@ -1412,7 +1412,7 @@ static int remove_from_spool (STATE *state, char *flopath,
     {
       if ((flo = fopen (flopath, "r+b")) == 0)
       {
-        Log (5, "remove_from_spool: %s: %s", flopath, strerror (errno));
+        Log (LL_INFO, "remove_from_spool: %s: %s", flopath, strerror (errno));
         return 0;
       }
     }
@@ -1431,21 +1431,21 @@ static int remove_from_spool (STATE *state, char *flopath,
       {
         clearerr (flo);
         if (fseeko (flo, curr_offset, SEEK_SET) == EOF)
-          Log (1, "remove_from_spool: fseek(%s): %s", flopath,
+          Log (LL_CRIT, "remove_from_spool: fseek(%s): %s", flopath,
                strerror (errno));
         else if (putc ('~', flo) == EOF)
-          Log (1, "remove_from_spool: fputc(%s): %s", flopath,
+          Log (LL_CRIT, "remove_from_spool: fputc(%s): %s", flopath,
                strerror (errno));
         fflush (flo);
         /* The line was marked, now skip it */
         if (!fgets (buf, MAXPATHLEN, flo))
-          Log (1, "remove_from_spool: fgets(%s): %s", flopath,
+          Log (LL_CRIT, "remove_from_spool: fgets(%s): %s", flopath,
                strerror (errno));
         /* We've found the file in flo, so try to translate it's name before
          * the action */
         if (w == 0 && (w = trans_flo_line (file, config->rf_rules.first)) != 0)
         {
-          Log (5, "%s mapped to %s", file, w);
+          Log (LL_INFO, "%s mapped to %s", file, w);
         }
       }
       else if (*buf && *buf != '~')
@@ -1529,14 +1529,14 @@ static int NUL (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
   UNUSED_ARG(sz);
   UNUSED_ARG(config);
 
-  Log (3, "%s", s = strquote (buf, SQ_CNTRL));
+  Log (LL_WARN, "%s", s = strquote (buf, SQ_CNTRL));
   if (!memcmp (s, "VER ", 4) &&
       (a = strstr (s, PRTCLNAME "/")) != 0 &&
       (b = strstr (a, ".")) != 0)
   {
     state->major = atoi (a + 6);
     state->minor = atoi (b + 1);
-    Log (6, "remote uses " PRTCLNAME " v.%i.%i", state->major, state->minor);
+    Log (LL_DBG, "remote uses " PRTCLNAME " v.%i.%i", state->major, state->minor);
     if (!memcmp(s + 4, "binkd/0.9/", 10) ||
         !memcmp(s + 4, "binkd/0.9.1/", 12) ||
         !memcmp(s + 4, "binkd/0.9.2/", 12) ||
@@ -1545,7 +1545,7 @@ static int NUL (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
         !memcmp(s + 4, "binkd/0.9.4/", 12))
     {
       state->buggy_NR = 1;
-      Log (5, "remote has NR bug, use workaround");
+      Log (LL_INFO, "remote has NR bug, use workaround");
     }
   }
   else if (!memcmp (s, "TRF ", 4))
@@ -1554,7 +1554,7 @@ static int NUL (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
     if ((mail = getwordx (s + 4, 1, 0)) != NULL &&
         (files = getwordx (s + 4, 2, 0)) != NULL)
     {
-      Log (2, "Remote has %sb of mail and %sb of files for us", mail, files);
+      Log (LL_ERR, "Remote has %sb of mail and %sb of files for us", mail, files);
       free(files);
     }
     if (mail) free(mail);
@@ -1569,34 +1569,34 @@ static int NUL (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
       if (!strcmp (w, "NR"))
       {
         state->NR_flag |= WE_NR;      /* They want NR mode - turn it on */
-        Log(2, "Remote requests NR mode");
+        Log (LL_ERR, "Remote requests NR mode");
       }
       if (!strcmp (w, "ND"))
       {
         state->ND_flag |= WE_ND;      /* They want ND mode - turn it on */
-        Log(2, "Remote requests ND mode");
+        Log (LL_ERR, "Remote requests ND mode");
       }
       if (!strcmp (w, "NDA"))
       {
         state->ND_flag |= CAN_NDA;     /* They supports asymmetric ND */
-        Log(2, "Remote supports asymmetric ND mode");
+        Log (LL_ERR, "Remote supports asymmetric ND mode");
       }
       if (!strcmp (w, "CRYPT"))
       {
         state->crypt_flag |= THEY_CRYPT;  /* They want crypt mode */
-        Log(2, "Remote requests CRYPT mode");
+        Log (LL_ERR, "Remote requests CRYPT mode");
       }
       if (!strncmp(w, "CRAM-", 5) && !no_MD5 &&
           state->to && (state->to->MD_flag >= 0))
       {
-        Log(2, "Remote requests MD mode");
+        Log (LL_ERR, "Remote requests MD mode");
         xfree(state->MD_challenge);
         state->MD_challenge=MD_getChallenge(w, NULL);
       }
 #ifdef WITH_ZLIB
       if (!strcmp (w, "GZ"))
       {
-        Log(2, "Remote supports GZ mode");
+        Log (LL_ERR, "Remote supports GZ mode");
 #ifdef ZLIBDL
         if (zlib_loaded)
 #endif
@@ -1606,7 +1606,7 @@ static int NUL (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
 #ifdef WITH_BZLIB2
       if (!strcmp (w, "BZ2"))
       {
-        Log(2, "Remote supports BZ2 mode");
+        Log (LL_ERR, "Remote supports BZ2 mode");
 #ifdef ZLIBDL
         if (bzlib2_loaded)
 #endif
@@ -1616,7 +1616,7 @@ static int NUL (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
       if (!strcmp (w, "EXTCMD"))
       {
         state->extcmd = 1;  /* They can accept extra params for commands */
-        Log(2, "Remote supports EXTCMD mode");
+        Log (LL_ERR, "Remote supports EXTCMD mode");
       }
       free (w);
     }
@@ -1629,7 +1629,7 @@ static int NUL (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
     strnzcpy (state->location, s + 4, sizeof (state->location));
   else if (!memcmp (s, "FREQ", 4)) {
     state->delay_EOB++;
-    Log(2, "Remote claims to have a FREQ for us");
+    Log (LL_ERR, "Remote claims to have a FREQ for us");
   }
   free (s);
   return 1;
@@ -1644,7 +1644,7 @@ static int RError (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
 
   UNUSED_ARG(sz);
 
-  Log (1, "rerror: %s", s = strquote (buf, SQ_CNTRL));
+  Log (LL_CRIT, "rerror: %s", s = strquote (buf, SQ_CNTRL));
   if (state->to)
     bad_try (&state->to->fa, s, BAD_MERR, config);
   free (s);
@@ -1657,7 +1657,7 @@ static int BSY (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
 
   UNUSED_ARG(sz);
 
-  Log (1, "got M_BSY: %s", s = strquote (buf, SQ_CNTRL));
+  Log (LL_CRIT, "got M_BSY: %s", s = strquote (buf, SQ_CNTRL));
   if (state->to)
     bad_try (&state->to->fa, s, BAD_MBSY, config);
   free (s);
@@ -1687,7 +1687,7 @@ static char * add_shared_akas(char * s, BINKD_CONFIG *config)
            * by remote node, it should be deleted...
            */
           ftnaddress_to_str (szFTNAddr,&fa);
-          Log(1,"shared aka `%s' used by node %s",szFTNAddr,s);
+          Log (LL_CRIT,"shared aka `%s' used by node %s",szFTNAddr,s);
           /* fill this aka by spaces */
           c = strstr(s,w);
           if (c)
@@ -1714,7 +1714,7 @@ static char * add_shared_akas(char * s, BINKD_CONFIG *config)
               ftnaddress_to_str (szFTNAddr,&chn->sha);
               strcat(ad, " ");
               strcat(ad, szFTNAddr);
-              Log(2,"shared aka %s is added",szFTNAddr);
+              Log (LL_ERR,"shared aka %s is added",szFTNAddr);
               break;
             }
           }
@@ -1732,7 +1732,7 @@ static void send_ADR (STATE *state, BINKD_CONFIG *config) {
   int i, N;
   struct akachain *ps;
 
-  Log(7, "send_ADR(): got %d remote addresses", state->nfa);
+  Log (LL_DBG2, "send_ADR(): got %d remote addresses", state->nfa);
 
   if (!state->pAddr) {
     state->nAddr = config->nAddr;
@@ -1757,7 +1757,7 @@ static void send_ADR (STATE *state, BINKD_CONFIG *config) {
         if (ftnaddress_cmp(state->pAddr+i, &(ps->fa)) == 0) {
           char buf[FTN_ADDR_SZ];
           ftnaddress_to_str(buf, &(ps->fa));
-          Log(3, "hiding aka %s", buf);
+          Log (LL_WARN, "hiding aka %s", buf);
           if (i < state->nAddr-1)
             memmove(state->pAddr+i, state->pAddr+i+1, (state->nAddr-1-i)*sizeof(FTN_ADDR));
           state->nAddr--;
@@ -1771,7 +1771,7 @@ static void send_ADR (STATE *state, BINKD_CONFIG *config) {
       if (i == state->nAddr) {
         char buf[FTN_ADDR_SZ];
         ftnaddress_to_str(buf, &(ps->fa));
-        Log(3, "presenting aka %s", buf);
+        Log (LL_WARN, "presenting aka %s", buf);
         state->nAddr++;
         if (state->nAddr > N) {
           state->pAddr = xrealloc(state->pAddr, state->nAddr * sizeof(FTN_ADDR));
@@ -1844,7 +1844,7 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
       {
         free (s); free (ad);
       }
-      Log (1, "all akas was removed as shared");
+      Log (LL_CRIT, "all akas was removed as shared");
       return 0;
     }
     free (w);
@@ -1865,7 +1865,7 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
       char *q = strquote (s, SQ_CNTRL);
 
       msg_send2 (state, M_ERR, "Bad address", 0);
-      Log (1, "remote passed bad address: `%s'", q);
+      Log (LL_CRIT, "remote passed bad address: `%s'", q);
       free (w);
       free (q);
       return 0;
@@ -1913,7 +1913,7 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
       if (getpeername (state->s, (struct sockaddr *)&sin, &si) == -1)
       {
         if (binkd_exit) return 0;
-        Log (1, "Can't getpeername(): %s", TCPERR());
+        Log (LL_CRIT, "Can't getpeername(): %s", TCPERR());
 #ifndef VAL_STYLE
         ipok = 2;
 #endif
@@ -1924,17 +1924,17 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
       {
         if (rc == 0)
         {
-          Log (1, "%s: %i: error parsing host list", pn->hosts, i);
+          Log (LL_CRIT, "%s: %i: error parsing host list", pn->hosts, i);
           continue;
         }
         if (strcmp(host, "-") == 0)
           continue;
 
-        Log (5, "resolving `%s'...", host);
+        Log (LL_INFO, "resolving `%s'...", host);
 	aiErr = getaddrinfo(host, "0", &hints, &aiHead);
 	if (aiErr != 0)
         {
-	  Log(3, "%s, getaddrinfo error: %s (%d)", host, gai_strerror(aiErr), aiErr);
+	  Log (LL_WARN, "%s, getaddrinfo error: %s (%d)", host, gai_strerror(aiErr), aiErr);
 #ifdef VAL_STYLE
           if (aiErr == EAI_NONAME)
             ip_found |= FOUND_UNKNOWN;
@@ -1980,9 +1980,9 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
         if (pn->pwd && strcmp(pn->pwd, "-") && state->to == 0)
         {
           if (ipok == 0)
-            Log (1, "addr: %s (unresolvable)", szFTNAddr);
+            Log (LL_CRIT, "addr: %s (unresolvable)", szFTNAddr);
           else
-            Log (1, "addr: %s (not from allowed remote address)", szFTNAddr);
+            Log (LL_CRIT, "addr: %s (not from allowed remote address)", szFTNAddr);
           msg_send2 (state, M_ERR, "Bad source IP", 0);
           return 0;
         } else
@@ -1990,9 +1990,9 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
           if (ip_verified == 0)
             ip_verified = -1;
           if (ipok == 0)
-            Log(2, "Addr %s dropped - unresolvable IP", szFTNAddr);
+            Log (LL_ERR, "Addr %s dropped - unresolvable IP", szFTNAddr);
           else
-            Log(2, "Addr %s dropped - not from allowed IP", szFTNAddr);
+            Log (LL_ERR, "Addr %s dropped - not from allowed IP", szFTNAddr);
           continue;
         }
       }
@@ -2012,12 +2012,12 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
         ) ip_check = CHECK_WRONG;
       }
       if (ip_check == CHECK_WRONG && !state->to && pn->pwd && strcmp(pn->pwd, "-")) {
-        Log (1, "addr: %s (not from allowed remote IP, aborted)", szFTNAddr);
+        Log (LL_CRIT, "addr: %s (not from allowed remote IP, aborted)", szFTNAddr);
         msg_send2 (state, M_ERR, "Bad source IP", 0);
         return 0;
       }
       else if (ip_check == CHECK_WRONG) {
-        Log (2, "addr: %s (not from allowed remote IP, disabled)", szFTNAddr);
+        Log (LL_ERR, "addr: %s (not from allowed remote IP, disabled)", szFTNAddr);
         continue;
       }
 #endif
@@ -2044,10 +2044,10 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
         else if (strcmp(state->expected_pwd, pwd))
         {
           if (state->to)
-            Log (2, "inconsistent pwd settings for this node, aka %s dropped", szFTNAddr);
+            Log (LL_ERR, "inconsistent pwd settings for this node, aka %s dropped", szFTNAddr);
           else
           { /* drop incoming session with M_ERR "Bad password" */
-            Log (1, "inconsistent pwd settings for this node");
+            Log (LL_CRIT, "inconsistent pwd settings for this node");
             state->expected_pwd[0] = '\0';
           }
           continue;
@@ -2060,13 +2060,13 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
     if (bsy_add (&fa, F_BSY, config))
     {
 #ifndef VAL_STYLE
-      Log (2, "addr: %s", szFTNAddr);
+      Log (LL_ERR, "addr: %s", szFTNAddr);
 #else
       char *s;
       if (ip_check == CHECK_OK) s = "remote IP ok";
       else if (ip_check == CHECK_OFF) s = "remote IP unchecked";
       else s = "remote IP can't be verified";
-      Log (2, "addr: %s (%s)", szFTNAddr, s);
+      Log (LL_ERR, "addr: %s (%s)", szFTNAddr, s);
 #endif
       if (state->nfa == 0)
         setproctitle ("%c %s [%s]",
@@ -2110,11 +2110,11 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
     }
     else
     {
-      Log (2, "addr: %s (n/a or busy)", szFTNAddr);
+      Log (LL_ERR, "addr: %s (n/a or busy)", szFTNAddr);
 #if 1
       if (pn && pn->pwd && strcmp(pn->pwd, "-") && state->to == 0)
       {
-        Log (1, "Secure AKA %s busy, drop the session", szFTNAddr);
+        Log (LL_CRIT, "Secure AKA %s busy, drop the session", szFTNAddr);
         msg_sendf (state, M_BSY, "Secure AKA %s busy", szFTNAddr);
         return 0;
       }
@@ -2148,28 +2148,28 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
   }
   if (state->nfa == 0)
   {
-    Log (1, "no AKAs in common domains or all AKAs are busy");
+    Log (LL_CRIT, "no AKAs in common domains or all AKAs are busy");
     msg_send2 (state, M_BSY, "No AKAs in common domains or all AKAs are busy", 0);
     return 0;
   }
   if (state->to != 0 && main_AKA_ok == 0)
   {
     ftnaddress_to_str (szFTNAddr, &state->to->fa);
-    Log (1, "called %s, but remote has no such AKA", szFTNAddr);
+    Log (LL_CRIT, "called %s, but remote has no such AKA", szFTNAddr);
     bad_try (&state->to->fa, "Remote has no needed AKA", BAD_AKA, config);
     return 0;
   }
 #ifndef VAL_STYLE
   if (ip_verified < 0)
   { /* strict IP check and no address resolved */
-    Log (1, "Remote IP check failed");
+    Log (LL_CRIT, "Remote IP check failed");
     msg_send2 (state, M_ERR, "Bad remote IP", 0);
     return 0;
   }
   else if (ip_verified == 2)
-    Log (4, "Remote IP matched");
+    Log (LL_NOTICE, "Remote IP matched");
   else if (state->to == 0)
-    Log (5, "Remote IP not checked");
+    Log (LL_INFO, "Remote IP not checked");
 #endif
 
   if (!state->to)
@@ -2177,7 +2177,7 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
 #ifdef WITH_PERL
     char *s = perl_on_handshake(state);
     if (s && *s) {
-      Log (1, "aborted by Perl on_handshake(): %s", s);
+      Log (LL_CRIT, "aborted by Perl on_handshake(): %s", s);
       msg_send2 (state, M_ERR, s, 0);
       return 0;
     }
@@ -2209,7 +2209,7 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
     else state->bw_send.rel = -pn->bw_send;
   }
   if (state->bw_send.abs || state->bw_send.rel)
-    Log (7, "Session send rate limit is %s cps or %d%%",
+    Log (LL_DBG2, "Session send rate limit is %s cps or %d%%",
             describe_rate(state->bw_send.abs), state->bw_send.rel);
 
   if (bw_recv_unlim) state->bw_recv.abs = state->bw_recv.rel = 0;
@@ -2219,7 +2219,7 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
     else state->bw_recv.rel = -pn->bw_recv;
   }
   if (state->bw_recv.abs || state->bw_recv.rel)
-    Log (7, "Session recv rate limit is %s cps or %d%%",
+    Log (LL_DBG2, "Session recv rate limit is %s cps or %d%%",
             describe_rate(state->bw_recv.abs), state->bw_recv.rel);
 #endif
 
@@ -2231,7 +2231,7 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
       char *tp=MD_buildDigest(state->to->out_pwd ? state->to->out_pwd : "-", state->MD_challenge);
       if (!tp)
       {
-        Log(2, "Unable to build MD5 digest");
+        Log (LL_ERR, "Unable to build MD5 digest");
         bad_try (&state->to->fa, "Unable to build MD5 digest", BAD_AUTH, config);
         return 0;
       }
@@ -2241,7 +2241,7 @@ static int ADR (STATE *state, char *s, int sz, BINKD_CONFIG *config)
     }
     else if ((state->to->MD_flag == 1) && !no_MD5) /* We do not want to talk without MD5 */
     {
-      Log(2, "CRAM-MD5 is not supported by remote");
+      Log (LL_ERR, "CRAM-MD5 is not supported by remote");
       bad_try (&state->to->fa, "CRAM-MD5 is not supported by remote", BAD_AUTH, config);
       return 0;
     }
@@ -2271,26 +2271,26 @@ static int complete_login (STATE *state, BINKD_CONFIG *config)
     state->q = q_sort (state->q, state->fa, state->nfa, config);
   state->msgs_in_batch = 0;               /* Forget about login msgs */
   if (state->state == P_SECURE)
-    Log (2, "pwd protected session (%s)",
+    Log (LL_ERR, "pwd protected session (%s)",
          (state->MD_flag == 1) ? "MD5" : "plain text");
   if (state->ND_flag & WE_ND)
   { state->NR_flag |= WE_NR;
-    Log (3, "we are in ND mode");
+    Log (LL_WARN, "we are in ND mode");
   }
   if (state->ND_flag & THEY_ND)
-    Log (3, "remote is in ND mode");
+    Log (LL_WARN, "remote is in ND mode");
   else if (state->NR_flag == WE_NR)
-    Log (3, "we are in NR mode");
+    Log (LL_WARN, "we are in NR mode");
   if (state->state != P_SECURE)
     state->crypt_flag = NO_CRYPT;
   else if (state->crypt_flag == (WE_CRYPT|THEY_CRYPT) && !state->MD_flag)
   { state->crypt_flag = NO_CRYPT;
-    Log (3, "Crypt allowed only with MD5 authorization");
+    Log (LL_WARN, "Crypt allowed only with MD5 authorization");
   }
   else if (state->crypt_flag == (WE_CRYPT|THEY_CRYPT))
   { char *p;
     state->crypt_flag = YES_CRYPT;
-    Log (3, "session in CRYPT mode");
+    Log (LL_WARN, "session in CRYPT mode");
     if (state->to)
     { init_keys(state->keys_out, state->to->out_pwd ? state->to->out_pwd : "-");
       init_keys(state->keys_in,  "-");
@@ -2308,7 +2308,7 @@ static int complete_login (STATE *state, BINKD_CONFIG *config)
   {
     char *s = perl_after_handshake(state);
     if (s && *s) {
-      Log (1, "aborted by Perl after_handshake(): %s", s);
+      Log (LL_CRIT, "aborted by Perl after_handshake(): %s", s);
       msg_send2 (state, M_ERR, s, 0);
       return 0;
     }
@@ -2326,11 +2326,11 @@ static int PWD (STATE *state, char *pwd, int sz, BINKD_CONFIG *config)
   UNUSED_ARG(sz);
 
   if (state->to)
-  { Log (1, "unexpected password from the remote on outgoing call: `%s'", pwd);
+  { Log (LL_CRIT, "unexpected password from the remote on outgoing call: `%s'", pwd);
     return 1;
   }
   if (state->state != P_NULL)
-  { Log (2, "Double M_PWD from remote! Ignored.", pwd);
+  { Log (LL_ERR, "Double M_PWD from remote! Ignored.", pwd);
     msg_send2 (state, M_NUL, "MSG Warning: double of password is received (M_PWD more one)!", 0);
     return 0;
   }
@@ -2340,7 +2340,7 @@ static int PWD (STATE *state, char *pwd, int sz, BINKD_CONFIG *config)
     do_prescan (state, config);
     state->state = P_NONSECURE;
     if (strcmp (pwd, "-"))
-      Log (1, "unexpected password from the remote: `%s'", pwd);
+      Log (LL_CRIT, "unexpected password from the remote: `%s'", pwd);
   }
   else
   {
@@ -2350,7 +2350,7 @@ static int PWD (STATE *state, char *pwd, int sz, BINKD_CONFIG *config)
       if (bad_pwd && state->MD_flag)
       {
         msg_send2(state, M_ERR, "You must support MD5", 0);
-        Log (1, "Caller does not support MD5");
+        Log (LL_CRIT, "Caller does not support MD5");
         return 0;
       }
       if ((sp = MD_buildDigest(state->expected_pwd, state->MD_challenge)) != NULL)
@@ -2360,7 +2360,7 @@ static int PWD (STATE *state, char *pwd, int sz, BINKD_CONFIG *config)
         sp = NULL;
       }
       else {
-        Log (2, "Unable to build Digest");
+        Log (LL_ERR, "Unable to build Digest");
         bad_pwd=1;
       }
     }
@@ -2369,7 +2369,7 @@ static int PWD (STATE *state, char *pwd, int sz, BINKD_CONFIG *config)
     if (bad_pwd && !no_password) /* I don't check password if we do not need one */
     {
       msg_send2 (state, M_ERR, "Bad password", 0);
-      Log (1, "`%s': incorrect password", pwd);
+      Log (LL_CRIT, "`%s': incorrect password", pwd);
       return 0;
     }
     else
@@ -2379,7 +2379,7 @@ static int PWD (STATE *state, char *pwd, int sz, BINKD_CONFIG *config)
         state->state = P_NONSECURE;
         do_prescan (state, config);
         if (bad_pwd) {
-          Log (1, "unexpected password digest from the remote");
+          Log (LL_CRIT, "unexpected password digest from the remote");
           state->state_ext = P_WE_NONSECURE;
         }
       }
@@ -2395,7 +2395,7 @@ static int PWD (STATE *state, char *pwd, int sz, BINKD_CONFIG *config)
     state->crypt_flag = NO_CRYPT;
   else if (state->crypt_flag == (THEY_CRYPT | WE_CRYPT) && !state->MD_flag)
   { state->crypt_flag = NO_CRYPT;
-    Log (4, "Crypt allowed only with MD5 authorization");
+    Log (LL_NOTICE, "Crypt allowed only with MD5 authorization");
   }
 
   if ((state->ND_flag & WE_ND) && (state->ND_flag & CAN_NDA) == 0)
@@ -2406,7 +2406,7 @@ static int PWD (STATE *state, char *pwd, int sz, BINKD_CONFIG *config)
   { /* workaround bug of old binkd */
     /* force symmetric NR-mode with it */
     state->NR_flag |= WE_NR;
-    Log (5, "Turn on NR-mode with this link (remote has buggy NR)");
+    Log (LL_INFO, "Turn on NR-mode with this link (remote has buggy NR)");
   }
 
   szOpt = xstrdup(" EXTCMD");
@@ -2439,7 +2439,7 @@ static int OK (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
     if (state->state == P_SECURE && strcmp(w, "non-secure") == 0)
     {
       state->crypt_flag=NO_CRYPT; /* some development binkd versions send OPT CRYPT with unsecure session */
-      Log (1, "Warning: remote set UNSECURE session");
+      Log (LL_CRIT, "Warning: remote set UNSECURE session");
       state->state_ext = P_REMOTE_NONSECURE;
     }
     free(w);
@@ -2483,7 +2483,7 @@ static void setup_rate_limit (STATE *state, BINKD_CONFIG *config, BW *bw,
   {
     if ( (ps->atype & amask) && pmatch_ncase(ps->mask, fname) )
     {
-      Log (7, "%s matches rate limit mask %s", fname, ps->mask);
+      Log (LL_DBG2, "%s matches rate limit mask %s", fname, ps->mask);
       rlim = ps->rate;
       break;
     }
@@ -2502,9 +2502,9 @@ static void setup_rate_limit (STATE *state, BINKD_CONFIG *config, BW *bw,
   perl_setup_rlimit(state, bw, fname);
 #endif
   if (bw->rlim)
-    Log (3, "rate limit for %s is %d cps", fname, bw->rlim);
+    Log (LL_WARN, "rate limit for %s is %d cps", fname, bw->rlim);
   else
-    Log (5, "rate for %s is unlimited", fname);
+    Log (LL_INFO, "rate for %s is unlimited", fname);
   bw->utime.tv_sec = bw->utime.tv_usec = 0;
 }
 
@@ -2531,7 +2531,7 @@ static int check_rate_limit(BW *bw, struct timeval *tv)
   gettvtime(&ctime);
   if (ctime.tv_sec < bw->utime.tv_sec ||
       (ctime.tv_sec == bw->utime.tv_sec && ctime.tv_usec < bw->utime.tv_usec)) {
-    Log(3, "System time steps back, reset rate-limiting");
+    Log (LL_WARN, "System time steps back, reset rate-limiting");
     bw->utime.tv_sec = bw->utime.tv_usec = 0;
   }
   if (bw->utime.tv_sec == 0 && bw->utime.tv_usec == 0) {
@@ -2561,7 +2561,7 @@ static int check_rate_limit(BW *bw, struct timeval *tv)
   }
   else if (dt >= BW_TIME_INT) bw->cps = cps;
   else bw->cps = ((BW_TIME_INT - dt) * bw->cps + cps * dt) / BW_TIME_INT;
-  Log (9, "current cps is %u, avg. cps is %u", (int)cps, (int)bw->cps);
+  Log (LL_DBG4, "current cps is %u, avg. cps is %u", (int)cps, (int)bw->cps);
   if (bw->cps <= bw->rlim)
     return 0;
   dt = (unsigned long) (bw->cpsN * (bw->cps / bw->rlim - 1) + 1000);
@@ -2624,19 +2624,19 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
       errno=0;
       state->in.time = safe_atol (argv[2], &errmesg);
       if (errmesg) {
-          Log ( 1, "File time parsing error: %s! (M_FILE \"%s %s %s %s\")", errmesg, argv[0], argv[1], argv[0], argv[2], argv[3] );
+          Log (LL_CRIT, "File time parsing error: %s! (M_FILE \"%s %s %s %s\")", errmesg, argv[0], argv[1], argv[0], argv[2], argv[3] );
       }
     }
     offset = (off_t) strtoumax (argv[3], NULL, 10);
     if (!strcmp (argv[3], "-1"))
     {
       off_req = 1;
-      Log (6, "got offset request for %s", state->in.netname);
+      Log (LL_DBG, "got offset request for %s", state->in.netname);
       if ((state->NR_flag & THEY_NR) == 0)
       {
         state->NR_flag |= THEY_NR;
         if ((state->ND_flag & THEY_ND) == 0)
-          Log (3, "remote is in NR mode");
+          Log (LL_WARN, "remote is in NR mode");
       }
     }
 
@@ -2648,7 +2648,7 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
       int rc;
 
       if ((rc = perl_before_recv(state, offset)) > 0) {
-        Log (1, "skipping %s (%sdestructive, %" PRIuMAX " byte(s), by Perl before_recv)",
+        Log (LL_CRIT, "skipping %s (%sdestructive, %" PRIuMAX " byte(s), by Perl before_recv)",
              state->in.netname, rc == SKIP_D ? "" : "non-",
              (uintmax_t) state->in.size);
         msg_sendf (state, (t_msg)(rc == SKIP_D ? M_GOT : M_SKIP),
@@ -2661,7 +2661,7 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
 #endif
       /* val: skip check */
       if ((mask = skip_test(state, config)) != NULL) {
-        Log (1, "skipping %s (%sdestructive, %" PRIuMAX " byte(s), mask %s)",
+        Log (LL_CRIT, "skipping %s (%sdestructive, %" PRIuMAX " byte(s), mask %s)",
              state->in.netname, mask->destr ? "" : "non-",
              (uintmax_t) state->in.size, mask->mask);
         msg_sendf (state, (t_msg)(mask->destr ? M_GOT : M_SKIP),
@@ -2676,7 +2676,7 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
       if (inb_test (state->in.netname, state->in.size,
                     state->in.time, state->inbound, realname))
       {
-        Log (2, "already have %s (%s, %" PRIuMAX " byte(s))",
+        Log (LL_ERR, "already have %s (%s, %" PRIuMAX " byte(s))",
              state->in.netname, realname, (uintmax_t) state->in.size);
         msg_sendf (state, M_GOT, "%s %" PRIuMAX " %" PRIuMAX,
                    state->in.netname,
@@ -2696,14 +2696,14 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
       if (!state->skip_all_flag &&
           (state->n_rcvdlist+1ul) * sizeof(RCVDLIST) > 64535ul)
       {
-        Log (1, "ReceivedList has reached max size 64K");
+        Log (LL_CRIT, "ReceivedList has reached max size 64K");
         state->skip_all_flag = 1;
       }
 #endif
 
       if (state->skip_all_flag)
       {
-        Log (2, "skipping %s (non-destructive)", state->in.netname);
+        Log (LL_ERR, "skipping %s (non-destructive)", state->in.netname);
         msg_sendf (state, M_SKIP, "%s %" PRIuMAX " %" PRIuMAX,
                    state->in.netname,
                    (uintmax_t) state->in.size,
@@ -2717,7 +2717,7 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
 
     if (off_req || offset != ftello (state->in.f))
     {
-      Log (2, "have %" PRIuMAX " byte(s) of %s",
+      Log (LL_ERR, "have %" PRIuMAX " byte(s) of %s",
            (uintmax_t) ftello (state->in.f), state->in.netname);
       msg_sendf (state, M_GET, "%s %" PRIuMAX " %" PRIuMAX " %" PRIuMAX,
                  state->in.netname,
@@ -2733,7 +2733,7 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
       --state->GET_FILE_balance;
     }
 
-    Log (3, "receiving %s (%" PRIuMAX " byte(s), off %" PRIuMAX ")",
+    Log (LL_WARN, "receiving %s (%" PRIuMAX " byte(s), off %" PRIuMAX ")",
          state->in.netname, (uintmax_t) (state->in.size), (uintmax_t) offset);
 #ifdef BW_LIM
     setup_rate_limit(state, config, &state->bw_recv, state->in.netname);
@@ -2746,7 +2746,7 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
       else if (strcmp(w, "GZ") == 0)
       {
         if (state->z_recv == 0)
-          Log (4, "gzip mode is on for %s", state->in.netname);
+          Log (LL_NOTICE, "gzip mode is on for %s", state->in.netname);
         state->z_recv |= 1;
       }
 #endif
@@ -2754,18 +2754,18 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
       else if (strcmp(w, "BZ2") == 0)
       {
         if (state->z_recv == 0)
-          Log (4, "bzip2 mode is on for %s", state->in.netname);
+          Log (LL_NOTICE, "bzip2 mode is on for %s", state->in.netname);
         state->z_recv |= 2;
       }
 #endif
       else
-        Log (4, "Unknown option %s for %s ignored", w, state->in.netname);
+        Log (LL_NOTICE, "Unknown option %s for %s ignored", w, state->in.netname);
       free(w);
     }
 
 #if defined(WITH_ZLIB) && defined(WITH_BZLIB2)
     if (state->z_recv == 3) {
-      Log (1, "Both GZ and BZ2 extras are specified for %s", state->in.netname);
+      Log (LL_CRIT, "Both GZ and BZ2 extras are specified for %s", state->in.netname);
       msg_send2 (state, M_ERR, "Can't handle GZ and BZ2 at the same time for ", state->in.netname);
       return 0;
     }
@@ -2773,7 +2773,7 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
 
     if (fseeko (state->in.f, offset, SEEK_SET) == -1)
     {
-      Log (1, "fseek: %s", strerror (errno));
+      Log (LL_CRIT, "fseek: %s", strerror (errno));
       return 0;
     }
     else
@@ -2792,7 +2792,7 @@ static int ND_set_status(char *status, FTN_ADDR *fa, STATE *state, BINKD_CONFIG 
   UNUSED_ARG(state);
 
   if (fa->z==-1)
-  { Log(8, "ND_set_status: unknown address for '%s'", status);
+  { Log (LL_DBG3, "ND_set_status: unknown address for '%s'", status);
     return 0;
   }
   ftnaddress_to_filename (buf, fa, config);
@@ -2801,24 +2801,24 @@ static int ND_set_status(char *status, FTN_ADDR *fa, STATE *state, BINKD_CONFIG 
   if (!status || !*status)
   {
     if (unlink(buf) == 0)
-    { Log(5, "Clean link status for %u:%u/%u.%u",
+    { Log (LL_INFO, "Clean link status for %u:%u/%u.%u",
           fa->z, fa->net, fa->node, fa->p);
       return 1;
     }
     rc = errno;
     if (access(buf, F_OK) == 0)
-    { Log(1, "Can't unlink %s: %s!\n", buf, strerror(rc));
+    { Log (LL_CRIT, "Can't unlink %s: %s!\n", buf, strerror(rc));
       return 0;
     }
     return 1;
   }
   else
   {
-    Log(5, "Set link status for %u:%u/%u.%u to '%s'",
+    Log (LL_INFO, "Set link status for %u:%u/%u.%u to '%s'",
         fa->z, fa->net, fa->node, fa->p, status);
     f=fopen(buf, "w");
     if (f==NULL)
-    { Log(1, "Can't write to %s: %s", buf, strerror(errno));
+    { Log (LL_CRIT, "Can't write to %s: %s", buf, strerror(errno));
       return 0;
     }
     rc=1;
@@ -2841,19 +2841,19 @@ static void z_send_init(STATE *state, BINKD_CONFIG *config, char **extra)
 #ifdef WITH_BZLIB2
     if (!state->z_send && (state->z_cansend & 2)) {
       *extra = " BZ2"; state->z_send = 2;
-      Log (4, "bzip2 mode is on for %s", state->out.netname);
+      Log (LL_NOTICE, "bzip2 mode is on for %s", state->out.netname);
     }
 #endif
 #ifdef WITH_ZLIB
     if (!state->z_send && (state->z_cansend & 1)) {
       *extra = " GZ"; state->z_send = 1;
-      Log (4, "gzip mode is on for %s", state->out.netname);
+      Log (LL_NOTICE, "gzip mode is on for %s", state->out.netname);
     }
 #endif
     if (state->z_send)
       if ((rc = compress_init(state->z_send, config->zlevel, &state->z_odata)))
       {
-        Log (1, "compress_init failed (rc=%d), send uncompressed file %s",
+        Log (LL_CRIT, "compress_init failed (rc=%d), send uncompressed file %s",
              rc, state->out.netname);
         *extra = "";
         state->z_send = 0;
@@ -2897,7 +2897,7 @@ static int GET (STATE *state, char *args, int sz, BINKD_CONFIG *config)
       fsize = atol (argv[1]);
       ftime = safe_atol (argv[2], &errmesg);
       if(errmesg){
-        Log ( 1, "File time parsing error: %s! (M_GET \"%s %s %s %s\")", errmesg, argv[0], argv[1], argv[0], argv[2], argv[3] );
+        Log (LL_CRIT, "File time parsing error: %s! (M_GET \"%s %s %s %s\")", errmesg, argv[0], argv[1], argv[0], argv[2], argv[3] );
       }
     }
     /* Check if the file was already sent */
@@ -2921,7 +2921,7 @@ static int GET (STATE *state, char *args, int sz, BINKD_CONFIG *config)
         }
         if ((state->out.f = fopen (state->out.path, "rb")) == 0)
         {
-          Log (1, "GET: %s: %s", state->out.path, strerror (errno));
+          Log (LL_CRIT, "GET: %s: %s", state->out.path, strerror (errno));
           TF_ZERO (&state->out);
         }
         break;
@@ -2943,7 +2943,7 @@ static int GET (STATE *state, char *args, int sz, BINKD_CONFIG *config)
         {
           state->send_eof = 1;
           state->waiting_for_GOT = 1;
-          Log(5, "Waiting for M_GOT");
+          Log (LL_INFO, "Waiting for M_GOT");
           state->off_req_sent = 0;
           return rc;
         }
@@ -2954,7 +2954,7 @@ static int GET (STATE *state, char *args, int sz, BINKD_CONFIG *config)
       }
       else if ((offset = (off_t)strtoumax (argv[3], NULL, 10)) > state->out.size)
       {
-        Log (1, "GET: remote requests seeking %s to %" PRIuMAX ", file size " PRIuMAX,
+        Log (LL_CRIT, "GET: remote requests seeking %s to %" PRIuMAX ", file size " PRIuMAX,
              argv[0], (uintmax_t) offset, state->out.size);
         msg_sendf(state, M_ERR, "Invalid M_GET violates binkp: offset " PRIuMAX " after end of file, file %s size " PRIuMAX,
                   (uintmax_t)offset, argv[0], (uintmax_t)state->out.size);
@@ -2966,7 +2966,7 @@ static int GET (STATE *state, char *args, int sz, BINKD_CONFIG *config)
       }
       else if (fseeko (state->out.f, offset, SEEK_SET) == -1)
       {
-        Log (1, "GET: error seeking %s to %" PRIuMAX ": %s",
+        Log (LL_CRIT, "GET: error seeking %s to %" PRIuMAX ": %s",
              argv[0], (uintmax_t) offset, strerror (errno));
         msg_sendf(state, M_ERR, "Error seeking: %s size " PRIuMAX " to offset " PRIuMAX,
                   argv[0], (uintmax_t)state->out.size, (uintmax_t)offset);
@@ -2976,13 +2976,13 @@ static int GET (STATE *state, char *args, int sz, BINKD_CONFIG *config)
       }
       else
       {
-        Log (2, "sending %s from %" PRIuMAX, argv[0], (uintmax_t) offset);
+        Log (LL_ERR, "sending %s from %" PRIuMAX, argv[0], (uintmax_t) offset);
         for (argc = 1; (extra = getwordx (args, argc, 0)) != 0; ++argc)
         {
           if (strcmp(extra, "GZ") == 0 || strcmp(extra, "BZ2") == 0) ;
           else if (strcmp(extra, "NZ") == 0) nz = 1;
           else if (extra[0])
-            Log (4, "Unknown option %s for %s ignored", extra, argv[0]);
+            Log (LL_NOTICE, "Unknown option %s for %s ignored", extra, argv[0]);
           free(extra);
         }
         z_send_stop(state);
@@ -2996,13 +2996,13 @@ static int GET (STATE *state, char *args, int sz, BINKD_CONFIG *config)
       }
     }
     else
-      Log (1, "unexpected M_GET for %s", argv[0]);
+      Log (LL_CRIT, "unexpected M_GET for %s", argv[0]);
     ND_set_status("", &state->ND_addr, state, config);
     state->ND_addr.z=-1;
     if (state->ND_flag & WE_ND)
     {
       state->waiting_for_GOT = 0;
-      Log(9, "Don't waiting for M_GOT");
+      Log (LL_DBG4, "Don't waiting for M_GOT");
     }
     state->off_req_sent = 0;
 
@@ -3036,7 +3036,7 @@ static int SKIP (STATE *state, char *args, int sz, BINKD_CONFIG *config)
       ftime = safe_atol (argv[2], &errmesg);
       if (errmesg)
       {
-        Log ( 1, "File time parsing error: %s! (M_SKIP \"%s %s %s\")", errmesg, argv[0], argv[1], argv[0], argv[2] );
+        Log (LL_CRIT, "File time parsing error: %s! (M_SKIP \"%s %s %s\")", errmesg, argv[0], argv[1], argv[0], argv[2] );
       }
     }
     for (n = 0; n < state->n_sent_fls; ++n)
@@ -3044,7 +3044,7 @@ static int SKIP (STATE *state, char *args, int sz, BINKD_CONFIG *config)
       if (!tfile_cmp (state->sent_fls + n, argv[0], fsize, ftime))
       {
         state->r_skipped_flag = 1;
-        Log (2, "%s skipped by remote", state->sent_fls[n].netname);
+        Log (LL_ERR, "%s skipped by remote", state->sent_fls[n].netname);
         memcpy (&state->ND_addr, &state->sent_fls[n].fa, sizeof(FTN_ADDR));
         remove_from_sent_files_queue (state, n);
       }
@@ -3056,11 +3056,11 @@ static int SKIP (STATE *state, char *args, int sz, BINKD_CONFIG *config)
         fclose (state->out.f);
       else
       {
-        Log (1, "Cannot skip ND-status, session dropped");
+        Log (LL_CRIT, "Cannot skip ND-status, session dropped");
         msg_send2(state, M_ERR, "Cannot skip ND-status", 0);
         return 0;
       }
-      Log (2, "%s skipped by remote", state->out.netname);
+      Log (LL_ERR, "%s skipped by remote", state->out.netname);
       TF_ZERO (&state->out);
     }
     ND_set_status("", &state->ND_addr, state, config);
@@ -3068,7 +3068,7 @@ static int SKIP (STATE *state, char *args, int sz, BINKD_CONFIG *config)
     if ((state->ND_flag & WE_ND) || (state->NR_flag & WE_NR))
     {
       state->waiting_for_GOT = state->off_req_sent = 0;
-      Log(9, "Don't waiting for M_GOT");
+      Log (LL_DBG4, "Don't waiting for M_GOT");
     }
     return 1;
   }
@@ -3105,11 +3105,11 @@ static int GOT (STATE *state, char *args, int sz, BINKD_CONFIG *config)
     ftime = safe_atol (argv[2], &errmesg);
     if (errmesg)
     {
-      Log ( 1, "File time parsing error: %s! (M_GOT \"%s %s %s\")", errmesg, argv[0], argv[1], argv[0], argv[2] );
+      Log (LL_CRIT, "File time parsing error: %s! (M_GOT \"%s %s %s\")", errmesg, argv[0], argv[1], argv[0], argv[2] );
     }
     if (!tfile_cmp (&state->out, argv[0], fsize, ftime))
     {
-      Log (2, "remote already has %s", state->out.netname);
+      Log (LL_ERR, "remote already has %s", state->out.netname);
       if (state->out.f)
       {
         fclose (state->out.f);
@@ -3117,7 +3117,7 @@ static int GOT (STATE *state, char *args, int sz, BINKD_CONFIG *config)
       }
       memcpy(&state->ND_addr, &state->out.fa, sizeof(state->out.fa));
       if (state->ND_flag & WE_ND)
-        Log (7, "Set ND_addr to %u:%u/%u.%u",
+        Log (LL_DBG2, "Set ND_addr to %u:%u/%u.%u",
              state->ND_addr.z, state->ND_addr.net, state->ND_addr.node, state->ND_addr.p);
       if (status)
       {
@@ -3127,7 +3127,7 @@ static int GOT (STATE *state, char *args, int sz, BINKD_CONFIG *config)
           rc = ND_set_status(status, &state->ND_addr, state, config);
       }
       state->waiting_for_GOT = state->off_req_sent = 0;
-      Log(9, "Don't waiting for M_GOT");
+      Log (LL_DBG4, "Don't waiting for M_GOT");
       remove_from_spool (state, state->out.flo,
                          state->out.path, state->out.action, config);
       TF_ZERO (&state->out);
@@ -3145,9 +3145,9 @@ static int GOT (STATE *state, char *args, int sz, BINKD_CONFIG *config)
           ++state->files_sent;
           memcpy (&state->ND_addr, &state->sent_fls[n].fa, sizeof(FTN_ADDR));
           if (state->ND_flag & WE_ND)
-             Log (7, "Set ND_addr to %u:%u/%u.%u",
+             Log (LL_DBG2, "Set ND_addr to %u:%u/%u.%u",
                   state->ND_addr.z, state->ND_addr.net, state->ND_addr.node, state->ND_addr.p);
-          Log (2, "sent: %s (%" PRIuMAX ", %.2f CPS, %s)",
+          Log (LL_ERR, "sent: %s (%" PRIuMAX ", %.2f CPS, %s)",
                state->sent_fls[n].path,
                (uintmax_t) state->sent_fls[n].size,
                (double) (state->sent_fls[n].size) /
@@ -3161,7 +3161,7 @@ static int GOT (STATE *state, char *args, int sz, BINKD_CONFIG *config)
               rc = ND_set_status(status, &state->ND_addr, state, config);
           }
           state->waiting_for_GOT = 0;
-          Log(9, "Don't waiting for M_GOT");
+          Log (LL_DBG4, "Don't waiting for M_GOT");
 #ifdef WITH_PERL
           perl_after_sent(state, n);
 #endif
@@ -3197,10 +3197,10 @@ static int EOB (STATE *state, char *buf, int sz, BINKD_CONFIG *config)
       ftnaddress_to_str (nodestr, state->fa);
       fclose (state->in.f);
       state->in.f = NULL;
-      Log (1, "receiving of %s interrupted", state->in.netname);
-      Log (2, "Remove partially received %s (%" PRIuMAX " of %" PRIuMAX " bytes) due to remote bug",
+      Log (LL_CRIT, "receiving of %s interrupted", state->in.netname);
+      Log (LL_ERR, "Remove partially received %s (%" PRIuMAX " of %" PRIuMAX " bytes) due to remote bug",
           state->in.netname, (uintmax_t) offset, (uintmax_t) state->in.size);
-      Log (1, "Turn on the NR mode for node %s in config to prevent this error, please", nodestr);
+      Log (LL_CRIT, "Turn on the NR mode for node %s in config to prevent this error, please", nodestr);
       inb_reject (state, config);
       TF_ZERO (&state->in);
     }
@@ -3251,7 +3251,7 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
       state->io_error = 1;
       if (!binkd_exit)
       {
-        Log (1, "recv: %s", save_err);
+        Log (LL_CRIT, "recv: %s", save_err);
         if (state->to)
           bad_try (&state->to->fa, save_err, BAD_IO, config);
       }
@@ -3272,14 +3272,14 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
       state->imsg = state->ibuf[0] >> 7;
       state->isize = ((((unsigned char *) state->ibuf)[0] & ~0x80) << 8) +
         ((unsigned char *) state->ibuf)[1];
-      Log (7, "recvd hdr: %i (%s)", state->isize, state->imsg ? "msg" : "data");
+      Log (LL_DBG2, "recvd hdr: %i (%s)", state->isize, state->imsg ? "msg" : "data");
       if (state->isize == 0)
         goto DoNotEvenTryToRecvZeroLengthBlock;
     }
     else
     {
   DoNotEvenTryToRecvZeroLengthBlock:
-      Log (7, "got block: %i (%s)", state->isize, state->imsg ? "msg" : "data");
+      Log (LL_DBG2, "got block: %i (%s)", state->isize, state->imsg ? "msg" : "data");
       if (state->imsg)
       {
         int rc = 1;
@@ -3290,13 +3290,13 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
         perl_on_recv(state, state->ibuf, state->isize);
 #endif
         if (state->isize == 0)
-          Log (1, "zero length command from remote (must be at least 1)");
+          Log (LL_CRIT, "zero length command from remote (must be at least 1)");
         else if ((unsigned) (state->ibuf[0]) > M_MAX)
-          Log (1, "unknown msg type from remote: %u", state->ibuf[0]);
+          Log (LL_CRIT, "unknown msg type from remote: %u", state->ibuf[0]);
         else
         {
           state->ibuf[state->isize] = 0;
-          Log (5, "rcvd msg %s %s", scommand[(unsigned char)(state->ibuf[0])], state->ibuf+1);
+          Log (LL_INFO, "rcvd msg %s %s", scommand[(unsigned char)(state->ibuf[0])], state->ibuf+1);
           rc = commands[(unsigned) (state->ibuf[0])]
             (state, state->ibuf + 1, state->isize - 1, config);
         }
@@ -3320,10 +3320,10 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
           {
             if (decompress_init(state->z_recv, &state->z_idata))
             {
-              Log (1, "Can't init decompress");
+              Log (LL_CRIT, "Can't init decompress");
               return 0;
             } else
-              Log (8, "decompress_init success");
+              Log (LL_DBG3, "decompress_init success");
           }
           while (nget)
           {
@@ -3333,14 +3333,14 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
                                state->z_idata);
             if (rc < 0)
             {
-              Log (1, "Decompress %s error %d", state->in.netname, rc);
+              Log (LL_CRIT, "Decompress %s error %d", state->in.netname, rc);
               return 0;
             }
             else
-              Log (10, "%d bytes of data decompressed to %d", nput, zavail);
+              Log (LL_DBG5, "%d bytes of data decompressed to %d", nput, zavail);
             if (zavail != 0 && fwrite (zbuf, zavail, 1, state->in.f) < 1)
             {
-              Log (1, "write error: %s", strerror(errno));
+              Log (LL_CRIT, "write error: %s", strerror(errno));
               decompress_abort(state->z_recv, state->z_idata);
               state->z_idata = NULL;
               return 0;
@@ -3352,12 +3352,12 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
           }
           if (rc == 1)
           { if ((rc = decompress_deinit(state->z_recv, state->z_idata)) < 0)
-              Log (1, "decompress_deinit retcode %d", rc);
+              Log (LL_CRIT, "decompress_deinit retcode %d", rc);
             state->z_idata = NULL;
           }
           if (fflush(state->in.f))
           {
-            Log (1, "write error: %s", strerror(errno));
+            Log (LL_CRIT, "write error: %s", strerror(errno));
             return 0;
           }
         }
@@ -3367,7 +3367,7 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
             (fwrite (state->ibuf, state->isize, 1, state->in.f) < 1 ||
             fflush (state->in.f)))
         {
-          Log (1, "write error: %s", strerror(errno));
+          Log (LL_CRIT, "write error: %s", strerror(errno));
           return 0;
         }
         if (config->percents && state->in.size > 0)
@@ -3382,7 +3382,7 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
         {
           if (fclose (state->in.f))
           {
-            Log (1, "Cannot fclose(%s): %s!",
+            Log (LL_CRIT, "Cannot fclose(%s): %s!",
                  state->in.netname, strerror (errno));
             state->in.f = NULL;
             return 0;
@@ -3391,12 +3391,12 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
 #if defined(WITH_ZLIB) || defined(WITH_BZLIB2)
           if (state->z_recv)
           {
-            Log (4, "File %s compressed size %" PRIuMAX " bytes, compress ratio %.1f%%",
+            Log (LL_NOTICE, "File %s compressed size %" PRIuMAX " bytes, compress ratio %.1f%%",
                  state->in.netname, (uintmax_t) state->z_cisize,
                  100.0 * state->z_cisize / state->z_isize);
             if (state->z_idata)
             {
-              Log (1, "Warning: extra compressed data ignored");
+              Log (LL_CRIT, "Warning: extra compressed data ignored");
               decompress_deinit(state->z_recv, state->z_idata);
               state->z_idata = NULL;
             }
@@ -3404,7 +3404,7 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
 #endif
           if (state->ND_flag & THEY_ND)
           {
-            Log (5, "File %s complete received, waiting for renaming",
+            Log (LL_INFO, "File %s complete received, waiting for renaming",
                  state->in.netname);
             memcpy(&state->in_complete, &state->in, sizeof(state->in_complete));
           }
@@ -3426,14 +3426,14 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
         }
         else if (ftello (state->in.f) > state->in.size)
         {
-          Log (1, "rcvd %" PRIuMAX " extra bytes!",
+          Log (LL_CRIT, "rcvd %" PRIuMAX " extra bytes!",
                (uintmax_t) (ftello (state->in.f) - state->in.size));
           return 0;
         }
       }
       else if (state->isize > 0)
       {
-        Log (7, "ignoring data block (%" PRIuMAX " byte(s))",
+        Log (LL_DBG2, "ignoring data block (%" PRIuMAX " byte(s))",
              (uintmax_t) state->isize);
       }
       state->isize = -1;
@@ -3446,7 +3446,7 @@ static int recv_block (STATE *state, BINKD_CONFIG *config)
     if (!binkd_exit)
     {
       char *s_err = "connection closed by foreign host";
-      Log (1, "recv: %s", s_err);
+      Log (LL_CRIT, "recv: %s", s_err);
       if (state->to)
         bad_try (&state->to->fa, s_err, BAD_IO, config);
     }
@@ -3510,7 +3510,7 @@ static int banner (STATE *state, BINKD_CONFIG *config)
   if (state->to) {
     char *s = perl_on_handshake(state);
     if (s && *s) {
-      Log (1, "aborted by Perl on_handshake(): %s", s);
+      Log (LL_CRIT, "aborted by Perl on_handshake(): %s", s);
       msg_send2 (state, M_ERR, s, 0);
       return 0;
     }
@@ -3566,7 +3566,7 @@ static int start_file_transfer (STATE *state, FTNQ *file, BINKD_CONFIG *config)
       if ((f = fopen (file->path, (file->type == 'l') ? "r+b" : "rb")) == 0 ||
           fstat (fileno (f), &sb) == -1)
       {
-        Log (1, "%s: cannot open: %s", file->path, strerror (errno));
+        Log (LL_CRIT, "%s: cannot open: %s", file->path, strerror (errno));
         return 0;
       }
       /* We've opened a .?lo */
@@ -3581,7 +3581,7 @@ static int start_file_transfer (STATE *state, FTNQ *file, BINKD_CONFIG *config)
     memcpy (&state->out.fa, &file->fa, sizeof(FTN_ADDR));
     if ((state->ND_flag & WE_ND) == 0)
       memcpy(&state->ND_addr, &file->fa, sizeof(state->ND_addr));
-    Log (8, "cur remote addr is %u:%u/%u.%u",
+    Log (LL_DBG3, "cur remote addr is %u:%u/%u.%u",
          file->fa.z, file->fa.net, file->fa.node, file->fa.p);
   }
   if (state->flo.f != 0)
@@ -3602,7 +3602,7 @@ static int start_file_transfer (STATE *state, FTNQ *file, BINKD_CONFIG *config)
       }
 
       if ((w = trans_flo_line (state->out.path, config->rf_rules.first)) != 0)
-        Log (5, "%s mapped to %s", state->out.path, w);
+        Log (LL_INFO, "%s mapped to %s", state->out.path, w);
 
       /* look for the file in not-to-send list */
       for (i = 0; i < state->n_nosendlist; i++)
@@ -3618,7 +3618,7 @@ static int start_file_transfer (STATE *state, FTNQ *file, BINKD_CONFIG *config)
           fstat (fileno (f), &sb) == -1 ||
           (sb.st_mode & S_IFDIR) != 0)
       {
-        Log (1, "start_file_transfer: %s: %s",
+        Log (LL_CRIT, "start_file_transfer: %s: %s",
              w ? w : state->out.path, strerror (errno));
         if (f) fclose(f);
         xfree (w);
@@ -3650,24 +3650,24 @@ static int start_file_transfer (STATE *state, FTNQ *file, BINKD_CONFIG *config)
   state->out.size = sb.st_size;
   state->out.time = sb.st_mtime;
   state->waiting_for_GOT = 0;
-  Log(9, "Dont waiting for M_GOT");
+  Log (LL_DBG4, "Dont waiting for M_GOT");
   state->out.start = safe_time();
   netname (state->out.netname, &state->out, config);
   if ((state->out.type == 'm' || (ispkt(state->out.netname) && config->dontsendempty >= EMPTY_ARCMAIL)) && state->out.size <= 60)
   {
-    Log (3, "skip empty pkt %s, %" PRIuMAX " bytes", state->out.path,
+    Log (LL_WARN, "skip empty pkt %s, %" PRIuMAX " bytes", state->out.path,
          (uintmax_t) state->out.size);
     dontsend = 1;
   }
   else if (config->dontsendempty >= EMPTY_ARCMAIL &&
       state->out.size == 0 && isarcmail(state->out.netname))
   {
-    Log (3, "skip empty arcmail %s", state->out.path);
+    Log (LL_WARN, "skip empty arcmail %s", state->out.path);
     dontsend = 1;
   }
   else if (config->dontsendempty == EMPTY_ALL && state->out.size == 0)
   {
-    Log (3, "skip empty attach %s", state->out.path);
+    Log (LL_WARN, "skip empty attach %s", state->out.path);
     dontsend = 1;
   }
   if (dontsend)
@@ -3680,7 +3680,7 @@ static int start_file_transfer (STATE *state, FTNQ *file, BINKD_CONFIG *config)
   }
 #ifdef WITH_PERL
   if (perl_before_send(state) > 0) {
-    Log(3, "sending %s aborted by Perl before_send()", state->out.path);
+    Log (LL_WARN, "sending %s aborted by Perl before_send()", state->out.path);
     if (state->out.f) fclose(state->out.f);
     remove_from_spool (state, state->out.flo,
                        state->out.path, state->out.action, config);
@@ -3688,7 +3688,7 @@ static int start_file_transfer (STATE *state, FTNQ *file, BINKD_CONFIG *config)
     return 0;
   }
 #endif
-  Log (2, "sending %s as %s (%" PRIuMAX ")",
+  Log (LL_ERR, "sending %s as %s (%" PRIuMAX ")",
        state->out.path, state->out.netname, (uintmax_t) state->out.size);
 #ifdef BW_LIM
   setup_rate_limit(state, config, &state->bw_send, state->out.netname);
@@ -3730,7 +3730,7 @@ static void log_end_of_session (int status, STATE *state, BINKD_CONFIG *config)
   else
     strcpy (szFTNAddr, "?");
 
-  Log (2, "done (%s%s, %s, S/R: %i/%i (%" PRIuMAX "/%" PRIuMAX " bytes))",
+  Log (LL_ERR, "done (%s%s, %s, S/R: %i/%i (%" PRIuMAX "/%" PRIuMAX " bytes))",
        state->to ? "to " : (state->fa ? "from " : ""), szFTNAddr,
        status ? "failed" : "OK",
        state->files_sent, state->files_rcvd,
@@ -3770,7 +3770,7 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
   if (getpeername (socket, (struct sockaddr *)&peer_name, &peer_name_len) == -1)
   {
     if (!binkd_exit)
-      Log (1, "getpeername: %s", TCPERR ());
+      Log (LL_CRIT, "getpeername: %s", TCPERR ());
   }
 
   /* verify that output of getpeername() is safe (enough) and resolve
@@ -3791,13 +3791,13 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
         status = getnameinfo((struct sockaddr *)&peer_name, peer_name_len, 
 		host, sizeof(host), NULL, 0, NI_NAMEREQD);
         if (status != 0 && status != EAI_NONAME)
-          Log(2, "Error in getnameinfo(): %s (%d)", 
+          Log (LL_ERR, "Error in getnameinfo(): %s (%d)", 
 	    gai_strerror(status), status);
       }
     }
     else
     {
-      Log(1, "Error in numeric getnameinfo(): %s (%d)", 
+      Log (LL_CRIT, "Error in numeric getnameinfo(): %s (%d)", 
 	    gai_strerror(status), status);
       snprintf(ipaddr, BINKD_FQDNLEN, "unknown");
     }
@@ -3813,11 +3813,11 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
 
   setproctitle ("%c [%s]", to ? 'o' : 'i', state.peer_name);
   if (*host != '\0')
-    Log (2, "%s session with %s [%s] (%s)",
+    Log (LL_ERR, "%s session with %s [%s] (%s)",
        to ? "outgoing" : "incoming",
        host, ipaddr, service);
   else
-    Log (2, "%s session with %s (%s)",
+    Log (LL_ERR, "%s session with %s (%s)",
        to ? "outgoing" : "incoming",
        state.peer_name,
        service);
@@ -3825,7 +3825,7 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
   if (getsockname (socket, (struct sockaddr *)&peer_name, &peer_name_len) == -1)
   {
     if (!binkd_exit)
-      Log (1, "getsockname: %s", TCPERR ());
+      Log (LL_CRIT, "getsockname: %s", TCPERR ());
     memset(&peer_name, 0, sizeof (peer_name));
   }
   else
@@ -3836,13 +3836,13 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
     if (status == 0)
       state.our_ip=ownhost;
     else
-      Log(2, "Error in getnameinfo(): %s (%d)", gai_strerror(status), status);
+      Log (LL_ERR, "Error in getnameinfo(): %s (%d)", gai_strerror(status), status);
   }
 
   if (banner (&state, config) == 0) ;
   else if (n_servers > config->max_servers && !to)
   {
-    Log (1, "too many servers");
+    Log (LL_CRIT, "too many servers");
     msg_send2 (&state, M_BSY, "Too many servers", 0);
   }
   else
@@ -3915,7 +3915,7 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
           q_to_killlist (&state.killlist, &state.n_killlist, state.q);
           free_rcvdlist (&state.rcvdlist, &state.n_rcvdlist);
         }
-        Log (6, "there were %i msgs in this batch", state.msgs_in_batch);
+        Log (LL_DBG, "there were %i msgs in this batch", state.msgs_in_batch);
         if (state.msgs_in_batch <= 2 || (state.major * 100 + state.minor <= 100))
         { /* Only M_EOBs in last batch (binkp 1.1) or protocol is binkp 1.0 (or lower), close session */
           ND_set_status("", &state.ND_addr, &state, config);
@@ -3940,17 +3940,17 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
       if (t_out < u_nettimeout)
       {
 #endif
-        Log (8, "tv.tv_sec=%lu, tv.tv_usec=%lu",
+        Log (LL_DBG3, "tv.tv_sec=%lu, tv.tv_usec=%lu",
            (unsigned long) tv.tv_sec, (unsigned long) tv.tv_usec);
         no = SELECT (socket + 1, &r, &w, 0, &tv);
         if (no < 0)
           save_err = TCPERR ();
-        Log (8, "selected %i (r=%i, w=%i)", no, FD_ISSET (socket, &r), FD_ISSET (socket, &w));
+        Log (LL_DBG3, "selected %i (r=%i, w=%i)", no, FD_ISSET (socket, &r), FD_ISSET (socket, &w));
 #if defined(WIN32) /* workaround winsock bug */
       }
       else
       {
-        Log (8, "win9x winsock workaround: timeout detected (nettimeout=%u sec, t_out=%lu sec)", config->nettimeout, t_out/1000000);
+        Log (LL_DBG3, "win9x winsock workaround: timeout detected (nettimeout=%u sec, t_out=%lu sec)", config->nettimeout, t_out/1000000);
         no = 0;
       }
 #endif
@@ -3962,7 +3962,7 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
           )
       {
         state.io_error = 1;
-        Log (1, "timeout!");
+        Log (LL_CRIT, "timeout!");
         if (to)
           bad_try (&to->fa, "Timeout!", BAD_IO, config);
         break;
@@ -3972,7 +3972,7 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
         state.io_error = 1;
         if (!binkd_exit)
         {
-          Log (1, "select: %s (args: %i %i)", save_err, socket, tv.tv_sec);
+          Log (LL_CRIT, "select: %s (args: %i %i)", save_err, socket, tv.tv_sec);
           if (to)
             bad_try (&to->fa, save_err, BAD_IO, config);
         }
@@ -4032,7 +4032,7 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
       break;
     }
     else
-      Log (9, "Purged %d bytes from input queue", no);
+      Log (LL_DBG4, "Purged %d bytes from input queue", no);
   }
 
   /* Still have something to send */
@@ -4061,7 +4061,7 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
       /* We called and there were still files in transfer -- restore poll */
       if (tolower (state.maxflvr) != 'h')
       {
-        Log (4, "restoring poll with `%c' flavour", state.maxflvr);
+        Log (LL_NOTICE, "restoring poll with `%c' flavour", state.maxflvr);
         create_poll (&state.to->fa, state.maxflvr, config);
       }
     }
@@ -4069,7 +4069,7 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
 
   if (to && state.r_skipped_flag && config->hold_skipped > 0)
   {
-    Log (2, "holding skipped mail for %lu sec",
+    Log (LL_ERR, "holding skipped mail for %lu sec",
          (unsigned long) config->hold_skipped);
     hold_node (&to->fa, safe_time() + config->hold_skipped, config);
   }
@@ -4077,5 +4077,5 @@ void protocol (SOCKET socket, FTN_NODE *to, char *current_addr, BINKD_CONFIG *co
   deinit_protocol (&state, config, status);
   evt_set (state.evt_queue);
   state.evt_queue = NULL;
-  Log (4, "session closed, quitting...");
+  Log (LL_NOTICE, "session closed, quitting...");
 }

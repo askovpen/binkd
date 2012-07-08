@@ -640,7 +640,7 @@ void unlock_config_structure(BINKD_CONFIG *c, int on_exit)
     /* Free all dynamic data here */
 
     if (c != &work_config && !binkd_exit)
-      Log(4, "previous config is no longer in use, unloading");
+      Log (LL_NOTICE, "previous config is no longer in use, unloading");
 
 #ifdef WITH_PERL
     if (c->perl)
@@ -923,8 +923,8 @@ static int ConfigError(char *format, ...)
   va_start(args, format);
   for (i = 0; i < MAX_CONFIGERROR_PARAMS; i++)
     data[i] = va_arg(args, int);
-  Log(-1, "%s: line %d: error in configuration files\n", current_path, current_line);
-  Log(1, format, data[0], data[1], data[2], data[3], data[4], data[5]);
+  Log (LL_CONONLY, "%s: line %d: error in configuration files\n", current_path, current_line);
+  Log (LL_CRIT, format, data[0], data[1], data[2], data[3], data[4], data[5]);
   va_end(args);
   return 0;
 }
@@ -956,7 +956,7 @@ static void add_to_config_list(const char *path, FILE *f)
     new_entry.mtime = sb.st_mtime;
   else
   {
-    Log(2, "Cannot get modification time for %s: %s", path, strerror(errno));
+    Log (LL_ERR, "Cannot get modification time for %s: %s", path, strerror(errno));
     new_entry.mtime = 0;
   }
   simplelist_add(&work_config.config_list.linkpoint, &new_entry, sizeof(new_entry));
@@ -1202,7 +1202,7 @@ BINKD_CONFIG *readcfg (char *path)
     /* Config error. Abort or continue? */
     if (current_config)
     {
-      Log(1, "error in configuration, using old config");
+      Log (LL_CRIT, "error in configuration, using old config");
       unlock_config_structure(&work_config, 0);
     }
   }
@@ -1224,7 +1224,7 @@ int checkcfg(void)
 
 #ifdef HAVE_FORK
   if (got_sighup)
-    Log (2, "got SIGHUP");
+    Log (LL_ERR, "got SIGHUP");
   need_reload = got_sighup;
   got_sighup = 0;
 #else
@@ -1244,7 +1244,7 @@ int checkcfg(void)
       /* If reload failed, this will keep us from constant reload */
       pc->mtime = sb.st_mtime;
 
-      Log(2, "%s changed!", pc->path);
+      Log (LL_ERR, "%s changed!", pc->path);
       need_reload = 1;
     }
   }
@@ -1259,7 +1259,7 @@ int checkcfg(void)
   if (!need_reload)
     return 0;
   /* Reload starting from first file in list */
-  Log(2, "Reloading configuration...");
+  Log (LL_ERR, "Reloading configuration...");
   pc = current_config->config_list.first;
   new_config = readcfg(pc->path);
 
@@ -1270,7 +1270,7 @@ int checkcfg(void)
     if (!perl_init(new_config->perl_script, new_config))
       if (new_config->perl_strict)
       {
-        Log (1, "error parsing Perl script %s, using old config", new_config->perl_script);
+        Log (LL_CRIT, "error parsing Perl script %s, using old config", new_config->perl_script);
         unlock_config_structure(new_config, 0);
         new_config = NULL;
       }
@@ -1284,7 +1284,7 @@ int checkcfg(void)
     {
       if (!perl_init(new_config->perl_script, new_config))
         if (new_config->perl_strict)
-          Log (0, "error parsing Perl script %s", new_config->perl_script);
+          Log (LL_FATAL, "error parsing Perl script %s", new_config->perl_script);
     }
   }
 #endif
@@ -1412,7 +1412,7 @@ static int read_aka_list (KEYWORD *key, int wordcount, char **words)
         break;
     if (n < work_config.nAddr)
     {
-      Log (2, "Duplicate address %s in config ignored", words[i]);
+      Log (LL_ERR, "Duplicate address %s in config ignored", words[i]);
       continue;
     }
     work_config.pAddr = xrealloc (work_config.pAddr, sizeof (FTN_ADDR) * (work_config.nAddr+1));
@@ -1998,7 +1998,7 @@ static int read_skip (KEYWORD *key, int wordcount, char **words)
   struct skipchain new_entry;
 
   if ((destr = key->option1) != 0)
-    Log(1, "%s: line %d: warning: option skipmask is obsolete, use skip instead", current_path, current_line);
+    Log (LL_CRIT, "%s: line %d: warning: option skipmask is obsolete, use skip instead", current_path, current_line);
   for (i = 0; i < wordcount; i++)
   {
     char *w = words[i];

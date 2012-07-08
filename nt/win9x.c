@@ -255,7 +255,7 @@ int win9x_process(int argc, char **argv)
   if (service_flag != w32_noservice && !Is9x())
   {
     if (!quiet_flag)  AllocTempConsole();
-    Log((quiet_flag?0:-1), "Can't operate witn Windows 9x services: incompatible OS type%s", quiet_flag?"":"\n");
+    Log((quiet_flag?LL_FATAL:LL_CONONLY), "Can't operate witn Windows 9x services: incompatible OS type%s", quiet_flag?"":"\n");
     return 1;
   }
 
@@ -333,7 +333,7 @@ int win9x_process(int argc, char **argv)
     return -1;
 
   default:
-    Log((quiet_flag?0:-1), "Unknown service control code (%i)\n", service_flag);
+    Log((quiet_flag?LL_FATAL:LL_CONONLY), "Unknown service control code (%i)\n", service_flag);
     return 1;
   }
 
@@ -501,29 +501,29 @@ int win9x_service_control_exec(char *tmp, enum serviceflags cmd, int qflag)
   switch (cmd)
   {
   case w32_queryservice:
-    if (!qflag)  Log(-1, "\'%s\': %s\n", tmp, hwnd?"started":"stopped");
+    if (!qflag)  Log (LL_CONONLY, "\'%s\': %s\n", tmp, hwnd?"started":"stopped");
     break;
   case w32_startservice:
     if (!hwnd)
     {
       if (win9x_service_start(tmp))
       {
-        if (!qflag)   Log(-1, "\'%s\': started\n", tmp);
+        if (!qflag)   Log (LL_CONONLY, "\'%s\': started\n", tmp);
       }
       else
       {
-        if (!qflag)  Log(-1, "\'%s\': starting failed!\n", tmp);
+        if (!qflag)  Log (LL_CONONLY, "\'%s\': starting failed!\n", tmp);
         rc = 0;
       }
     }
     else
     {
-      if (!qflag)  Log(-1, "\'%s\': already started\n", tmp);
+      if (!qflag)  Log (LL_CONONLY, "\'%s\': already started\n", tmp);
     }
     break;
   case w32_stopservice:
     if (hwnd) SendMessage(hwnd, WM_BINKD9XCOMMAND, CTRL_SERVICESTOP_EVENT, 0);
-    if (!qflag)  Log(-1, "\'%s\': %s\n", tmp, hwnd?"stopped":"already stopped");
+    if (!qflag)  Log (LL_CONONLY, "\'%s\': %s\n", tmp, hwnd?"stopped":"already stopped");
     break;
   case w32_restartservice:
     if (hwnd)
@@ -531,16 +531,16 @@ int win9x_service_control_exec(char *tmp, enum serviceflags cmd, int qflag)
       SendMessage(hwnd, WM_BINKD9XCOMMAND, CTRL_SERVICERESTART_EVENT, 0);
       if (win9x_service_start(tmp))
       {
-        if (!qflag)  Log(-1, "\'%s\': restarted\n", tmp);
+        if (!qflag)  Log (LL_CONONLY, "\'%s\': restarted\n", tmp);
       }
       else
       {
-        if (!qflag)  Log(-1, "\'%s\': restarting failed!\n", tmp);
+        if (!qflag)  Log (LL_CONONLY, "\'%s\': restarting failed!\n", tmp);
         rc = 0;
       }
     }
     else
-      if (!qflag)  Log(-1, "\'%s\': already stopped\n", tmp);
+      if (!qflag)  Log (LL_CONONLY, "\'%s\': already stopped\n", tmp);
     break;
   default:  /* Avoid gcc warnings about non-handled enumeration values */
     rc = 0;
@@ -636,7 +636,7 @@ int win9x_service_control(void)
     break;
   }
 
-  if (!quiet_flag && msg)  Log(-1, msg);
+  if (!quiet_flag && msg)  Log (LL_CONONLY, msg);
 
   if (win9x_check_name_all())
   {
@@ -689,7 +689,7 @@ int win9x_service_do_uninstall(char *srvname, int qflag)
     }
   }
 
-  if (!qflag)  Log(-1, "\'%s\' uninstalled...\n", srvname);
+  if (!qflag)  Log (LL_CONONLY, "\'%s\' uninstalled...\n", srvname);
   if (!win9x_service_control_exec(srvname, w32_stopservice, qflag))  rc = 0;
   return rc;
 }
@@ -707,7 +707,7 @@ int win9x_service_un_install(int argc, char **argv)
 
   if (all&&(service_flag != w32_uninstallservice))
   {
-    Log((quiet_flag?0:-1), "Invalid service name!%s", quiet_flag?"":"\n");
+    Log((quiet_flag?LL_FATAL:LL_CONONLY), "Invalid service name!%s", quiet_flag?"":"\n");
     return 0;
   }
 
@@ -719,7 +719,7 @@ int win9x_service_un_install(int argc, char **argv)
 
     if (j)
     {
-      if (!quiet_flag)  Log(-1, "Service already %sinstalled...\n", service_flag==w32_installservice?"":"UN");
+      if (!quiet_flag)  Log (LL_CONONLY, "Service already %sinstalled...\n", service_flag==w32_installservice?"":"UN");
       return 1;
     }
   }
@@ -731,7 +731,7 @@ int win9x_service_un_install(int argc, char **argv)
       srvlst = win9x_get_services_list(1);
 
       if (!srvlst->count)
-        Log(-1, "No installed services.\n");
+        Log (LL_CONONLY, "No installed services.\n");
       else
         for(i=0; i<srvlst->count; i++)
           if (!win9x_service_do_uninstall(srvlst->names[i], quiet_flag))  rc = 0;
@@ -827,20 +827,20 @@ int win9x_service_un_install(int argc, char **argv)
   }
 
   if (!rc)
-    Log((quiet_flag?0:-1), "Unable to store data in registry...%s", quiet_flag?"":"\n");
+    Log((quiet_flag?LL_FATAL:LL_CONONLY), "Unable to store data in registry...%s", quiet_flag?"":"\n");
   else
   {
     if (win9x_service_start(service_name))
     {
-      if (!quiet_flag)  Log(-1, "\'%s\' installed and started...\n", service_name);
+      if (!quiet_flag)  Log (LL_CONONLY, "\'%s\' installed and started...\n", service_name);
     }
     else
     {
       rc = 0;
       if (!quiet_flag)
       {
-        Log(-1, "\'%s\' installed...\n", service_name);
-        Log(-1, "Unable to start service!\n");
+        Log (LL_CONONLY, "\'%s\' installed...\n", service_name);
+        Log (LL_CONONLY, "Unable to start service!\n");
       }
     }
   }

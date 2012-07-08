@@ -120,9 +120,9 @@ int bsy_add (FTN_ADDR *fa0, bsy_t bt, BINKD_CONFIG *config)
   {
     strnzcat (buf, bt == F_CSY ? ".csy" : ".bsy", sizeof (buf));
     if (mkpath (buf) == -1)
-      Log (1, "mkpath('%s'): %s", buf, strerror (errno));
+      Log (LL_CRIT, "mkpath('%s'): %s", buf, strerror (errno));
 
-    if (create_sem_file (buf, 5))
+    if (create_sem_file (buf, LL_INFO))
     {
       BSY_ADDR *new_bsy = bsy_get_free_cell ();
 
@@ -133,7 +133,7 @@ int bsy_add (FTN_ADDR *fa0, bsy_t bt, BINKD_CONFIG *config)
 #ifndef UNIX
       new_bsy->h = open(buf, O_RDONLY);
       if (new_bsy->h == -1)
-        Log (2, "Can't open %s: %s!", buf, strerror(errno));
+        Log (LL_ERR, "Can't open %s: %s!", buf, strerror(errno));
 #if defined(OS2)
       else
         DosSetFHState(new_bsy->h, OPEN_FLAGS_NOINHERIT);
@@ -163,7 +163,7 @@ int bsy_test (FTN_ADDR *fa0, bsy_t bt, BINKD_CONFIG *config)
     strnzcat (buf, bt == F_CSY ? ".csy" : ".bsy", sizeof (buf));
 
     if (mkpath (buf) == -1)
-      Log (1, "mkpath('%s'): %s", buf, strerror (errno));
+      Log (LL_CRIT, "mkpath('%s'): %s", buf, strerror (errno));
 
     if (access (buf, F_OK) == -1)
       return 1;
@@ -189,7 +189,7 @@ void bsy_remove (FTN_ADDR *fa0, bsy_t bt, BINKD_CONFIG *config)
 #ifndef UNIX
 	if (bsy->h != -1)
 	  if (close(bsy->h))
-            Log (2, "Can't close %s (handle %d): %s!", buf, bsy->h, strerror(errno));
+            Log (LL_ERR, "Can't close %s (handle %d): %s!", buf, bsy->h, strerror(errno));
 #endif
 	delete (buf);
 	/* remove empty point directory */
@@ -235,7 +235,7 @@ void bsy_remove_all (BINKD_CONFIG *config)
 #ifndef UNIX
       if (bsy->h != -1)
         if (close(bsy->h))
-          Log (2, "Can't close %s (handle %d): %s!", buf, bsy->h, strerror(errno));
+          Log (LL_ERR, "Can't close %s (handle %d): %s!", buf, bsy->h, strerror(errno));
 #endif
       delete (buf);
       /* remove empty point directory */
@@ -248,7 +248,7 @@ void bsy_remove_all (BINKD_CONFIG *config)
       FA_ZERO (&bsy->fa);
     }
   }
-  Log (6, "bsy_remove_all: done");
+  Log (LL_DBG, "bsy_remove_all: done");
   bsy_deinit ();
 }
 
@@ -272,9 +272,9 @@ void bsy_touch (BINKD_CONFIG *config)
       {
 	strnzcat (buf, bsy->bt == F_CSY ? ".csy" : ".bsy", sizeof (buf));
 	if (touch (buf, time (0)) == -1)
-          Log (1, "touch %s: %s", buf, strerror (errno));
+          Log (LL_CRIT, "touch %s: %s", buf, strerror (errno));
 	else
-	  Log (6, "touched %s", buf);
+	  Log (LL_DBG, "touched %s", buf);
       }
     }
     last_touch = time (0);

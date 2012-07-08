@@ -95,7 +95,7 @@ int WinsockIni(void) {
 
     Err = WSAStartup(wVersionRequested, &wsaData);
     if (Err != 0) {
-       Log (0, "Cannot initialise WinSock");
+       Log (LL_FATAL, "Cannot initialise WinSock");
        return (-1);
     }
     /*----------------------------------------------------------------*/
@@ -104,7 +104,7 @@ int WinsockIni(void) {
     /*----------------------------------------------------------------*/
 
     if (LOBYTE(wsaData.wVersion) != 1 || HIBYTE(wsaData.wVersion) != 1) {
-       Log (0, "WinSock %d.%d detected. Required version 1.1",LOBYTE(wsaData.wVersion), HIBYTE(wsaData.wVersion));
+       Log (LL_FATAL, "WinSock %d.%d detected. Required version 1.1",LOBYTE(wsaData.wVersion), HIBYTE(wsaData.wVersion));
        WSACleanup( );
        return (-1);
     }

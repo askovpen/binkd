@@ -211,7 +211,7 @@ void xftnaddress_to_str(char *s, FTN_ADDR *fa, int force_point)
 void exp_ftnaddress (FTN_ADDR *fa, FTN_ADDR *pAddr, int nAddr, FTN_DOMAIN *pDomains)
 {
   if (!pAddr)
-    Log (0, "you should define your address right after domains");
+    Log (LL_FATAL, "you should define your address right after domains");
   if (fa->z == -1) {
     /* val: set default zone for a domain */
     FTN_DOMAIN *d = get_domain_info(fa->domain, pDomains);

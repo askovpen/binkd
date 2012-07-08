@@ -259,7 +259,7 @@
  * - unless using threads define log buffer via xalloc()
  *
  * Revision 2.8  2003/08/13 08:20:45  val
- * try to avoid mixing Log() output and Perl errors in stderr
+ * try to avoid mixing Log () output and Perl errors in stderr
  *
  * Revision 2.7  2003/08/11 08:33:16  val
  * better error handling in perl hooks
@@ -934,14 +934,6 @@ struct perl_const { char *name; int value; } perl_consts[] = {
   { "BAD_AUTH", BAD_AUTH }
 };
 
-/* log levels */
-#define LL_ERR  1
-#define LL_WARN 2
-#define LL_INFO 3
-#define LL_LOG  3
-#define LL_DBG  7
-#define LL_DBG2 9
-
 /* ---------------------------- defines ------------------------------- */
 
 #define VK_ADD_intz(_sv, _name, _v)                 \
@@ -994,7 +986,7 @@ static void perl_warn_str (char* str) {
     char* cp = strchr (str, '\n');
     char  c  = 0;
     if (cp) { c = *cp; *cp = 0; }
-    Log(LL_ERR, "Perl error: %s", str);
+    Log (LL_CRIT, "Perl error: %s", str);
     if (cp) *cp = c;
     else break;
     str = cp + 1;
@@ -1030,19 +1022,19 @@ static void sub_err(int sub) {
   else
     s = xstrdup("(empty error message)");
   if ( strchr(s, '\n') == NULL )
-    Log(LL_ERR, "Perl %s error: %s", perl_subnames[sub], s);
+    Log (LL_CRIT, "Perl %s error: %s", perl_subnames[sub], s);
   else {
     p = s;
-    Log(LL_ERR, "Perl %s error below:", perl_subnames[sub]);
+    Log (LL_CRIT, "Perl %s error below:", perl_subnames[sub]);
     while ( *p && (*p != '\n' || *(p+1)) ) {
       char *r = strchr(p, '\n');
       if (r) {
         *r = 0;
-        Log(LL_ERR, "  %s", p);
+        Log (LL_CRIT, "  %s", p);
         p = r+1;
       }
       else {
-        Log(LL_ERR, "  %s", p);
+        Log (LL_CRIT, "  %s", p);
         break;
       }
     }
@@ -1080,17 +1072,17 @@ static void sub_err(int sub) {
   STRLEN n_a;
 
   if (items != 1 && items != 2)
-  { Log(LL_ERR, "wrong params number to Log (need 1 or 2, exist %d)", items);
+  { Log (LL_CRIT, "wrong params number to Log (need 1 or 2, exist %d)", items);
     XSRETURN_EMPTY;
   }
   if (items == 2) {
     lvl = SvUV(ST(0));
     str = (char *)SvPV(ST(1), n_a); if (n_a == 0) str = "";
   } else {
-    lvl = LL_LOG;
+    lvl = LL_NOTICE;
     str = (char *)SvPV(ST(0), n_a); if (n_a == 0) str = "";
   }
-  Log(lvl, "%s", str);
+  Log (lvl, "%s", str);
   XSRETURN_EMPTY;
 }
 /* returns 1 if the first addr matches to any of the rest */
@@ -1109,7 +1101,7 @@ static void sub_err(int sub) {
   int mask_mode = 0;
 
   if (items == 1) { 
-    Log(LL_ERR, "aeq() requires 2 or more parameters, %d exist", items);
+    Log (LL_CRIT, "aeq() requires 2 or more parameters, %d exist", items);
     XSRETURN_UNDEF;
   }
   VK_FIND_CONFIG(cfg);
@@ -1149,11 +1141,11 @@ static void sub_err(int sub) {
   SV **svp;
 
   if (items == 1) { 
-    Log(LL_ERR, "arm() requires 2 or more parameters, %d exist", items);
+    Log (LL_CRIT, "arm() requires 2 or more parameters, %d exist", items);
     XSRETURN_UNDEF;
   }
   if (!SvROK(ST(0)) || SvTYPE(SvRV(ST(0))) != SVt_PVAV) {
-    Log(LL_ERR, "first parameter to arm() should be array reference");
+    Log (LL_CRIT, "first parameter to arm() should be array reference");
     XSRETURN_UNDEF;
   }
   VK_FIND_CONFIG(cfg);
@@ -1213,14 +1205,14 @@ extern void msg_send2 (STATE *state, t_msg m, char *s1, char *s2);
   char sv_state[20];
 
   if (items != 2) {
-    Log(LL_ERR, "wrong params number to msg_send (needs 2, exist %d)", items);
+    Log (LL_CRIT, "wrong params number to msg_send (needs 2, exist %d)", items);
     XSRETURN_EMPTY;
   }
   def_state();
   sv = perl_get_sv(sv_state, FALSE);
-  if (!sv) { Log(LL_ERR, "can't find $%s pointer", sv_state); XSRETURN_EMPTY; }
+  if (!sv) { Log (LL_CRIT, "can't find $%s pointer", sv_state); XSRETURN_EMPTY; }
   state = (STATE*)SvPV(sv, n_a);
-  if (!state || !n_a) { Log(LL_ERR, "$%s pointer is NULL", sv_state); XSRETURN_EMPTY; }
+  if (!state || !n_a) { Log (LL_CRIT, "$%s pointer is NULL", sv_state); XSRETURN_EMPTY; }
   m = (t_msg)SvIV(ST(0));
   str = (char *)SvPV(ST(1), n_a); if (n_a == 0) str = "";
   msg_send2(state, m, str, NULL);
@@ -1312,7 +1304,7 @@ static void perl_setup(BINKD_CONFIG *cfg, PerlInterpreter *perl) {
   int   i;
 
   if (!perl) return;
-  Log(LL_DBG, "perl_setup(): perl context %p", perl);
+  Log (LL_DBG2, "perl_setup(): perl context %p", perl);
 
   hv = perl_get_hv("config", TRUE);
   hv_clear(hv);
@@ -1356,7 +1348,7 @@ static void perl_setup(BINKD_CONFIG *cfg, PerlInterpreter *perl) {
 	  cur = cur->next;
 	}
   }
-  Log(LL_DBG2, "perl_setup(): %%config done");
+  Log (LL_DBG4, "perl_setup(): %%config done");
   /* domain */
   hv = perl_get_hv("domain", TRUE);
   hv_clear(hv);
@@ -1384,7 +1376,7 @@ static void perl_setup(BINKD_CONFIG *cfg, PerlInterpreter *perl) {
       cur = cur->next;
     }
   }
-  Log(LL_DBG2, "perl_setup(): %%domain done");
+  Log (LL_DBG4, "perl_setup(): %%domain done");
   /* address -> me */
   av = perl_get_av("addr", TRUE);
   av_clear(av);
@@ -1394,7 +1386,7 @@ static void perl_setup(BINKD_CONFIG *cfg, PerlInterpreter *perl) {
     SvREADONLY_on(sv);
     av_push(av, sv);
   }
-  Log(LL_DBG2, "perl_setup(): @addr done");
+  Log (LL_DBG4, "perl_setup(): @addr done");
   /* ftrans */
   av = perl_get_av("ftrans", TRUE);
   av_clear(av);
@@ -1409,7 +1401,7 @@ static void perl_setup(BINKD_CONFIG *cfg, PerlInterpreter *perl) {
       cur = cur->next;
     }
   }
-  Log(LL_DBG2, "perl_setup(): @ftrans done");
+  Log (LL_DBG4, "perl_setup(): @ftrans done");
   /* overwrite */
   av = perl_get_av("overwrite", TRUE);
   av_clear(av);
@@ -1422,7 +1414,7 @@ static void perl_setup(BINKD_CONFIG *cfg, PerlInterpreter *perl) {
       cur = cur->next;
     }
   }
-  Log(LL_DBG2, "perl_setup(): @overwrite done");
+  Log (LL_DBG4, "perl_setup(): @overwrite done");
   /* skip */
   av = perl_get_av("skip", TRUE);
   av_clear(av);
@@ -1439,7 +1431,7 @@ static void perl_setup(BINKD_CONFIG *cfg, PerlInterpreter *perl) {
       cur = cur->next;
     }
   }
-  Log(LL_DBG2, "perl_setup(): @skip done");
+  Log (LL_DBG4, "perl_setup(): @skip done");
   /* share */
   hv = perl_get_hv("share", TRUE);
   hv_clear(hv);
@@ -1462,12 +1454,12 @@ static void perl_setup(BINKD_CONFIG *cfg, PerlInterpreter *perl) {
       cur = cur->next;
     }
   }
-  Log(LL_DBG2, "perl_setup(): %%share done");
+  Log (LL_DBG4, "perl_setup(): %%share done");
   /* node */
   hv = perl_get_hv("node", TRUE);
   hv_clear(hv);
   foreach_node(add_node_to_hv, hv, cfg);
-  Log(LL_DBG2, "perl_setup(): %%node done");
+  Log (LL_DBG4, "perl_setup(): %%node done");
 }
 
 /* init root perl, parse hooks file, return success */
@@ -1480,20 +1472,20 @@ int perl_init(char *perlfile, BINKD_CONFIG *cfg) {
   char **perlenv = saved_envp;
   PerlInterpreter *perl;
 
-  Log(LL_DBG, "perl_init(): %s", perlfile);
+  Log (LL_DBG2, "perl_init(): %s", perlfile);
   /* try to find out the actual path to perl script and set dir to -I */
   i = 1;
   perlargs[i++] = "-e";
   perlargs[i++] = "0";
   /* check perm */
   if (access(perlfile, R_OK)) {
-    Log(LL_ERR, "Cannot open %s: %s", perlfile, strerror(errno));
+    Log (LL_CRIT, "Cannot open %s: %s", perlfile, strerror(errno));
     return 0;
   }
 #ifdef PERLDL
   /* load DLL */
   if (!cfg->perl_dll[0]) {
-    Log(LL_ERR, "You should define `perl-dll' in config to use Perl hooks");
+    Log (LL_CRIT, "You should define `perl-dll' in config to use Perl hooks");
     return 0;
   } else if (*(perl_dlfuncs->f) == NULL) { /* not already loaded */
     struct perl_dlfunc *dlfunc;
@@ -1506,10 +1498,10 @@ int perl_init(char *perlfile, BINKD_CONFIG *cfg) {
     if (!hl)
 #endif
     {
-      Log(LL_ERR, "perl_init(): can't load library %s", cfg->perl_dll);
+      Log (LL_CRIT, "perl_init(): can't load library %s", cfg->perl_dll);
       return 0;
     }
-    Log(LL_DBG2, "perl_init(): load library: %p", hl);
+    Log (LL_DBG4, "perl_init(): load library: %p", hl);
 
     for (dlfunc = perl_dlfuncs; dlfunc->name; dlfunc++) {
 #ifdef OS2
@@ -1517,9 +1509,9 @@ int perl_init(char *perlfile, BINKD_CONFIG *cfg) {
 #else
       if ((*(dlfunc->f) = GetProcAddress(hl, dlfunc->name)))
 #endif
-        Log(LL_DBG2, "perl_init(): load method %s: %p", dlfunc->name, *(dlfunc->f));
+        Log (LL_DBG4, "perl_init(): load method %s: %p", dlfunc->name, *(dlfunc->f));
       else {
-        Log(LL_ERR, "perl_init(): can't load method %s", dlfunc->name);
+        Log (LL_CRIT, "perl_init(): can't load method %s", dlfunc->name);
         return 0;
       }
     }
@@ -1527,22 +1519,22 @@ int perl_init(char *perlfile, BINKD_CONFIG *cfg) {
     {
       if (!DosQueryProcAddr(hl, 0, "Perl_sv_2pv", (PFN*)dl_Perl_sv_2pv) &&
           !DosQueryProcAddr(hl, 0, "Perl_sv_2pv_flags", (PFN*)dl_Perl_sv_2pv_flags)) {
-        Log(LL_ERR, "perl_init(): can't load method Perl_sv_2pv or Perl_sv_2pv_flags");
+        Log (LL_CRIT, "perl_init(): can't load method Perl_sv_2pv or Perl_sv_2pv_flags");
         return 0;
       }
       if (!DosQueryProcAddr(hl, 0, "Perl_sv_2uv", (PFN*)dl_Perl_sv_2uv) &&
           !DosQueryProcAddr(hl, 0, "Perl_sv_2uv_flags", (PFN*)dl_Perl_sv_2uv_flags)) {
-        Log(LL_ERR, "perl_init(): can't load method Perl_sv_2uv or Perl_sv_2uv_flags");
+        Log (LL_CRIT, "perl_init(): can't load method Perl_sv_2uv or Perl_sv_2uv_flags");
         return 0;
       }
       if (!DosQueryProcAddr(hl, 0, "Perl_sv_2iv", (PFN*)dl_Perl_sv_2iv) &&
           !DosQueryProcAddr(hl, 0, "Perl_sv_2iv_flags", (PFN*)dl_Perl_sv_2iv_flags)) {
-        Log(LL_ERR, "perl_init(): can't load method Perl_sv_2iv or Perl_sv_2iv_flags");
+        Log (LL_CRIT, "perl_init(): can't load method Perl_sv_2iv or Perl_sv_2iv_flags");
         return 0;
       }
       if (!DosQueryProcAddr(hl, 0, "Perl_sv_setsv", (PFN*)dl_Perl_sv_setsv) &&
           !DosQueryProcAddr(hl, 0, "Perl_sv_setsv_flags", (PFN*)dl_Perl_sv_setsv_flags)) {
-        Log(LL_ERR, "perl_init(): can't load method Perl_sv_setsv or Perl_sv_setsv_flags");
+        Log (LL_CRIT, "perl_init(): can't load method Perl_sv_setsv or Perl_sv_setsv_flags");
         return 0;
       }
     }
@@ -1551,25 +1543,25 @@ int perl_init(char *perlfile, BINKD_CONFIG *cfg) {
       *(void**)&dl_Perl_sv_2pv = GetProcAddress(hl, "Perl_sv_2pv");
       *(void**)&dl_Perl_sv_2pv_flags = GetProcAddress(hl, "Perl_sv_2pv_flags");
       if (!dl_Perl_sv_2pv && !dl_Perl_sv_2pv_flags) {
-        Log(LL_ERR, "perl_init(): can't load method Perl_sv_2pv or Perl_sv_2pv_flags");
+        Log (LL_CRIT, "perl_init(): can't load method Perl_sv_2pv or Perl_sv_2pv_flags");
         return 0;
       }
       *(void**)&dl_Perl_sv_2uv = GetProcAddress(hl, "Perl_sv_2uv");
       *(void**)&dl_Perl_sv_2uv_flags = GetProcAddress(hl, "Perl_sv_2uv_flags");
       if (!dl_Perl_sv_2uv && !dl_Perl_sv_2uv_flags) {
-        Log(LL_ERR, "perl_init(): can't load method Perl_sv_2uv or Perl_sv_2uv_flags");
+        Log (LL_CRIT, "perl_init(): can't load method Perl_sv_2uv or Perl_sv_2uv_flags");
         return 0;
       }
       *(void**)&dl_Perl_sv_2iv = GetProcAddress(hl, "Perl_sv_2iv");
       *(void**)&dl_Perl_sv_2iv_flags = GetProcAddress(hl, "Perl_sv_2iv_flags");
       if (!dl_Perl_sv_2iv && !dl_Perl_sv_2iv_flags) {
-        Log(LL_ERR, "perl_init(): can't load method Perl_sv_2iv or Perl_sv_2iv_flags");
+        Log (LL_CRIT, "perl_init(): can't load method Perl_sv_2iv or Perl_sv_2iv_flags");
         return 0;
       }
       *(void**)&dl_Perl_sv_setsv = GetProcAddress(hl, "Perl_sv_setsv");
       *(void**)&dl_Perl_sv_setsv_flags = GetProcAddress(hl, "Perl_sv_setsv_flags");
       if (!dl_Perl_sv_setsv && !dl_Perl_sv_setsv_flags) {
-        Log(LL_ERR, "perl_init(): can't load method Perl_sv_setv or Perl_sv_setsv_flags");
+        Log (LL_CRIT, "perl_init(): can't load method Perl_sv_setv or Perl_sv_setsv_flags");
       }
     }
 #endif
@@ -1583,12 +1575,12 @@ int perl_init(char *perlfile, BINKD_CONFIG *cfg) {
   PERL_SET_CONTEXT(perl);
   perl_construct(perl);
   rc = perl_parse(perl, xs_init, i, perlargv, (char **)NULL);
-  Log(LL_DBG, "perl_init(): parse rc=%d", rc);
+  Log (LL_DBG2, "perl_init(): parse rc=%d", rc);
   /* can't parse */
   if (rc) {
     perl_destruct(perl);
     perl_free(perl);
-    Log(LL_ERR, "Can't parse %s, perl filtering disabled", perlfile);
+    Log (LL_CRIT, "Can't parse %s, perl filtering disabled", perlfile);
     return 0;
   }
   /* setup consts */
@@ -1604,13 +1596,13 @@ int perl_init(char *perlfile, BINKD_CONFIG *cfg) {
   PL_diehook  = newRV_inc ((SV*) perl_get_cv ("binkd_warn", TRUE));
 
   /* run main program body */
-  Log(LL_DBG, "perl_init(): running body");
+  Log (LL_DBG2, "perl_init(): running body");
   cmd = xstrdup ("do '");
   xstrcat (&cmd, perlfile);
   xstrcat (&cmd, "'; $@ ? $@ : '';");
   sv = perl_eval_pv (cmd, TRUE);
   if (!SvPOK(sv)) {
-    Log(LL_ERR, "Syntax error in internal perl expression: %s", cmd);
+    Log (LL_CRIT, "Syntax error in internal perl expression: %s", cmd);
     rc = 1;
   } else if (SvTRUE (sv)) {
     perl_warn_sv (sv);
@@ -1630,14 +1622,14 @@ int perl_init(char *perlfile, BINKD_CONFIG *cfg) {
   InitSem (&perlsem);
 #endif
   cfg->perl = perl;
-  Log(LL_DBG, "perl_init(): end");
+  Log (LL_DBG2, "perl_init(): end");
   return 1;
 }
 
 /* exit, just before destruction */
 static void perl_on_exit(BINKD_CONFIG *cfg) {
   if (cfg->perl_ok & (1 << PERL_ON_EXIT)) {
-     Log(LL_DBG, "perl_on_exit(), perl");
+     Log (LL_DBG2, "perl_on_exit(), perl");
      { dSP;
        ENTER;
        SAVETMPS;
@@ -1650,25 +1642,25 @@ static void perl_on_exit(BINKD_CONFIG *cfg) {
        LEAVE;
      }
      if (SvTRUE(ERRSV)) sub_err(PERL_ON_EXIT);
-     Log(LL_DBG, "perl_on_exit() end");
+     Log (LL_DBG2, "perl_on_exit() end");
   }
 }
 
 /* deallocate root perl, call on_exit() if master==1 */
 void perl_done(BINKD_CONFIG *cfg, int master) {
-  Log(LL_DBG, "perl_done(): perl=%p", cfg->perl);
+  Log (LL_DBG2, "perl_done(): perl=%p", cfg->perl);
   if (cfg->perl) {
     PERL_SET_CONTEXT((PerlInterpreter *)cfg->perl);
     /* run on_exit() */
     if (master) perl_on_exit(cfg);
     /* de-allocate */
-    Log(LL_DBG, "perl_done(): destructing perl %p", cfg->perl);
+    Log (LL_DBG2, "perl_done(): destructing perl %p", cfg->perl);
 #ifndef _MSC_VER
     perl_destruct((PerlInterpreter *)cfg->perl);
     perl_free((PerlInterpreter *)cfg->perl);
 #endif
     cfg->perl = NULL;
-    Log(LL_DBG, "perl_done(): end");
+    Log (LL_DBG2, "perl_done(): end");
   }
   if (current_config && current_config->perl)
     PERL_SET_CONTEXT((PerlInterpreter *)current_config->perl);
@@ -1683,7 +1675,7 @@ void *perl_init_clone(BINKD_CONFIG *cfg) {
   PerlInterpreter *p;
 
   if (cfg->perl) {
-    Log(LL_DBG2, "perl_init_clone(), parent perl=%p, context=%p", cfg->perl, Perl_get_context());
+    Log (LL_DBG4, "perl_init_clone(), parent perl=%p, context=%p", cfg->perl, Perl_get_context());
     PERL_SET_CONTEXT((PerlInterpreter *)cfg->perl);
 #ifndef PERL_MULTITHREAD
 #if defined(WIN32) && defined(CLONEf_CLONE_HOST)
@@ -1708,7 +1700,7 @@ void *perl_init_clone(BINKD_CONFIG *cfg) {
     }
   }
   else p = NULL;
-  Log(LL_DBG, "perl_init_clone(): new clone %p", p);
+  Log (LL_DBG2, "perl_init_clone(): new clone %p", p);
   return p;
 }
 /* destruct a clone */
@@ -1716,7 +1708,7 @@ void perl_done_clone(void *p) {
   char sv_config[20];
   SV *sv;
 
-  Log(LL_DBG, "perl_done_clone(): destructing clone %p", p);
+  Log (LL_DBG2, "perl_done_clone(): destructing clone %p", p);
   if (p == NULL) return;
   def_config();
   VK_ADD_strn(sv, sv_config, NULL, 0); /* is it possible to set NULL pointer? */
@@ -1759,7 +1751,7 @@ static void setup_session(STATE *state, int lvl) {
   BINKD_CONFIG *cfg = state->config;
 
   if (!Perl_get_context()) return;
-  Log(LL_DBG2, "perl_setup_session(), perl context %p", Perl_get_context());
+  Log (LL_DBG4, "perl_setup_session(), perl context %p", Perl_get_context());
 
   /* lvl 1 */
   if (lvl >= 1 && state->perl_set_lvl < 1) {
@@ -1818,7 +1810,7 @@ static void setup_session(STATE *state, int lvl) {
     VK_ADD_intz(sv, "files_rcvd", state->files_rcvd);
     VK_ADD_intz(sv, "files_sent", state->files_sent);
   }
-  Log(LL_DBG2, "perl_setup_session() end");
+  Log (LL_DBG4, "perl_setup_session() end");
 }
 
 /* setup a queue */
@@ -1829,7 +1821,7 @@ static void setup_queue(STATE *state, FTNQ *queue) {
   SV   *sv;
   FTNQ *q;
 
-  Log(LL_DBG2, "perl_setup_queue()");
+  Log (LL_DBG4, "perl_setup_queue()");
   av = perl_get_av("queue", TRUE);
   av_clear(av);
   for (q = queue; q; q = q->next) {
@@ -1849,7 +1841,7 @@ static void setup_queue(STATE *state, FTNQ *queue) {
     sv = newRV_noinc( (SV*)hv );
     av_push(av, (SV*)sv);
   }
-  Log(LL_DBG2, "perl_setup_queue() end");
+  Log (LL_DBG4, "perl_setup_queue() end");
 }
 
 /* refresh queue */
@@ -1863,10 +1855,10 @@ static FTNQ *refresh_queue(STATE *state, FTNQ *queue) {
   char *s;
   BINKD_CONFIG *cfg;
 
-  Log(LL_DBG2, "perl_refresh_queue()");
+  Log (LL_DBG4, "perl_refresh_queue()");
   cfg = state->config;
   av = perl_get_av("queue", FALSE);
-  if (!av) { Log(LL_DBG2, "perl_refresh_queue(): @queue undefined"); return queue; }
+  if (!av) { Log (LL_DBG4, "perl_refresh_queue(): @queue undefined"); return queue; }
   n = av_len(av) + 1;
   for (i = 0; i < n; i++) {
     svp = av_fetch(av, i, 0);
@@ -1907,7 +1899,7 @@ static FTNQ *refresh_queue(STATE *state, FTNQ *queue) {
     } else q->fa = state->fa[0];
   }
   if (queue != SCAN_LISTED) q_free(queue, cfg);
-  Log(LL_DBG2, "perl_refresh_queue() end");
+  Log (LL_DBG4, "perl_refresh_queue() end");
   return q0;
 }
 
@@ -1916,7 +1908,7 @@ static FTNQ *refresh_queue(STATE *state, FTNQ *queue) {
 /* start, after init */
 void perl_on_start(BINKD_CONFIG *cfg) {
   if (cfg->perl_ok & (1 << PERL_ON_START)) {
-     Log(LL_DBG, "perl_on_start()");
+     Log (LL_DBG2, "perl_on_start()");
      lockperlsem();
      { dSP;
        ENTER;
@@ -1931,10 +1923,10 @@ void perl_on_start(BINKD_CONFIG *cfg) {
      }
      if (SvTRUE(ERRSV)) sub_err(PERL_ON_START);
 /*     {
-       Log(LL_ERR, "Perl on_start() error: %s", SvPV(ERRSV, n_a));
+       Log (LL_CRIT, "Perl on_start() error: %s", SvPV(ERRSV, n_a));
      }*/
      releaseperlsem();
-     Log(LL_DBG, "perl_on_start() end");
+     Log (LL_DBG2, "perl_on_start() end");
   }
 }
 
@@ -1954,7 +1946,7 @@ int perl_on_call(FTN_NODE *node, BINKD_CONFIG *cfg, char **hosts
 #endif
 
   if (cfg->perl_ok & (1 << PERL_ON_CALL)) {
-    Log(LL_DBG, "perl_on_call(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_on_call(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return 1;
     lockperlsem();
     { dSP;
@@ -2018,7 +2010,7 @@ int perl_on_call(FTN_NODE *node, BINKD_CONFIG *cfg, char **hosts
       }
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_on_call() end");
+    Log (LL_DBG2, "perl_on_call() end");
     return rc;
   }
   return 1;
@@ -2031,7 +2023,7 @@ int perl_on_error(BINKD_CONFIG *cfg, FTN_ADDR *addr, const char *error, const in
   SV     *svret, *sv;
 
   if (cfg->perl_ok & (1 << PERL_ON_ERROR)) {
-    Log(LL_DBG, "perl_on_error(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_on_error(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return 1;
     lockperlsem();
     { dSP;
@@ -2053,7 +2045,7 @@ int perl_on_error(BINKD_CONFIG *cfg, FTN_ADDR *addr, const char *error, const in
       if (SvTRUE(ERRSV)) sub_err(PERL_ON_ERROR);
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_on_error() end");
+    Log (LL_DBG2, "perl_on_error() end");
     return rc;
   }
   return 1;
@@ -2077,7 +2069,7 @@ char *perl_on_handshake(STATE *state) {
     VK_ADD_strn(svret, sv_state, state, sizeof(STATE)); 
   }
   if (cfg->perl_ok & (1 << PERL_ON_HANDSHAKE)) {
-    Log(LL_DBG, "perl_on_handshake(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_on_handshake(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return NULL;
     lockperlsem();
     { dSP;
@@ -2135,7 +2127,7 @@ char *perl_on_handshake(STATE *state) {
             state->pAddr[n++] = addr;
           }
           state->nAddr = n;
-          if (n == 0) Log(LL_WARN, "Perl on_handshake(): @me contains no valid addresses");
+          if (n == 0) Log (LL_ERR, "Perl on_handshake(): @me contains no valid addresses");
         }
         if ((passwd = perl_get_sv("passwd", FALSE)) != NULL && SvOK(passwd)) {
           strncpy(state->expected_pwd, SvPV(passwd, len), sizeof(state->expected_pwd));
@@ -2145,7 +2137,7 @@ char *perl_on_handshake(STATE *state) {
       }
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_on_handshake() end");
+    Log (LL_DBG2, "perl_on_handshake() end");
     return prc;
   }
   return NULL;
@@ -2159,7 +2151,7 @@ char *perl_after_handshake(STATE *state) {
   BINKD_CONFIG *cfg = state->config;
 
   if (cfg->perl_ok & (1 << PERL_AFTER_HANDSHAKE)) {
-    Log(LL_DBG, "perl_after_handshake(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_after_handshake(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return NULL;
     lockperlsem();
     { dSP;
@@ -2185,7 +2177,7 @@ char *perl_after_handshake(STATE *state) {
         state->q = refresh_queue(state, state->q);
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_after_handshake() end");
+    Log (LL_DBG2, "perl_after_handshake() end");
     return prc;
   }
   return NULL;
@@ -2203,7 +2195,7 @@ void perl_after_session(STATE *state, int status) {
     /* SvREFCNT_dec(sv); */
   }
   if (cfg->perl_ok & (1 << PERL_AFTER_SESSION)) {
-    Log(LL_DBG, "perl_after_session(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_after_session(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return;
     lockperlsem();
     { dSP;
@@ -2221,7 +2213,7 @@ void perl_after_session(STATE *state, int status) {
       if (SvTRUE(ERRSV)) sub_err(PERL_AFTER_SESSION);
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_after_session() end");
+    Log (LL_DBG2, "perl_after_session() end");
   }
 }
 
@@ -2232,7 +2224,7 @@ int perl_before_recv(STATE *state, off_t offs) {
   BINKD_CONFIG *cfg = state->config;
 
   if (cfg->perl_ok & (1 << PERL_BEFORE_RECV)) {
-    Log(LL_DBG, "perl_before_recv(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_before_recv(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return 0;
     lockperlsem();
     { dSP;
@@ -2259,7 +2251,7 @@ int perl_before_recv(STATE *state, off_t offs) {
       }
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_before_recv() end");
+    Log (LL_DBG2, "perl_before_recv() end");
     return rc;
   }
   return 0;
@@ -2275,7 +2267,7 @@ int perl_after_recv(STATE *state, TFILE *file, char *tmp_name, char *real_name) 
   BINKD_CONFIG *cfg = state->config;
 
   if (cfg->perl_ok & (1 << PERL_AFTER_RECV)) {
-    Log(LL_DBG, "perl_after_recv(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_after_recv(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return 0;
     lockperlsem();
     { dSP;
@@ -2317,7 +2309,7 @@ int perl_after_recv(STATE *state, TFILE *file, char *tmp_name, char *real_name) 
       }
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_after_recv() end");
+    Log (LL_DBG2, "perl_after_recv() end");
     return rc;
   }
   return 0;
@@ -2331,7 +2323,7 @@ int perl_before_send(STATE *state) {
   BINKD_CONFIG *cfg = state->config;
 
   if (cfg->perl_ok & (1 << PERL_BEFORE_SEND)) {
-    Log(LL_DBG, "perl_before_send(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_before_send(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return 0;
     lockperlsem();
     { dSP;
@@ -2369,7 +2361,7 @@ int perl_before_send(STATE *state) {
       }
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_before_send() end");
+    Log (LL_DBG2, "perl_before_send() end");
     return rc;
   }
   return 0;
@@ -2384,7 +2376,7 @@ int perl_after_sent(STATE *state, int n) {
   BINKD_CONFIG *cfg = state->config;
 
   if (cfg->perl_ok & (1 << PERL_AFTER_SENT)) {
-    Log(LL_DBG, "perl_after_sent(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_after_sent(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return 0;
     lockperlsem();
     { dSP;
@@ -2423,7 +2415,7 @@ int perl_after_sent(STATE *state, int n) {
       }
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_after_sent() end");
+    Log (LL_DBG2, "perl_after_sent() end");
     return rc;
   }
   return 0;
@@ -2437,7 +2429,7 @@ int perl_on_log(char *s, int bufsize, int *lev) {
   BINKD_CONFIG *cfg;
   char inlog[20];
 
-  cfg = lock_current_config(); /* Log() always working by current_config */
+  cfg = lock_current_config(); /* Log () always working by current_config */
   if (!cfg) return 1;
   if (!cfg->perl_ok || !Perl_get_context()) {
     unlock_config_structure(cfg, 0);
@@ -2461,7 +2453,7 @@ int perl_on_log(char *s, int bufsize, int *lev) {
     sv_setiv(svchk, 1);
     SvREADONLY_on(svchk);
     /* end of check */
-    Log(LL_DBG2, "perl_on_log(), perl=%p", Perl_get_context());
+    Log (LL_DBG4, "perl_on_log(), perl=%p", Perl_get_context());
     { dSP;
       VK_ADD_intz(sv, "lvl", *lev); if (sv) { SvREADONLY_off(sv); }
       VK_ADD_str (sv, "_", s); if (sv) { SvREADONLY_off(sv); }
@@ -2491,7 +2483,7 @@ int perl_on_log(char *s, int bufsize, int *lev) {
       }
       else rc = 1;
     }
-    Log(LL_DBG2, "perl_on_log() end");
+    Log (LL_DBG4, "perl_on_log() end");
     SvREADONLY_off(svchk);
     sv_setiv(svchk, 0); /* check: now we can restore */
     /* SvREFCNT_dec(svchk); */
@@ -2508,7 +2500,7 @@ int perl_on_send(STATE *state, t_msg *m, char **s1, char **s2) {
   BINKD_CONFIG *cfg = state->config;
 
   if (cfg->perl_ok & (1 << PERL_ON_SEND)) {
-    Log(LL_DBG2, "perl_on_send(), perl=%p", Perl_get_context());
+    Log (LL_DBG4, "perl_on_send(), perl=%p", Perl_get_context());
     lockperlsem();
     { dSP;
       VK_ADD_intz(sv, "type", *m);
@@ -2528,7 +2520,7 @@ int perl_on_send(STATE *state, t_msg *m, char **s1, char **s2) {
       }
     }
     releaseperlsem();
-    Log(LL_DBG2, "perl_on_send() end");
+    Log (LL_DBG4, "perl_on_send() end");
     return rc;
   }
   return 1;
@@ -2540,7 +2532,7 @@ int perl_on_recv(STATE *state, char *s, int size) {
   BINKD_CONFIG *cfg = state->config;
 
   if (cfg->perl_ok & (1 << PERL_ON_RECV)) {
-    Log(LL_DBG2, "perl_on_recv(), perl=%p", Perl_get_context());
+    Log (LL_DBG4, "perl_on_recv(), perl=%p", Perl_get_context());
     lockperlsem();
     { dSP;
       if ( (sv = perl_get_sv("s", TRUE)) ) {
@@ -2560,7 +2552,7 @@ int perl_on_recv(STATE *state, char *s, int size) {
       }
     }
     releaseperlsem();
-    Log(LL_DBG2, "perl_on_recv() end");
+    Log (LL_DBG4, "perl_on_recv() end");
     return rc;
   }
   return 1;
@@ -2575,7 +2567,7 @@ int perl_setup_rlimit(STATE *state, BW *bw, char *fname)
   BINKD_CONFIG *cfg = state->config;
 
   if (cfg->perl_ok & (1 << PERL_SETUP_RLIMIT)) {
-    Log(LL_DBG2, "perl_set_rlimit(), perl=%p", Perl_get_context());
+    Log (LL_DBG4, "perl_set_rlimit(), perl=%p", Perl_get_context());
     lockperlsem();
     { dSP;
       if (state->perl_set_lvl < 2) setup_session(state, 2);
@@ -2605,7 +2597,7 @@ int perl_setup_rlimit(STATE *state, BW *bw, char *fname)
       }
     }
     releaseperlsem();
-    Log(LL_DBG2, "perl_setup_rlimit() end");
+    Log (LL_DBG4, "perl_setup_rlimit() end");
     return rc;
   }
   return 1;
@@ -2621,7 +2613,7 @@ int perl_need_reload(BINKD_CONFIG *cfg, struct conflist_type *conflist, int need
   SV     *sv, *svret;
 
   if (cfg->perl_ok & (1 << PERL_NEED_RELOAD)) {
-    Log(LL_DBG, "perl_need_reload(), perl=%p", Perl_get_context());
+    Log (LL_DBG2, "perl_need_reload(), perl=%p", Perl_get_context());
     if (!Perl_get_context()) return 0;
     lockperlsem();
     { dSP;
@@ -2632,7 +2624,7 @@ int perl_need_reload(BINKD_CONFIG *cfg, struct conflist_type *conflist, int need
         SvREADONLY_on(sv);
         av_push(av, sv);
       }
-      Log(LL_DBG2, "perl_need_reload(): @conflist done");
+      Log (LL_DBG4, "perl_need_reload(): @conflist done");
       VK_ADD_intz (sv, "_", need_reload); if (sv) { SvREADONLY_off(sv); }
       ENTER;
       SAVETMPS;
@@ -2651,7 +2643,7 @@ int perl_need_reload(BINKD_CONFIG *cfg, struct conflist_type *conflist, int need
       }
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_need_reload() end, returns %i", rc);
+    Log (LL_DBG2, "perl_need_reload() end, returns %i", rc);
     return rc;
   }
   return 0;
@@ -2661,7 +2653,7 @@ int perl_need_reload(BINKD_CONFIG *cfg, struct conflist_type *conflist, int need
 void perl_config_loaded(BINKD_CONFIG *cfg)
 {
   if (cfg->perl && (cfg->perl_ok & (1 << PERL_CONFIG_LOADED))) {
-    Log(LL_DBG, "perl_config_loaded()");
+    Log (LL_DBG2, "perl_config_loaded()");
     lockperlsem();
     { dSP;
       ENTER;
@@ -2678,7 +2670,7 @@ void perl_config_loaded(BINKD_CONFIG *cfg)
       }
     }
     releaseperlsem();
-    Log(LL_DBG, "perl_config_loaded() end");
+    Log (LL_DBG2, "perl_config_loaded() end");
     return;
   }
   return;

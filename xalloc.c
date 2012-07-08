@@ -50,7 +50,7 @@ void *xalloc (size_t size)
   void *p = malloc (size);
 
   if (!p)
-    Log (0, "Not enough memory (failed to allocate %lu byte(s))",
+    Log (LL_FATAL, "Not enough memory (failed to allocate %lu byte(s))",
 	 (unsigned long) size);
   memset(p, 0xEE, size);
   return p;
@@ -61,7 +61,7 @@ void *xrealloc (void *ptr, size_t size)
   void *p = realloc (ptr, size);
 
   if (!p)
-    Log (0, "Not enough memory (failed to realloc %p to %lu byte(s))",
+    Log (LL_FATAL, "Not enough memory (failed to realloc %p to %lu byte(s))",
 	 ptr, (unsigned long) size);
   return p;
 }

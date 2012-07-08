@@ -385,7 +385,7 @@ void rel_grow_handles(int nh)
   LockSem(&fhsem);
   if (curmaxfh == 0)
   { if (DosSetRelMaxFH(&addfh, &curmaxfh))
-    { Log(1, "Cannot DosSetRelMaxFH");
+    { Log (LL_CRIT, "Cannot DosSetRelMaxFH");
       return;
     }
   }
@@ -395,9 +395,9 @@ void rel_grow_handles(int nh)
   addfh=nh;
   if (DosSetRelMaxFH(&addfh, &curmaxfh))
 #endif
-    Log(1, "Cannot grow handles to %ld (now %ld): %s", curmaxfh, addfh, strerror(errno));
+    Log (LL_CRIT, "Cannot grow handles to %ld (now %ld): %s", curmaxfh, addfh, strerror(errno));
   else
-    Log(6, "Set MaxFH to %ld (res %ld)", curmaxfh, addfh);
+    Log (LL_DBG, "Set MaxFH to %ld (res %ld)", curmaxfh, addfh);
   ReleaseSem(&fhsem);
 }
 #endif
@@ -420,7 +420,7 @@ static int do_client(BINKD_CONFIG *config)
   {
     q_free (SCAN_LISTED, config);
     if (config->printq)
-      Log (-1, "scan\r");
+      Log (LL_CONONLY, "scan\r");
     q_scan (SCAN_LISTED, config);
     config->q_present = 1;
     if (config->printq)
@@ -428,7 +428,7 @@ static int do_client(BINKD_CONFIG *config)
       LockSem (&lsem);
       q_list (stderr, SCAN_LISTED, config);
       ReleaseSem (&lsem);
-      Log (-1, "idle\r");
+      Log (LL_CONONLY, "idle\r");
     }
   }
   if (n_clients < config->max_clients)
@@ -443,7 +443,7 @@ static int do_client(BINKD_CONFIG *config)
         char szDestAddr[FTN_ADDR_SZ + 1];
 
         ftnaddress_to_str (szDestAddr, &r->fa);
-        Log (4, "%s busy, skipping", szDestAddr);
+        Log (LL_NOTICE, "%s busy, skipping", szDestAddr);
         return 0; /* go to the next node */
       }
       rel_grow_handles (6);
@@ -457,7 +457,7 @@ static int do_client(BINKD_CONFIG *config)
         rel_grow_handles (-6);
         threadsafe(--n_clients);
         PostSem(&eothread);
-        Log (1, "cannot branch out");
+        Log (LL_CRIT, "cannot branch out");
         unblocksig();
         SLEEP(1);
         blocksig();
@@ -466,7 +466,7 @@ static int do_client(BINKD_CONFIG *config)
 #if !defined(DEBUGCHILD)
       else
       {
-        Log (5, "started client #%i, id=%i", n_clients, pid);
+        Log (LL_INFO, "started client #%i, id=%i", n_clients, pid);
 #if defined(HAVE_FORK) && !defined(AMIGA)
         unlock_config_structure(config, 0); /* Forked child has own copy */
 #endif
@@ -479,7 +479,7 @@ static int do_client(BINKD_CONFIG *config)
       {
         if (n_clients <= 0 && q_not_empty (config) == 0)
         {
-          Log (4, "the queue is empty, quitting...");
+          Log (LL_NOTICE, "the queue is empty, quitting...");
           return -1;
         }
       } else
@@ -527,7 +527,7 @@ void clientmgr (void *arg)
 #endif
 
   setproctitle ("client manager");
-  Log (4, "clientmgr started");
+  Log (LL_NOTICE, "clientmgr started");
 
   for (;;)
   {
@@ -557,7 +557,7 @@ void clientmgr (void *arg)
       checkcfg();
   }
 
-  Log (5, "downing clientmgr...");
+  Log (LL_INFO, "downing clientmgr...");
 
 #if defined(WITH_PERL) && defined(HAVE_THREADS)
   if (server_flag && cperl)
@@ -611,7 +611,7 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
                     , &proxy, &socks
 #endif
                     )) {
-    Log(1, "call aborted by Perl on_call()");
+    Log (LL_CRIT, "call aborted by Perl on_call()");
     return 0;
   }
 #else
@@ -623,7 +623,7 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
 #endif
 
   ftnaddress_to_str (szDestAddr, &node->fa);
-  Log (2, "call to %s", szDestAddr);
+  Log (LL_ERR, "call to %s", szDestAddr);
   setproctitle ("call to %s", szDestAddr);
 
 #ifdef HTTPS
@@ -647,13 +647,13 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
     }
     if ( (aiErr = srv_getaddrinfo(host, sport, &hints, &aiProxyHead)) != 0)
     {
-	Log(2, "Port %s not found, try default %d", sp, proxy[0] ? 3128 : 1080);
+	Log (LL_ERR, "Port %s not found, try default %d", sp, proxy[0] ? 3128 : 1080);
 	aiErr = getaddrinfo(host, proxy[0] ? "3128" : "1080", &hints, &aiProxyHead);
     }
     /* resolve proxy host */
     if (aiErr != 0)
     {
-      Log(1, "%s host %s not found", proxy[0] ? "Proxy" : "Socks", host);
+      Log (LL_CRIT, "%s host %s not found", proxy[0] ? "Proxy" : "Socks", host);
 #ifdef WITH_PERL
       xfree(hosts);
 #ifdef HTTPS
@@ -672,7 +672,7 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
   {
     if (rc == 0)
     {
-      Log (1, "%s: %i: error parsing host list", hosts, i);
+      Log (LL_CRIT, "%s: %i: error parsing host list", hosts, i);
       continue;
     }
 #ifdef HTTPS
@@ -697,7 +697,7 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
     {
       if ((sockfd = socket (ai->ai_family, ai->ai_socktype, ai->ai_protocol)) == INVALID_SOCKET)
       {
-	Log (1, "socket: %s", TCPERR ());
+	Log (LL_CRIT, "socket: %s", TCPERR ());
 
 	/* as long as there are more addresses, try those */
         if (ai != NULL) 
@@ -737,7 +737,7 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
       rc = getnameinfo(ai->ai_addr, ai->ai_addrlen, addrbuf, sizeof(addrbuf),
 		       servbuf, sizeof(servbuf), NI_NUMERICHOST | NI_NUMERICSERV);
       if (rc != 0) {
-	Log (2, "Error in getnameinfo(): %s (%d)", gai_strerror(rc), rc);
+	Log (LL_ERR, "Error in getnameinfo(): %s (%d)", gai_strerror(rc), rc);
         snprintf(addrbuf, BINKD_FQDNLEN, "invalid");
 	*servbuf = '\0';
       }
@@ -748,10 +748,10 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
 	char *sp = strchr(host, ':');
 	if (sp) *sp = '\0';
 	if (port == config->oport)
-	  Log (4, "trying %s via %s %s:%s...", host,
+	  Log (LL_NOTICE, "trying %s via %s %s:%s...", host,
 	       proxy[0] ? "proxy" : "socks", addrbuf, servbuf);
 	else
-	  Log (4, "trying %s:%s via %s %s:%s...", host, port,
+	  Log (LL_NOTICE, "trying %s:%s via %s %s:%s...", host, port,
 	       proxy[0] ? "proxy" : "socks", addrbuf, servbuf);
 	sprintf(host+strlen(host), ":%s", port);
       }
@@ -759,9 +759,9 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
 #endif
       {
 	if (port == config->oport)
-          Log (4, "trying %s...", addrbuf);
+          Log (LL_NOTICE, "trying %s...", addrbuf);
 	else
-          Log (4, "trying %s:%s...", addrbuf, servbuf);
+          Log (LL_NOTICE, "trying %s:%s...", addrbuf, servbuf);
       }
       /* find bind addr with matching address family */
       if (config->bindaddr[0])
@@ -775,7 +775,7 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
 	if ((aiErr = getaddrinfo(config->bindaddr, NULL, &src_hints, &src_ai)) == 0)
         {
           if (bind(sockfd, src_ai->ai_addr, src_ai->ai_addrlen))
-	    Log(4, "bind: %s", TCPERR());
+	    Log (LL_NOTICE, "bind: %s", TCPERR());
 	  freeaddrinfo(src_ai);
 	}
         else
@@ -784,7 +784,7 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
 	    continue;
 	  else
 	    /* otherwise just warn and don't bind() */
-	    Log(2, "bind -- getaddrinfo: %s (%d)", gai_strerror(aiErr), aiErr);
+	    Log (LL_ERR, "bind -- getaddrinfo: %s (%d)", gai_strerror(aiErr), aiErr);
       }
 #ifdef HAVE_FORK
       if (config->connect_timeout)
@@ -798,7 +798,7 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
 #ifdef HAVE_FORK
 	alarm(0);
 #endif
-	Log (4, "connected");
+	Log (LL_NOTICE, "connected");
 	break;
       }
 
@@ -813,7 +813,7 @@ static int call0 (FTN_NODE *node, BINKD_CONFIG *config)
 #endif
       if (!binkd_exit)
       {
-	Log (1, "connection to %s failed: %s", szDestAddr, save_err);
+	Log (LL_CRIT, "connection to %s failed: %s", szDestAddr, save_err);
 	bad_try (&node->fa, save_err, BAD_CALL, config);
       }
       del_socket(sockfd);
@@ -884,7 +884,7 @@ static void call (void *arg)
   else
   {
     ftnaddress_to_str (szDestAddr, &a->node->fa);
-    Log (4, "%s busy, skipping", szDestAddr);
+    Log (LL_NOTICE, "%s busy, skipping", szDestAddr);
   }
 #if defined(WITH_PERL) && defined(HAVE_THREADS)
   perl_done_clone(cperl);

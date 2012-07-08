@@ -128,7 +128,7 @@ void process_killlist (KILLLIST *killlist, int n_killlist, int flag)
 {
   int i;
 
-  Log (6, "processing kill list");
+  Log (LL_DBG, "processing kill list");
   for (i = 0; i < n_killlist; ++i)
     if (killlist[i].cond != 's' || (flag == 's' && killlist[i].cond == 's'))
       delete (killlist[i].name);

@@ -149,10 +149,24 @@
 #define max(x,y) ((x) > (y) ? (x) : (y))
 #endif
 
+/* log levels */
+#define LL_CONONLY	-1
+#define LL_FATAL	0
+#define LL_CRIT		1
+#define LL_ERR		2
+#define LL_WARN		3
+#define LL_NOTICE	4
+#define LL_INFO		5
+#define LL_DBG		6
+#define LL_DBG2		7
+#define LL_DBG3		8
+#define LL_DBG4		9
+#define LL_DBG5		10
+
 void Log (int lev, char *s,...);
 void InitLog(int loglevel, int conlog, char *logpath, void *first);
 
-#define LOGINT(v) Log(6, "%s=%i\n", #v, (int)(v))
+#define LOGINT(v) Log(LL_DBG, "%s=%i\n", #v, (int)(v))
 
 /*
  * (xalloc.c) [Re]allocate memory or log error

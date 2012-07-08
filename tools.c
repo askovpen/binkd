@@ -475,12 +475,12 @@ int create_sem_file (char *name, int errloglevel)
   snprintf (buf, sizeof (buf), "%u\n", (int) getpid ());
   if ((i = write(h, buf, strlen(buf))) != (int)strlen(buf))
   { if (i == -1)
-      Log (2, "Can't write to %s (handle %d): %s", name, h, strerror(errno));
+      Log (LL_ERR, "Can't write to %s (handle %d): %s", name, h, strerror(errno));
     else
-      Log (2, "Can't write %d bytes to %s, wrote only %d", strlen(buf), name, i);
+      Log (LL_ERR, "Can't write %d bytes to %s, wrote only %d", strlen(buf), name, i);
   }
   close (h);
-  Log (5, "created %s", name);
+  Log (LL_INFO, "created %s", name);
   return 1;
 }
 
@@ -620,7 +620,7 @@ void Log (int lev, char *s,...)
   struct tm tm;
   time_t t;
   static const char *marks = "!?+-";
-  char ch = (0 <= lev && lev < (int) strlen (marks)) ? marks[lev] : ' ';
+  char ch = (LL_FATAL <= lev && lev < (int) strlen (marks)) ? marks[lev] : ' ';
   t = safe_time();
   safe_localtime (&t, &tm);
 
@@ -632,10 +632,10 @@ void Log (int lev, char *s,...)
   {
     LockSem(&lsem);
     fprintf (stderr, "%30.30s\r%c %02d:%02d [%u] %s%s", " ", ch,
-         tm.tm_hour, tm.tm_min, (unsigned) PID (), buf, (lev >= 0) ? "\n" : "");
+         tm.tm_hour, tm.tm_min, (unsigned) PID (), buf, (lev >= LL_FATAL) ? "\n" : "");
     fflush (stderr);
     ReleaseSem(&lsem);
-    if (lev < 0)
+    if (lev <= LL_CONONLY)
       return;
   }
 
@@ -666,9 +666,9 @@ void Log (int lev, char *s,...)
   }
 #ifdef WIN32
 #ifdef BINKD9X
-  if (!lev)
+  if (lev != LL_FATAL)
 #else
-  if (lev < 1 && isService() > 0)
+  if (lev <= LL_FATAL && isService() > 0)
 #endif
   {
     MessageBox(NULL, buf, MYNAME, MB_OK|MB_ICONSTOP|0x00200000L|MB_SYSTEMMODAL|MB_SETFOREGROUND);
@@ -698,7 +698,7 @@ void Log (int lev, char *s,...)
       openlog ("binkd", LOG_PID, syslog_facility);
     }
 
-    if (lev < 0 || lev >= sizeof log_levels / sizeof (int))
+    if (lev < LL_FATAL || lev >= sizeof log_levels / sizeof (int))
       lev = sizeof log_levels / sizeof (int) - 1;
 
     va_start (ap, s);
@@ -709,7 +709,7 @@ void Log (int lev, char *s,...)
 #endif
 } /* if (ok) */
 
-  if (lev == 0)
+  if (lev == LL_FATAL)
     exit (1);
 
 #if defined(EMX) || defined(__WATCOMC__)
@@ -870,7 +870,7 @@ char *parse_args (int argc, char *argv[], char *src, char *ID)
   }
   if (i < argc)
   {
-    Log (1, "%s: cannot parse args", ID, src);
+    Log (LL_CRIT, "%s: cannot parse args", ID, src);
     return NULL;
   }
   else
@@ -914,7 +914,7 @@ int touch (char *file, time_t t)
     if (r == 32)
       r = 0; /* Can't touch opened *.bsy */
     if (r)
-      Log (1, "touch: DosSetPathInfo(%s) retcode %d", file, r);
+      Log (LL_CRIT, "touch: DosSetPathInfo(%s) retcode %d", file, r);
   }
   return (r!=0);
 #endif
@@ -977,9 +977,9 @@ int delete (char *path)
   int rc;
 
   if ((rc = unlink (path)) != 0)
-    Log (1, "error unlinking `%s': %s", path, strerror (errno));
+    Log (LL_CRIT, "error unlinking `%s': %s", path, strerror (errno));
   else
-    Log (5, "unlinked `%s'", path);
+    Log (LL_INFO, "unlinked `%s'", path);
 
   return rc;
 }
@@ -990,12 +990,12 @@ int trunc_file (char *path)
 
   if ((h = open (path, O_WRONLY | O_TRUNC)) == -1)
   {
-    Log (1, "cannot truncate `%s': %s", path, strerror (errno));
+    Log (LL_CRIT, "cannot truncate `%s': %s", path, strerror (errno));
     return -1;
   }
   else
   {
-    Log (4, "truncated %s", path);
+    Log (LL_NOTICE, "truncated %s", path);
     close (h);
     return 0;
   }
@@ -1011,7 +1011,7 @@ int sdelete (char *path)
 
   for (i=0; i<5; i++) {
     if ((rc = unlink (path)) == 0) {
-      Log (6, "unlinked `%s'", path);
+      Log (LL_DBG, "unlinked `%s'", path);
       return 0;
     }
     else if (errno == EPERM || errno == EACCES || errno == EAGAIN)
@@ -1019,7 +1019,7 @@ int sdelete (char *path)
     else
       break;
   }
-  Log (1, "error unlinking `%s': %s", path, strerror (errno));
+  Log (LL_CRIT, "error unlinking `%s': %s", path, strerror (errno));
 
   return rc;
 }
@@ -1155,20 +1155,20 @@ char *makeinboundcase (char *s, enum inbcasetype inbcase)
   {
       case INB_UPPER:
 	s = strupper(s);
-	Log (8, "uppercase filename");
+	Log (LL_DBG3, "uppercase filename");
         break;
       case INB_LOWER:
 	s = strlower(s);
-	Log (8, "lowercase filename");
+	Log (LL_DBG3, "lowercase filename");
         break;
       case INB_MIXED:
         s[0] = toupper (s[0]);
         for (i = 1; s[i]; ++i)
           s[i] = isalnum(s[i-1]) ? tolower(s[i]) : toupper(s[i]);
-        Log (8, "mixing filename case");
+        Log (LL_DBG3, "mixing filename case");
         break;
       default:
-	Log (8, "nothing to do with filename case");
+	Log (LL_DBG3, "nothing to do with filename case");
         break;
   }
 

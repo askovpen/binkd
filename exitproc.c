@@ -222,7 +222,7 @@ void close_srvmgr_socket(void)
   int curfd;
 
   for (curfd=0; curfd<sockfd_used; curfd++)
-  { Log (5, "Closing server socket # %i", sockfd[curfd]);
+  { Log (LL_INFO, "Closing server socket # %i", sockfd[curfd]);
     soclose (sockfd[curfd]);
   }
   sockfd_used = 0;
@@ -239,7 +239,7 @@ void exitfunc (void)
     if(exitfunc_called_flag)
     { /* prevent double call exitfunc() at NT service stop sequence */
       ReleaseSem(&exitsem);
-      Log(10, "exitfunc() repeated call, return from exitfunc()");
+      Log (LL_DBG5, "exitfunc() repeated call, return from exitfunc()");
       return;
     }
     exitfunc_called_flag=1;
@@ -247,7 +247,7 @@ void exitfunc (void)
   }
 #endif
 
-  Log(7, "exitfunc()");
+  Log (LL_DBG2, "exitfunc()");
 
 #ifdef HAVE_FORK
   if (pidcmgr)
@@ -283,7 +283,7 @@ void exitfunc (void)
 	  timeout++;
 	  if (timeout == 4) /* 4 sec */
 	  {
-	    Log(5, "exitfunc(): warning, threads exit timeout (%i sec)!", timeout);
+	    Log (LL_INFO, "exitfunc(): warning, threads exit timeout (%i sec)!", timeout);
 	    break;
 	  }
 	}
@@ -292,7 +292,7 @@ void exitfunc (void)
       }
       else
       {
-	Log(8, "exitfunc(): all threads finished");
+	Log (LL_DBG3, "exitfunc(): all threads finished");
 	break;
       }
   }

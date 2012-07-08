@@ -103,7 +103,7 @@ int _InitSem(void *vpSem) {
 
    BsySem = CreateMutex(NULL,FALSE,NULL);
    if (BsySem == NULL) {
-      Log(0,"Unable to create Mutex object");
+      Log (LL_FATAL,"Unable to create Mutex object");
       return (-1);
    }
    return(0);
@@ -136,7 +136,7 @@ int _LockSem(void *vpSem) {
    if (WaitForSingleObject(BsySem,INFINITE) == WAIT_FAILED) {
        errcode = GetLastError();
        _CleanSem(vpSem);
-       Log(0, "Sem.c: WaitForSingleObject failed. Error code : %lx", errcode);
+       Log (LL_FATAL, "Sem.c: WaitForSingleObject failed. Error code : %lx", errcode);
        return (-1);
    }
    return(0);
@@ -165,7 +165,7 @@ int _InitEventSem(void *vpSem) {
 
    EvtSem = CreateEvent(NULL,FALSE,FALSE,NULL);
    if (EvtSem == NULL) {
-      Log(0,"Unable to create Event object");
+      Log (LL_FATAL,"Unable to create Event object");
       return (-1);
    }
    return(0);

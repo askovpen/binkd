@@ -196,7 +196,7 @@ int build_service_arguments(char **asp, char *argv[], int use_argv0)
   if (!use_argv0)
   {
     if (!(pathlen = GetModuleFileName(NULL, pathname, MAXPATHLEN)))
-      Log(0, "Error in GetModuleFileName()=%s\n", w32err(GetLastError()) );
+      Log (LL_FATAL, "Error in GetModuleFileName()=%s\n", w32err(GetLastError()) );
     l += pathlen+1;
     argc++;
   }
@@ -361,7 +361,7 @@ HICON LoadBinkdIcon(void)
   hi = LoadImage( NULL, BINKD_ICON_FILE, IMAGE_ICON, 0, 0,
                   LR_SHARED | LR_LOADFROMFILE | LR_LOADTRANSPARENT );
   if(hi)
-    Log(12,"Icon for systray is loaded from %s", BINKD_ICON_FILE);
+    Log (LL_DBG5, "Icon for systray is loaded from %s", BINKD_ICON_FILE);
 
   /* Load icon from resource */
   { HMODULE hModule;
