@@ -1,7 +1,7 @@
         BinkD FAQ
 
         Ответы на часто задаваемые вопросы по FTN-мэйлеру binkd
-        $Date: 2012/06/21 06:56:17 $
+        $Date: 2012/07/12 09:34:17 $
 
     Этот FAQ составлен на основе вопросов, часто встречающихся
 в эхоконференции RU.BINKD. Часть ответов основана на рекомендациях
@@ -74,8 +74,8 @@
        cvs -d :pserver:binkd@cvs.happy.kiev.ua:/cvs co binkd
        Получить последние исходники ветки binkd 1.0.x-stable:
        cvs -d :pserver:binkd@cvs.happy.kiev.ua:/cvs co -r binkd-1_0-stable binkd
-       Получить исходники binkd 1.0.0-release:
-       cvs -d :pserver:binkd@cvs.happy.kiev.ua:/cvs co -r binkd-1.0.0 binkd
+       Получить исходники binkd 1.0.1-release:
+       cvs -d :pserver:binkd@cvs.happy.kiev.ua:/cvs co -r binkd-1.0.1 binkd
 
     Анонимный FTP:
     ftp://cvs.happy.kiev.ua/pub/fidosoft/mailer/binkd/snapshot (основной)
