@@ -1,5 +1,5 @@
 # Microsoft Visual C++ Makefile
-# $Id: Makefile,v 2.50 2012/07/07 07:18:54 gul Exp $
+# $Id: Makefile,v 2.51 2012/07/12 07:00:55 gul Exp $
 #
 # Usage: nmake [DEBUG=1] [STATIC=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
 #              [ZLIB=1] [BZLIB2=1] [ZLIBDL=1] [DEBUGCHILD=1] [BW_LIM=1]
@@ -99,6 +99,7 @@ LIBS=$(LIBS) wsock32.lib
 !else
 !ifdef X64
 BINKDNAME=binkd64
+OUTDIR=$(OUTDIR)-x64
 !else
 BINKDNAME=binkd
 !endif
