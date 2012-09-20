@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.642.2.15 2012/07/12 09:37:09 gul Exp $
+ * $Id: Config.h,v 2.642.2.16 2012/09/20 12:18:22 gul Exp $
  */
 
 #ifndef _Config_h
@@ -62,7 +62,7 @@
 #define MINOR 0
 #define BUILD 2
 #define SUFFIX "-pre" /* comment out this define for release versions */
-#define PATCHLEVEL 1
+#define PATCHLEVEL 2
 #define MYVER_S(s) _MYVER_S(s)
 #define _MYVER_S(s) #s
 #ifdef SUFFIX
