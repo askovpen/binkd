@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnnode.c,v 2.44 2012/06/20 22:41:46 green Exp $
+ * $Id: ftnnode.c,v 2.44.2.1 2012/09/20 12:18:20 gul Exp $
  *
  * $Log: ftnnode.c,v $
+ * Revision 2.44.2.1  2012/09/20 12:18:20  gul
+ * Cosmitics
+ *
  * Revision 2.44  2012/06/20 22:41:46  green
  * 1 hour timeout for defnode resolutions
  *
@@ -518,7 +521,7 @@ int poll_node (char *s, BINKD_CONFIG *config)
 
   if (!parse_ftnaddress (s, &target, config->pDomains.first))
   {
-    Log (1, "`%s' cannot be parsed as a Fido-style address\n", s);
+    Log (1, "`%s' cannot be parsed as a Fido-style address", s);
     return 0;
   }
   else
