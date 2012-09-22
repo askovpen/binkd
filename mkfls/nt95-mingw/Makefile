@@ -1,4 +1,4 @@
-# $Id: Makefile,v 2.48 2012/01/26 09:57:29 gul Exp $
+# $Id: Makefile,v 2.49 2012/09/22 19:19:38 gul Exp $
 #
 
 # Usage: make [DEBUG=1] [BINKD9X=1] [PERL=1] [PERLDL=1]
@@ -28,7 +28,7 @@ CFLAGS+= -mno-cygwin -mthreads -pipe -funsigned-char \
 
 CDEFS+=  -DHAVE_THREADS -DHAVE_UNISTD -DHAVE_INTTYPES_H -DHAVE_INTMAX_T \
          -DWIN32 -DHAVE_IO_H -DHAVE_DOS_H -DHAVE_STDARG_H               \
-         -DHAVE_WAITPID -DHTTPS -DNTLM -DHAVE_SNPRINTF -DHAVE_VSNPRINTF \
+         -DHTTPS -DNTLM -DHAVE_SNPRINTF -DHAVE_VSNPRINTF \
          -DAMIGADOS_4D_OUTBOUND -DHASATTRIBUTE -DNONAMELESSUNION
 
 
