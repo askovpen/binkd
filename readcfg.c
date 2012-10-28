@@ -918,17 +918,11 @@ static int check_outbox(char *obox)
 
 static int ConfigError(char *format, ...)
 {
-#define MAX_CONFIGERROR_PARAMS 6
-
   va_list args;
-  int     data[MAX_CONFIGERROR_PARAMS];
-  int     i;
 
   va_start(args, format);
-  for (i = 0; i < MAX_CONFIGERROR_PARAMS; i++)
-    data[i] = va_arg(args, int);
   Log(-1, "%s: line %d: error in configuration files\n", current_path, current_line);
-  Log(1, format, data[0], data[1], data[2], data[3], data[4], data[5]);
+  vLog(1, format, args);
   va_end(args);
   return 0;
 }

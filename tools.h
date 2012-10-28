@@ -149,7 +149,8 @@
 #define max(x,y) ((x) > (y) ? (x) : (y))
 #endif
 
-void Log (int lev, char *s,...);
+void vLog (int lev, char *s, va_list ap);
+void Log (int lev, char *s, ...);
 void InitLog(int loglevel, int conlog, char *logpath, void *first);
 
 #define LOGINT(v) Log(6, "%s=%i\n", #v, (int)(v))
