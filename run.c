@@ -130,9 +130,25 @@ int run3 (const char *cmd, int *in, int *out, int *err)
   int pid;
   int pin[2], pout[2], perr[2];
 
-  if (in)  pipe(pin);
-  if (out) pipe(pout);
-  if (err) pipe(perr);
+  if (in && pipe(pin) == -1)
+  {
+    Log (1, "Cannot create input pipe: %s", strerror(errno));
+    return -1;
+  }
+  if (out && pipe(pout) == -1)
+  {
+    Log (1, "Cannot create output pipe: %s", strerror(errno));
+    if (in)  close(pin[1]),  close(pin[0]);
+    return -1;
+  }
+  if (err && pipe(perr) == -1)
+  {
+    Log (1, "Cannot create error pipe: %s", strerror(errno));
+    if (in)  close(pin[1]),  close(pin[0]);
+    if (out) close(pout[1]), close(pout[0]);
+    return -1;
+  }
+
   pid = fork();
   if (pid == -1)
   {
