@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: inbound.c,v 2.46 2013/01/24 17:25:35 gul Exp $
+ * $Id: inbound.c,v 2.47 2013/01/24 17:36:53 gul Exp $
  *
  * $Log: inbound.c,v $
+ * Revision 2.47  2013/01/24 17:36:53  gul
+ * Compilation on unix
+ *
  * Revision 2.46  2013/01/24 17:25:35  gul
  * Support "-pipe" option on Win32
  *
@@ -195,6 +198,7 @@
 #include <ctype.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+#include <fcntl.h>
 
 #include "readcfg.h"
 #include "inbound.h"
