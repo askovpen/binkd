@@ -3,9 +3,12 @@
  * code is working in VERY diff. ways in forking vs. threading versions!!
  */
 /*
- * $Id: bsy.c,v 2.11 2010/06/15 20:24:48 gul Exp $
+ * $Id: bsy.c,v 2.12 2013/01/24 17:25:35 gul Exp $
  *
  * $Log: bsy.c,v $
+ * Revision 2.12  2013/01/24 17:25:35  gul
+ * Support "-pipe" option on Win32
+ *
  * Revision 2.11  2010/06/15 20:24:48  gul
  * Improve diagnostics
  *
@@ -131,7 +134,7 @@ int bsy_add (FTN_ADDR *fa0, bsy_t bt, BINKD_CONFIG *config)
       new_bsy->bt = bt;
 
 #ifndef UNIX
-      new_bsy->h = open(buf, O_RDONLY);
+      new_bsy->h = open(buf, O_RDONLY|O_NOINHERIT);
       if (new_bsy->h == -1)
         Log (2, "Can't open %s: %s!", buf, strerror(errno));
 #if defined(OS2)

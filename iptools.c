@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: iptools.c,v 2.19 2012/01/22 00:19:47 green Exp $
+ * $Id: iptools.c,v 2.20 2013/01/24 17:25:35 gul Exp $
  *
  * $Log: iptools.c,v $
+ * Revision 2.20  2013/01/24 17:25:35  gul
+ * Support "-pipe" option on Win32
+ *
  * Revision 2.19  2012/01/22 00:19:47  green
  * Post lookup without host requires AI_PASSIVE
  *
@@ -134,7 +137,7 @@ void setsockopts (SOCKET s)
 
   arg = 1;
   if (ioctlsocket (s, FIONBIO, &arg) < 0)
-    if (!binkd_exit)
+    if (!binkd_exit && TCPERRNO != WSAENOTSOCK)
       Log (1, "ioctlsocket (FIONBIO): %s", TCPERR ());
 #endif
 #endif
