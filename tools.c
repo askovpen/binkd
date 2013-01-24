@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: tools.c,v 2.78 2013/01/24 17:25:35 gul Exp $
+ * $Id: tools.c,v 2.79 2013/01/24 17:33:40 gul Exp $
  *
  * $Log: tools.c,v $
+ * Revision 2.79  2013/01/24 17:33:40  gul
+ * Syntax error
+ *
  * Revision 2.78  2013/01/24 17:25:35  gul
  * Support "-pipe" option on Win32
  *
@@ -685,7 +688,7 @@ void vLog (int lev, char *s, va_list ap)
         LOG_INFO,		       /* 5 */
         LOG_INFO,		       /* 6 */
         LOG_DEBUG		       /* other */
-      }
+      };
 
       if (!opened)
       {
