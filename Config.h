@@ -12,7 +12,7 @@
  */
 
 /*
- * $Id: Config.h,v 2.667 2013/02/03 07:28:52 gul Exp $
+ * $Id: Config.h,v 2.668 2013/02/03 21:37:44 gul Exp $
  */
 
 #ifndef _Config_h
@@ -86,6 +86,7 @@
 
 #define MAXPWDLEN  40
 #define MAX_DOMAIN 32
+#define MAX_INB_RENAME  10000
 
 #define MAXSYSTEMNAME   120
 #define MAXSYSOPNAME    120

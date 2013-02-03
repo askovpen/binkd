@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: protocol.c,v 2.226 2013/02/03 07:28:50 gul Exp $
+ * $Id: protocol.c,v 2.227 2013/02/03 21:37:45 gul Exp $
  *
  * $Log: protocol.c,v $
+ * Revision 2.227  2013/02/03 21:37:45  gul
+ * New option "rename-style [postfix|extension]"
+ *
  * Revision 2.226  2013/02/03 07:28:50  gul
  * Possible segfault on after_session perl hook
  *
@@ -2761,7 +2764,8 @@ static int start_file_recv (STATE *state, char *args, int sz, BINKD_CONFIG *conf
       /* val: /skip check */
 
       if (inb_test (state->in.netname, state->in.size,
-                    state->in.time, state->inbound, realname))
+                    state->in.time, state->inbound, realname,
+                    config->renamestyle))
       {
         Log (2, "already have %s (%s, %" PRIuMAX " byte(s))",
              state->in.netname, realname, (uintmax_t) state->in.size);
