@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: ftnq.c,v 2.39 2011/05/06 15:44:04 gul Exp $
+ * $Id: ftnq.c,v 2.39.2.1 2013/02/03 07:29:03 gul Exp $
  *
  * $Log: ftnq.c,v $
+ * Revision 2.39.2.1  2013/02/03 07:29:03  gul
+ * Possible segfault on after_session perl hook
+ *
  * Revision 2.39  2011/05/06 15:44:04  gul
  * Fixed sorting files in filebox by time
  *
@@ -239,7 +242,7 @@ void q_free (FTNQ *q, BINKD_CONFIG *config)
       else
       {
 	last = last->prev;
-	xfree (last->next);
+	free (last->next);
       }
     }
   }
