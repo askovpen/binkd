@@ -12,9 +12,12 @@
  */
 
 /*
- * $Id: inbound.c,v 2.48 2013/02/03 21:37:44 gul Exp $
+ * $Id: inbound.c,v 2.49 2013/02/04 11:36:21 gul Exp $
  *
  * $Log: inbound.c,v $
+ * Revision 2.49  2013/02/04 11:36:21  gul
+ * Fix in prev patch
+ *
  * Revision 2.48  2013/02/03 21:37:44  gul
  * New option "rename-style [postfix|extension]"
  *
@@ -707,7 +710,7 @@ int inb_done (TFILE *file, STATE *state, BINKD_CONFIG *config)
     if (touch (tmp_name, file->time) != 0)
       Log (1, "touch %s: %s", tmp_name, strerror (errno));
 
-    while (!RENAME (tmp_name, real_name))
+    while (RENAME (tmp_name, real_name))
     {
       if (errno != EEXIST && errno != EACCES && errno != EAGAIN)
       {
